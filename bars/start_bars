@@ -1,0 +1,7 @@
+#!/usr/bin/env sh
+
+origin=$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )
+
+sleep 15
+
+eval "$origin/bars" & disown

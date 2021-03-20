@@ -1,0 +1,22 @@
+#!/usr/bin/env sh
+#
+# Get colour from anywhere in screen and return its HEX code
+#
+# Dependencies
+#   colorpicker : https://github.com/Jack12816/colorpicker
+#
+# BeyondMagic © 2021
+
+
+while IFS=$'\n' read -r id_colour; do
+
+  id_colour=$(printf "$id_colour" | sed -r 's/^[^#]*//' | tr -d '\n' )
+
+  printf "$id_colour" | xclip -sel c
+  notify-send "'$id_colour' was copied to your clipboard."
+
+  killall colorpicker
+
+  exit
+
+done < <(stdbuf -i0 -o0 -e0 colorpicker)

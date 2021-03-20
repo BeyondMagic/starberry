@@ -1,0 +1,51 @@
+#!/usr/bin/env sh
+#
+# Load a predetermined task from a "routine" file
+# Show task of the day based on a file.
+#
+# Example of a file to load the tasks.
+# -----file_name.txt------
+#12:30-13:00 | Breakfast
+#13:00-15:00 | Mathematics
+# ------------------------
+# 
+# Dependencies:
+#   bash
+#
+# BeyondMagic © 16/02/21
+
+file_task="routine/__routine.txt"
+icon_routine="  "
+
+fg="#F8FFF8"; 
+
+bg_before="#2b2b2b"
+
+# Basic
+date_now=$(date +%H%M | sed -r "s_^0+__gm")
+  origin=$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )
+
+_get_tasks() {
+
+  while :; do 
+
+    while read line; do
+
+      start_hour=$(echo "$line" | sed -r "s_:__g" | cut -c 1-4 | sed -r "s_^0+__g")
+        end_hour=$(echo "$line" | sed -r "s_:__g" | cut -c 6-9 | sed -r "s_^0+__g")
+       task_line=$(echo "$line" | sed -r "s_:__g" | cut -c 13-)
+
+       if [[ "$date_now" -ge "$start_hour" ]] && [[ "$date_now" -le "$end_hour" ]]; then
+
+         echo 'T' "%{O-4 T3 F$fg}$icon_routine %{T1} $task_line%{B- F-}"
+
+       fi
+
+    done < $origin/$file_task
+
+    sleep 60
+
+  done
+}
+
+_get_tasks

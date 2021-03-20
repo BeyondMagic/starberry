@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+#
+# This takes a full screenshot using imagemagic and puts unclutter back to its state
+# 
+# BeyondMagic © 2021
+
+killall unclutter
+import -window root png:- | xclip -selection clipboard -t image/png
+notify-send -i "Full screenshot was copied to clipboard." &
+unclutter --timeout 1 & disown
+exit

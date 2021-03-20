@@ -1,0 +1,38 @@
+#!/usr/bin/env sh
+#
+# Dependencies
+#   Swap (Memory)
+#   Grep
+#   
+#
+
+mem_color="#FFFFFF"
+swap_color="#FFFFFF"
+
+_get_ram() {
+
+  while :; do
+
+    msg=""
+
+    memory=$(free -h | grep 'Mem:')
+    memory_total=$(echo $memory | awk {'print $2'} | tr -d ' ')
+    memory_used=$(echo $memory | awk {'print $3'} | tr -d ' ')
+    mem_msg="$memory_used%{F#666666}/%{F-}$memory_total"
+
+    swap=$(free -h | grep 'Swap:')
+    swap_total=$(echo $swap | awk {'print $2'} | tr -d ' ')
+    swap_used=$(echo $swap | awk {'print $3'} | tr -d ' ')
+    swap_msg="$swap_used%{F#666666}/%{F-}$swap_total"
+
+    msg="$msg%{F#666666 T3} %{F#FFFFFF T2}$mem_msg"
+    msg="$msg%{F#666666 T3}  %{F#FFFFFF T2}$swap_msg"
+
+    echo 'M' "$msg　　　%{F- B-} "
+    sleep 30
+
+  done
+
+}
+
+_get_ram
