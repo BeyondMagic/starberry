@@ -28,7 +28,7 @@ format_active_window() {
     title_program="$(sed -r 's/ .*//' <<< "$total")"
     total="$(sed -r 's/\w* //' <<< "$total")"
     
-    [ "$title_program" = "nvim" ] && icon=""
+    [ "$title_program" = "v" ] && icon=""
     [ "$title_program" = "mpd" ] && { icon=""; total="$(sed -r "s/» *//g" <<< "$total")"; }
     [ "$title_program" = "n" ] && icon=""
 
@@ -62,6 +62,10 @@ format_active_window() {
   }; [ "$name" = "qbittorrent" ] && {
     
     icon=""
+
+  }; [ "$name" = "visualboyadvanc" ] && {
+    
+    icon=""
 
   }
   

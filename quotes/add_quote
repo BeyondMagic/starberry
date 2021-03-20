@@ -1,0 +1,86 @@
+#!/usr/bin/env sh
+#
+# Add quote to a file like:
+#
+# Warning: this script will overwrite your scripts.
+#
+#   This was tested with GNU sed 4.8
+#   See your version with:
+#     info sed
+#
+#
+# -------quotes.json--------
+#[
+#  [
+#    "Your Majesty, we Catholic clergy have done our best to destroy the Church for the last eighteen hundred years. We have not succeeded, and neither will you.",
+#    "Massimo Faggioli"
+#  ]
+#]
+# ---------------------------
+#
+# Examples
+#   ./this_executable "This generation fights sex trafficking more than anyone ever has and more than anyone ever has this generation consumes pornography."
+#   ./this_executable "É a batalha pela mente, guerra psicológica. Levando a loucura, tortura neurológica." "Zamba" "A Arte da Guerra"
+#   quotes_path="$HOME/quotes.json" $HOME/scripts/thix_executable "That's why we sing for these kids who don't have a thing, except for a dream and a fucking rap magazine." "Eminem"
+#
+# Dependencies
+#   sed
+#
+# Arguments
+#   $1 : quote
+#   $2 : author (optional)
+#   $3 : source (optional)
+#
+# Sets
+#   quotes_path = path of the quotes.json file
+#
+# BeyondMagic © 2021
+
+quotes_path="$HOME/github/quotes.json"
+
+# See if file exists
+
+   [ ! -e "$quotes_path" ] && {
+
+  echo -e "No file encountered, current path being passed is:\n  \$quotes_path : $quotes_path\n\nEdit this executable file to change the path or execute it with 'quotes_path' variable, for example:\n  quotes_path=\"/path_to_quotes/quotes_file.json\"$basename $0 \"Life is cool.\" \"Me\""
+  exit 1
+
+}
+
+# Four?
+  [ ! "$4" = "" ] && {
+
+  echo "Please, only three arguments..."
+  exit 1
+  
+# Three arguments passed
+} || [ ! "$3" = "" ] && {
+
+  echo -e "Three arguments passed:\n\$1 : $1\n\$2 : $2\n\$3 : $3"
+  sed -e '1 a ¨¨[' -e "1 a ¨¨¨¨\"$1\"," -e "1 a ¨¨¨¨\"$2\"," -e "1 a ¨¨¨¨\"$3\"" -e '1 a ¨¨],' "$quotes_path" | sed '2,6s/¨/ /g' > "$quotes_path.tmp" && mv "$quotes_path.tmp" "$quotes_path"
+  echo "Saved new quote."
+  exit 0
+
+# Two arguments passed
+} || [ ! "$2" = "" ] && {
+
+  echo -e "Tho arguments passed:\n\$1 : $1\n\$2 : $2"
+  sed -e '1 a ¨¨[' -e "1 a ¨¨¨¨\"$1\"," -e "1 a ¨¨¨¨\"$2\"" -e '1 a ¨¨],' "$quotes_path" | sed '2,5s/¨/ /g' > "$quotes_path.tmp" && mv "$quotes_path.tmp" "$quotes_path"
+  echo "Saved new quote."
+  exit 0
+
+# One argument passed
+} || [ ! "$1" = "" ] && {
+
+  echo -e "One arguments passed:\n\$1 : $1"
+  sed -e '1 a ¨¨[' -e "1 a ¨¨¨¨\"$1\"" -e '1 a ¨¨],' "$quotes_path" | sed '2,4s/¨/ /g' > "$quotes_path.tmp" && mv "$quotes_path.tmp" "$quotes_path"
+  echo "Saved new quote."
+  exit 0
+
+# No arguments passed, exit error
+} || {
+  
+  echo "Please, pass at least one arguments (quote)."
+  exit 1
+
+}
