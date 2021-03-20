@@ -57,7 +57,7 @@ quotes_path="$HOME/github/quotes.json"
 } || [ ! "$3" = "" ] && {
 
   echo -e "Three arguments passed:\n\$1 : $1\n\$2 : $2\n\$3 : $3"
-  sed -e '1 a ¨¨[' -e "1 a ¨¨¨¨\"$1\"," -e "1 a ¨¨¨¨\"$2\"," -e "1 a ¨¨¨¨\"$3\"" -e '1 a ¨¨],' "$quotes_path" | sed '2,6s/¨/ /g' > "$quotes_path.tmp" && mv "$quotes_path.tmp" "$quotes_path"
+  sed -e '1 a ¨¨[' -e "1 a ¨¨¨¨\"$1\"," -e "1 a ¨¨¨¨\"$2\"," -e "1 a ¨¨¨¨\"$3\"" -e '1 a ¨¨],' "$quotes_path" | sed '2,6s/¨/ /g' > "$quotes_path.tmp" && mv "$quotes_path.tmp" "$quotes_path" || { echo "Failed to save quote, please review the error message and be sure that you're using GNU sed."; exit 1; }
   echo "Saved new quote."
   exit 0
 
@@ -65,7 +65,7 @@ quotes_path="$HOME/github/quotes.json"
 } || [ ! "$2" = "" ] && {
 
   echo -e "Tho arguments passed:\n\$1 : $1\n\$2 : $2"
-  sed -e '1 a ¨¨[' -e "1 a ¨¨¨¨\"$1\"," -e "1 a ¨¨¨¨\"$2\"" -e '1 a ¨¨],' "$quotes_path" | sed '2,5s/¨/ /g' > "$quotes_path.tmp" && mv "$quotes_path.tmp" "$quotes_path"
+  sed -e '1 a ¨¨[' -e "1 a ¨¨¨¨\"$1\"," -e "1 a ¨¨¨¨\"$2\"" -e '1 a ¨¨],' "$quotes_path" | sed '2,5s/¨/ /g' > "$quotes_path.tmp" && mv "$quotes_path.tmp" "$quotes_path" || { echo "Failed to save quote, please review the error message and be sure that you're using GNU sed."; exit 1; }
   echo "Saved new quote."
   exit 0
 
@@ -73,7 +73,7 @@ quotes_path="$HOME/github/quotes.json"
 } || [ ! "$1" = "" ] && {
 
   echo -e "One arguments passed:\n\$1 : $1"
-  sed -e '1 a ¨¨[' -e "1 a ¨¨¨¨\"$1\"" -e '1 a ¨¨],' "$quotes_path" | sed '2,4s/¨/ /g' > "$quotes_path.tmp" && mv "$quotes_path.tmp" "$quotes_path"
+  sed -e '1 a ¨¨[' -e "1 a ¨¨¨¨\"$1\"" -e '1 a ¨¨],' "$quotes_path" | sed '2,4s/¨/ /g' > "$quotes_path.tmp" && mv "$quotes_path.tmp" "$quotes_path" || { echo "Failed to save quote, please review the error message and be sure that you're using GNU sed."; exit 1; }
   echo "Saved new quote."
   exit 0
 
