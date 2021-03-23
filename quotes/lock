@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 #
-# Load random quote of a file like:
+# Load random quote of a file like this and put in slock
 #
 # -------quotes.json--------
 #[
@@ -19,8 +19,12 @@
 # Dependencies
 #   jq
 #   shuf
+#   slock
+#     slock-message-xft
 #
 # BeyondMagic © 2021
+
+unset use
 
 quotes_path="$HOME/github/quotes.json"
 
@@ -36,17 +40,25 @@ third_line=$(jq -r ".[2]" <<< "$quote_chose")
 #   Center input text based on the terminal's size
 center() {
 
-  cols=$(tput cols)
+#  cols=$(tput cols)
+  cols=171
   string="$@"
 
   [ "$string" = "null" ] || printf "%*s\n" $(((${#string}+$cols)/2)) "$string"
 
 }
 
-clear
+#clear
 
-center "$first_line"
-center "$secon_line"
-center "$third_line"
+#center "$first_line"
+#center "$secon_line"
+#
 
-sleep infinity
+#sleep infinity
+
+use="$first_line"
+
+[ "$secon_line" = "null" ] || use="$use\n$(center "$secon_line")"
+[ "$third_line" = "null" ] || use="$use\n$(center "$third_line")"
+
+slock -m "$(echo -e "$use")"

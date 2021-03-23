@@ -5,13 +5,14 @@
 #
 # BeyondMagic © 2021
 
-source "$HOME/desktop/accounts"
 
-affix=""
+
 background="#000000"
 
 
 _messages() { while :; do
+
+  source "$HOME/desktop/accounts"
 
             first_new_emails=$(curl -u $username_gmail_first:$password_gmail_first --silent "https://mail.google.com/mail/feed/atom" |  grep -oPm1 "(?<=<title>)[^<]+" | sed '1d')
   first_number_of_new_emails=$(echo "$first_new_emails" | wc -l)
@@ -47,7 +48,7 @@ number_of_new_emails="%{T1 F${colourof_gmail_first}}$first_number_of_new_emails$
   }
 
 
-  echo 'G' "%{T3 B$background F$colour_emoji}$emoji %{T1 F#d4d4d4} $number_of_new_emails %{T3 F$background B#ffffff}$affix"
+  echo 'G' "%{T3 B$background F$colour_emoji}　　$emoji %{T1 F#d4d4d4} $number_of_new_emails"
 
   sleep 120
 

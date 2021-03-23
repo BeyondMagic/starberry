@@ -13,7 +13,7 @@ while IFS=$'\n' read -r id_colour; do
   id_colour=$(printf "$id_colour" | sed -r 's/^[^#]*//' | tr -d '\n' )
 
   printf "$id_colour" | xclip -sel c
-  notify-send "'$id_colour' was copied to your clipboard."
+  notify-send -i "/usr/share/icons/BeautyLine/apps/scalable/colour.svg" "'$id_colour' was copied to your clipboard."
 
   killall colorpicker
 

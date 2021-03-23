@@ -1,0 +1,50 @@
+#!/usr/bin/env sh
+#
+# Load random quote of a file like this and put in slock
+#
+# -------quotes.json--------
+#[
+#  [
+#    "Your Majesty, we Catholic clergy have done our best to destroy the Church for the last eighteen hundred years. We have not succeeded, and neither will you.",
+#    "Massimo Faggioli"
+#  ],
+#  [
+#    "Daddy listen, Mommy please. There must be a better way to raise me, I yell until my ears can't hear me - into a silence that kills me.",
+#    "Little People",
+#    "The Procussions"
+#  ]
+#]
+# ---------------------------
+#
+# Dependencies
+#   jq
+#   shuf
+#   slock
+#     slock-message-xft
+#
+# BeyondMagic © 2021
+
+quotes_path="$HOME/github/quotes.json"
+
+length_file=$(jq length "$quotes_path")
+random_numb=$(shuf -i 0-$((length_file - 1)) -n 1)
+quote_chose=$(jq -r ".[$random_numb]" "$quotes_path")
+
+first_line=$(jq -r ".[0]" <<< "$quote_chose")
+secon_line=$(jq -r ".[1]" <<< "$quote_chose")
+third_line=$(jq -r ".[2]" <<< "$quote_chose")
+
+# Function
+#   Center input text based on the terminal's size
+center() {
+
+  cols=$(tput cols)
+  string="$@"
+
+  [ "$string" = "null" ] || printf "%*s\n" $(((${#string}+$cols)/2)) "$string"
+
+}
+
+center "$first_line"
+center "$secon_line"
+center "$third_line"

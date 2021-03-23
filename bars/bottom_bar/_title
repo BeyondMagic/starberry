@@ -67,6 +67,14 @@ format_active_window() {
     
     icon=""
 
+  }; [ "$name" = "zathura" ] && {
+    
+    icon=""
+
+  }; [ "$name" = "telegram-deskto" ] && {
+    
+    icon=""
+
   }
   
 

@@ -1,0 +1,11 @@
+#!/usr/bin/env sh
+#
+# Button to open power bar
+#
+# BeyondMagic © 2021
+
+icon=" "; affix=""
+
+fg="#FaFaFa"; bg="#C92430"
+
+echo 'P' "%{F#000000 B$bg}$affix%{B$bg F$fg} $icon %{B- F-}"

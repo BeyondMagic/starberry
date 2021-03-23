@@ -5,7 +5,7 @@
 # BeyondMagic © 2021
 
 killall unclutter
-import -window root png:- | xclip -selection clipboard -t image/png
-notify-send -i "Full screenshot was copied to clipboard." &
+import -window root png:- | xclip -selection c -t image/png &
+notify-send -i "/usr/share/icons/BeautyLine/actions/scalable/editimage.svg" "Full screenshot was copied to clipboard."
 unclutter --timeout 1 & disown
 exit

@@ -25,9 +25,9 @@ height_bbar="19"; width_bbar="1400"; offset_by="+20"; offset_bx="+10"
 
 # Constants of Fonts
 #   Each font is beautifully chosen :)
-normal_font="Noto Sans CJK JP DemiLight:antialias=true:size=10:weight=200" # 1
-  bold_font="Noto Sans CJK JP Black:antialias=true:size=10:weight=100"     # 2
- emoji_font="NotoEmoji Nerd Font:antialias=true"                 # 3
+normal_font="Noto Sans CJK JP Medium:antialias=true:size=10" # 1
+  bold_font="Noto Sans CJK JP Black:antialias=true:size=10" # 2
+ emoji_font="NotoEmoji Nerd Font:antialias=true"            # 3
 
 
 # Constants of places
@@ -40,6 +40,8 @@ location_of_bottom_fifo="$HOME/desktop/bottom.fifo"
 origin="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 
+# Start bars
+notify-send -i "/usr/share/icons/BeautyLine/apps/scalable/deskbar.svg" "Bar is born :)"
 
 
 # Clean later processes
@@ -64,7 +66,7 @@ source "$origin/top_bar/_clock_song_cpu"
   _sensors &
   $origin/top_bar/_song &
   $origin/top_bar/_gmail &
-  $origin/top_bar/_volume &
+  $origin/top_bar/_power &
   $origin/top_bar/_task &
   $origin/top_bar/_tuxi_temp &
 
@@ -83,8 +85,8 @@ read_top_bar() {
         sensors="${line#?}";;
 
       # Volume
-      V*)
-        volume="${line#?}";;
+      P*)
+        power="${line#?}";;
 
       # Music
       M*)
@@ -104,7 +106,7 @@ read_top_bar() {
 
     esac
 
-    printf "%s%s%s\n" "$clock  %{F- B-}$sensors$music%{r}$task$tuxi$gmail$volume"
+    printf "%s%s%s\n" "$clock  %{F- B-}$sensors%{B-}%{c}$music%{r}$task$tuxi$gmail$power"
 
   done < "$location_of_top_fifo" 
 }
@@ -132,7 +134,7 @@ read_bottom_bar() {
 
     esac
 
-    printf "%s%s%s\n" "$layouts%{T3}$tags%{T1 c}$title%{r T2F#FFFFFF}$memory $(whoami) %{T3}%{T2} flora  "
+    printf "%s%s%s\n" "$layouts%{T3}$tags%{T1 c}$title%{r}$memory$(whoami) %{T3 F#7EABF8}%{T2 F#FFFFFF} flora  "
 
    done < "$location_of_bottom_fifo"  
 }

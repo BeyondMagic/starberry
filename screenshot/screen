@@ -6,6 +6,6 @@
 
 killall unclutter
 import png:- | xclip -selection clipboard -t image/png
-notify-send "Partial screenshot was copied to clipboard." &
+notify-send -i "/usr/share/icons/BeautyLine/actions/scalable/editimage.svg" "Partial screenshot was copied to clipboard." &
 unclutter --timeout 1 & disown
 exit

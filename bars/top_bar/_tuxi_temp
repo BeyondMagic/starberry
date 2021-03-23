@@ -10,8 +10,13 @@
 
 _temp() {
 
-  utilites_fg="#555555"
-  fg="#E4F2FF"
+  utilites_fg="#666666"
+  fg="#FFFFFF"
+
+   first_icon="#9E4542"
+  second_icon="#C88658"
+   third_icon="#A3AB60"
+
   bg="#14181B"
 
   tp_icon="  "
@@ -23,9 +28,9 @@ _temp() {
         tuxi_result=$(tuxi -trq "tuxi_weather weather now")
     formated_result=$(grep -hoE '[0-9]{2}' <<< "$tuxi_result" | sed \
       -e "2d;5d" \
-      -e "1 s/$/%{F$utilites_fg}ºC /;1 s/^/%{F$fg B$bg T3}$tp_icon%{T1}/" \
-      -e "3 s/$/%{F$utilites_fg}%% /;3 s/^/%{F$fg B$bg T3}$pp_icon%{T1}/" \
-      -e "4 s/$/%{F$utilites_fg}%% /;4 s/^/%{F$fg B$bg T3}$hd_icon%{T1}/" \
+      -e "1 s/$/%{F$utilites_fg}ºC /;1 s/^/%{F$first_icon B$bg T3}$tp_icon%{T1 F$fg}/" \
+      -e "3 s/$/%{F$utilites_fg}%% /;3 s/^/%{F$second_icon B$bg T3}$pp_icon%{T1 F$fg}/" \
+      -e "4 s/$/%{F$utilites_fg}%% /;4 s/^/%{F$third_icon B$bg T3}$hd_icon%{T1 F$fg}/" \
       | tr '\n' ' ')
     
     echo 'W' "$formated_result"
