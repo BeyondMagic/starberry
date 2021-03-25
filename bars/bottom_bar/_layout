@@ -38,15 +38,15 @@ _get_tags() {
 
       bit=$((1 << $tag))
 
-     if [ $(($selected & $bit)) -ne 0 ] && [ $(($occupied & $bit)) -ne 0 ] then
+      if [ $(($selected & $bit)) -ne 0 ] && [ $(($occupied & $bit)) -ne 0 ]; then
         out="${out}%{F$fg_selected_occupied} $icon_selected_occupied"
 
       # selected
-      elif [[ $(($selected & $bit)) -ne 0 ]]; then
+      elif [ $(($selected & $bit)) -ne 0 ]; then
         out="${out}%{F$fg_selected} $icon_selected"
 
       # have windows on it
-      elif [[ $(($occupied & $bit)) -ne 0 ]]; then
+      elif [ $(($occupied & $bit)) -ne 0 ]; then
         out="${out}%{F$fg_unselect} $icon_unselect"
 
       # nothing
