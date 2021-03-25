@@ -14,29 +14,29 @@ icon_fg="#FF5EA4"
 #   Note: it's ID, not PID
 format_active_window() {
 
-        icon=""
+  icon=""
   process_id="$1"
 
-       total=$(xprop -id "$process_id" | grep "_NET_WM_NAME" | sed -r -e 's/(_NET_WM_NAME\(UTF8_STRING\) = ")|"$//g')
-        name=$(cat /proc/$(xdotool getwindowpid "$process_id")/comm)
+  total=$(xprop -id "$process_id" | grep "_NET_WM_NAME" | sed -r -e 's/(_NET_WM_NAME\(UTF8_STRING\) = ")|"$//g')
+  name=$(cat /proc/$(xdotool getwindowpid "$process_id")/comm)
   
 
   # st
        [ "$name" = "st" ] && {
 
     icon=""
-    title_program="$(sed -r 's/ .*//' <<< "$total")"
-    total="$(sed -r 's/\w* //' <<< "$total")"
+    title_program=$(echo "$total" | sed -r 's/ .*//')
+    total=$(echo "$total" | sed -r 's/\w* //')
     
     [ "$title_program" = "v" ] && icon=""
-    [ "$title_program" = "mpd" ] && { icon=""; total="$(sed -r "s/» *//g" <<< "$total")"; }
+    [ "$title_program" = "mpd" ] && { icon=""; total=$(echo "$total" | sed -r "s/» *//g"); }
     [ "$title_program" = "n" ] && icon=""
 
   # Firefox-Developer-Edition
   }; [ "$name" = "firefox" ] && {
 
     icon=""
-    total="$(sed -r 's/(\[Sidebery\] )|( — Firefox.*)//g' <<< "$total")"
+    total=$(echo "$total" | sed -r 's/(\[Sidebery\] )|( — Firefox.*)//g')
 
   # gcolor2
   }; [ "$name" = "gcolor2" ] && {
@@ -82,7 +82,7 @@ format_active_window() {
   #  julia
 
     # Reduce length if it's bigger than 25 characters
-  [ "${#total}" -gt "40" ] && total="$(cut -c -40 <<< $total)..."
+  [ "${#total}" -gt "40" ] && total="$(echo "$total" | cut -c -40)..."
     # If there's no icon, then just prints out the name
   [ ! -n "$icon" ] && icon="$name" || icon="%{T3}$icon"
 
