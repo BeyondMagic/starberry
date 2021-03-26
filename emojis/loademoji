@@ -1,10 +1,24 @@
 #!/usr/bin/env sh
+#
+# The famous "get a menu of emojisto copy" script.
+# Get user selection via dmenu from emoji file.
+#
+# Dependencies
+#   dmenu
+#   xdotool
+#   libnotify ; notify-send
+#   xclip
+#
+# Thanks LukeSmith for the base script
+#
+# TODO
+#   add more descriptions for kaomojis
+# 
+# BeyondMagic © 2021
 
-# The famous "get a menu of emojis to copy" script.
-#   Get user selection via dmenu from emoji file.
-O="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-
-chosen=$(cut -d ';' -f1 $O/kuomojis | dmenu -i -l 10 | sed "s/ ###.*//")
+origin=$(cd -- "$(dirname "$0")" >/dev/null 2>&1 && pwd -P)
+emojis="$origin/kaomojis"
+chosen=$(cut -d ';' -f1 $emojis | dmenu -i -l 10 | sed "s/ ###.*//")
 
 # Exit if none chosen.
 [ -z "$chosen" ] && exit
@@ -18,6 +32,6 @@ chosen=$(cut -d ';' -f1 $O/kuomojis | dmenu -i -l 10 | sed "s/ ###.*//")
 } || {
 
 	echo "$chosen" | tr -d '\n' | xclip -selection clipboard
-notify-send "'$chosen' copied to clipboard." &
+  notify-send "'$chosen' copied to clipboard." &
 
 }
