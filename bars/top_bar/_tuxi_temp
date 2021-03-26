@@ -1,10 +1,10 @@
 #!/usr/bin/env sh
 #
-# Get temperature and precipitation
+# Description
+#   Get temperature and precipitation of your local city
 #
 # Dependencies
 #   tuxi
-#   bash
 #
 # BeyondMagic © 2021
 
@@ -26,7 +26,7 @@ _temp() {
   while :; do
 
         tuxi_result=$(tuxi -trq "tuxi_weather weather now")
-    formated_result=$(grep -hoE '[0-9]{2}' <<< "$tuxi_result" | sed \
+    formated_result=$(echo "$tuxi_result" | grep -hoE '[0-9]{2}' | sed \
       -e "2d;5d" \
       -e "1 s/$/%{F$utilites_fg}ºC /;1 s/^/%{F$first_icon B$bg T3}$tp_icon%{T1 F$fg}/" \
       -e "3 s/$/%{F$utilites_fg}%% /;3 s/^/%{F$second_icon B$bg T3}$pp_icon%{T1 F$fg}/" \

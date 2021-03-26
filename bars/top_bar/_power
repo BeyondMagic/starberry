@@ -1,6 +1,23 @@
 #!/usr/bin/env sh
 #
-# Button to open power bar
+# Description
+#   Button to open a sidebar, it doesn't work yet
+# 
+# TODO
+#   Label for power in Linux
+#   Some commands that the sidebar will be able to use with password is
+#     shutdown -h now ; shutdown
+#     shutdown -r now ; reboot
+#     command to suspend
+# 
+# Note
+#   It's just a label for now, I will create clickable button
+#   When I find a minimalist siderbar for Linux
+#   As for right now, there's no sidebar at all :(
+# 
+#   Maybe one day I'll create one
+#   But that it'll take long time because I want to create it
+#   in C++
 #
 # BeyondMagic © 2021
 

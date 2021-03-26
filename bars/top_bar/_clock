@@ -1,0 +1,52 @@
+#!/usr/bin/env sh
+# 
+# Description
+#   Get clock time :|
+#
+# Note
+#   This setting is working Japanese systems
+#   Change the "echo 'C'" line to change this
+#
+# BeyondMagic © 2021
+
+
+# Function of the top bar for Lemonnbar
+#   Modules are:
+#     Date - CPU% - Song (bar) - Title of Active Window - Gmail Notifications
+
+# %{T1} : normal font
+# %{T2} : normal font bold
+# ${T3} : emoji font
+
+
+# set icon to right
+_icon_right() {
+  icon="$1"; affix="$2"; fg="$3"; bg="$4"; f_bg="$5"
+
+  echo "%{T3 B$bg F$fg}$icon%{F$bg B$f_bg}$affix%{T2 B- O-0}"
+}
+
+_clock() {
+
+  icon=1; max_icon=25
+  icons=""
+
+
+  affix=""
+  fg="#123456"; bg="#ECF3FA"; f_bg="#ffffff"
+
+  
+
+  while :; do
+
+    prefix="%{O-3}$(_icon_right "$(expr substr "$icons" $icon 1)" "$affix" "$fg" "$bg" "$f_bg")"
+
+    echo 'C' "$prefix%{B#ffffff F#123456}$(date | sed -r -e 's/ -03//' -e 's/:/%{F#BDCDD7}:%{F#123456}/g')"
+    
+    [ "$icon" = "$max_icon" ] && icon=1 || icon=$(($icon + 1))
+
+    sleep 1
+
+  done
+
+}

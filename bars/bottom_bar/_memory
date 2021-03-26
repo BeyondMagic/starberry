@@ -1,10 +1,15 @@
 #!/usr/bin/env sh
 #
-# Dependencies
-#   Swap (Memory)
-#   Grep
-#   
+# Description
+#   Just get the swap and format it to lemonbar
 #
+# Dependencies
+#   
+# Note
+#   A swap file running in your system, or just disable it
+#   by removing correctly where it contains `swap` names
+#
+# BeyondMagic © 2021
 
 mem_color="#FFFFFF"
 swap_color="#FFFFFF"

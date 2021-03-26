@@ -1,18 +1,30 @@
 #!/usr/bin/env sh
 #
-# Rewrote a few times
+# Description
+#   This gives the name of the music and author
+#   In a way that bar would work, showing how much it has loaded with a colour
+#
+# Dependencies
+#   mpd
+#     mpc
+#
+# TODO
+#   fix for songs with all UTF-8 characters
+#
+# Arguments
+#   $1 : colour of progress
+#   $2 : colour of rest of the bar
+#   $3 ; length of scroll
 #
 # BeyondMagic © 2021
 
-
              info=$(mpc)
-             song=$(sed -n '1,1p' <<< "$info")
+             song=$(echo "$info" | sed -n '1,1p')
       song_length=${#song}
 max_length_scroll="$3"
 
  start_st="%%{F$1}"
 middle_st="%%{F$2}"
-   end_st=""
 
 
 [ ! -n $(pidof mpd) ] && {
@@ -23,7 +35,7 @@ middle_st="%%{F$2}"
 } || {
 
     # mpd is running, so find out if it's playing or paused and echo the corresponding glyph
-    grep -q "playing" <<< "$info" && {
+    echo "$info" | grep -q "playing" && {
 
       sleep 0
 
@@ -74,15 +86,13 @@ middle_st="%%{F$2}"
 #   total=$(echo "$info" | sed -r "s/duration //;t;d")
 #   progr=$(echo "$info" | sed -r "s/position //;t;d")
 #   perc=$(awk -v n="$total" -v m="$progr" 'BEGIN{ print int(( m/n )*100) }')
-       perc=$(echo "$info" | grep -oie "([[:digit:]]*%)" | tr '%' ' ' | tr '(' ' ' | tr ')' ' ')
+perc=$(echo "$info" | grep -oie "([[:digit:]]*%)" | tr '%' ' ' | tr '(' ' ' | tr ')' ' ')
 song_length=${#song}
-   perc_chr=$(awk -v n="$song_length" -v m="$perc" 'BEGIN{ print int( n*(m/100)) }')
+perc_chr=$(awk -v n="$song_length" -v m="$perc" 'BEGIN{ print int( n*(m/100)) }')
 
 
 
 
 
 
-song="$start_st${song:0:$perc_chr}$middle_st${song:$perc_chr:$song_length}$end_st"
-
-printf "$song"
+printf "$start_st$(expr substr "$song" 1 $perc_chr)$middle_st$(expr substr "$song" $(($perc_chr + 1)) $song_length)"

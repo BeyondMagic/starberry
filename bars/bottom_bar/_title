@@ -1,8 +1,21 @@
 #!/usr/bin/env sh
 #
+# Description
 #   Get the title of the active windows
 #   You can set an icon for specific programs that you
 #   Often use :)
+#
+# Note
+#   This formats for certain windows invidivually.
+#   For example, for simple terminal (st), it
+#   will display a certain icon.
+#   You can change that by just creating a new 
+#   condition in 'format_active_window'
+#
+# Dependencies
+#   xorg
+#   dwm
+#     dwm-msg
 #
 # BeyondMagic © 2021
 

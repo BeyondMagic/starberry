@@ -1,7 +1,15 @@
 #!/usr/bin/env sh
 #
-# Just a script to give emails' number left to read :)
-# This one is using 4 emails
+# Description
+#   Just a script to give emails' number left to read :)
+#   This one is using 4 emails
+#
+# Note
+#   This is not yet fully optimized
+#   It will get 4 of emails from an account from Google
+#   You can edit this by setting your own variables
+#   You have to enable the script and Google's settings
+#   to allow such scripts to be loaded.
 #
 # BeyondMagic © 2021
 
@@ -12,7 +20,7 @@ background="#000000"
 
 _messages() { while :; do
 
-  source "$HOME/desktop/accounts"
+  . "$HOME/desktop/accounts"
 
             first_new_emails=$(curl -u $username_gmail_first:$password_gmail_first --silent "https://mail.google.com/mail/feed/atom" |  grep -oPm1 "(?<=<title>)[^<]+" | sed '1d')
   first_number_of_new_emails=$(echo "$first_new_emails" | wc -l)

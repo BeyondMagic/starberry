@@ -1,17 +1,19 @@
 #!/usr/bin/env sh
 #
-# Load MPD info every time it updates
+# Description
+#   Load MPD info every time MPD updates
 # 
 # Dependencies:
 #   mpd
-#   mpc
+#     mpc
 #
 # BeyondMagic © 2021
 
 
-source $HOME/desktop/status_info
+. $HOME/desktop/status_info
 
-origin="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+
+origin=$(cd -- "$(dirname "$0")" >/dev/null 2>&1 && pwd -P)
 
 # This function is the main one and will get the information of MPD
 #   It uses "mpc idleloop" method to gather MPD updates
@@ -22,26 +24,27 @@ _music() {
 
   # Note: Neither "new_change" and "double_change" variables will be used
   mpc idleloop | while IFS=$'\n' read -r new_change && read -r double_change; do
+
     song=$($origin/mpd/__status "$first_running_song_name" "$second_running_song_name" "$limit_extra_length")
 
     # if paused
     #   If paused, then stop loop function
     [ "$song" = "paused" ] && {
 
-        # stop song
+      # stop song
       pkill -KILL -f "__loop_status";
-        # get formated icon (lol)
+      # get formated icon (lol)
       formated_icon=$(_icon_music "$icon_paused " "$background_icon" "$background_icon_name" )
-        # echo the formated paused label
+      # echo the formated paused label
       echo 'M' "%{T1 O-4}$formated_icon %{F$second_running_song_name} $extra_icon_paused %{B- F-}"
 
     # if running
     #   If running, then continues the loop function
-  } || {
+    } || {
 
-        # stop song
+      # stop song
       pkill -KILL -f "__loop_status";
-        # run thes scrip then disown it to kill it later
+      # run thes scrip then disown it to kill it later
       $origin/mpd/__loop_status &
 
     }

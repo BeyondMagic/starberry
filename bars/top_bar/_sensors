@@ -1,0 +1,44 @@
+#!/usr/bin/env sh
+#
+# Dependencies
+#   Load MPD info every time it updates
+# 
+# Dependencies:
+#   sensors
+#
+# BeyondMagic © 2021
+
+
+_icon_sensors() {
+  icon="$1"; bg_icon="$2"; fg_icon="$3"
+  
+  echo "%{T3 B$bg_icon F#FFFFFF}%{F$fg_icon}$icon%{F$bg_icon B#2B2B2B}%{T2}%{F$bg_icon B#2B2B2B}"
+}
+
+
+_sensors() {
+  while :; do
+
+    sss="$(sensors | grep Temperature | sed -r -e 's/CPU Temperature: *\+//' -e 's/\.0°C//' -e 's/  \(high.*//')"
+
+    mmm=""
+
+    #  0 < sss < 50
+                             [ "$sss" -lt "52" ] && mmm="$(_icon_sensors " " "#BDCDD7" "#0D2331" ) $sss"
+
+    # 50 < sss < 67
+      [ "$sss" -gt "51" ] && [ "$sss" -lt "68" ] && mmm="$(_icon_sensors " " "#87C7E4" "#0D2331" ) $sss"
+
+    # 67 < sss < 77
+      [ "$sss" -gt "67" ] && [ "$sss" -lt "77" ] && mmm="$(_icon_sensors " " "#FAFBC2" "#340010" ) $sss"
+
+    # 77 < sss < 95
+      [ "$sss" -gt "76" ] && [ "$sss" -lt "95" ] && mmm="$(_icon_sensors " " "#FF4464" "#0D2331" ) $sss"
+
+
+
+      echo 'S' "%{T1 O-4}$mmm ºC  %{B- F-}"
+
+    sleep 5
+  done
+}

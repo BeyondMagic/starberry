@@ -1,15 +1,17 @@
 #!/usr/bin/env sh
 #
-# Load MPD info every 5 seconds
+# Description
+#   Load MPD info every 2 seconds
 # 
 # Dependencies:
 #   mpd
-#   mpc
+#     mpc
 #
 # BeyondMagic © 2021
 
 
-source $HOME/desktop/status_info
+. $HOME/desktop/status_info
+
 
 # This function is called to continue the loop throughout the song
 #   It will be stopped/killed when MPD is stopped
@@ -17,7 +19,7 @@ source $HOME/desktop/status_info
 #   Is the one being used to stop this loop.
 _loop_song() {
 
-          dance="$dance_r"
+  dance="$dance_r"
   formated_icon=$(_icon_music "$icon_running" "$background_song_name" "$first_running_song_name" )
 
   while :; do

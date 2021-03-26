@@ -1,18 +1,34 @@
 #!/usr/bin/env sh
 #
-# Lemonbar with fifo
-# Events as well
-# Clickable bars
-# Everything :)
+# Description
+#   Two lemonbars with fifo, events as well
+#   very lightweight, and low CPU usage
+#
+# Note
+#   Low ram usage (30Mi)
+#   This uses external fonts
+#   The size of the bar is compatible with my monitor, change
+#     for your needs
+#   It's recomendded to change the location of fifos as well
+#   And icons for scripts
+#
+# TODO
+#   Add clickable commands
+#     I don't have idea yet on what to run
 #
 # Dependencies
-#   tuxi     (https://github.com/Bugswriter/tuxi)
-#   lemonbar (https://github.com/expectocode/bar)
+#   dash
+#   xorg
+#   xdotools
+#   lemonbar-xft (or forks that have fontconfig)
+#   tuxi
+#   sensors
+#   lm_sensors ; sensors
+#   libnotify ; notify-send
 #   mpd
-#   mpc
+#     mpc
 #   dwm
 #     dwm-msg
-#   bash
 #
 # BeyondMagic © 2021
 
@@ -37,8 +53,7 @@ location_of_bottom_fifo="$HOME/desktop/bottom.fifo"
 
 
 # Start basic config
-origin="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-
+origin=$(cd -- "$(dirname "$0")" >/dev/null 2>&1 && pwd -P)
 
 # Start bars
 notify-send -i "/usr/share/icons/BeautyLine/apps/scalable/deskbar.svg" "Bar is born :)"
@@ -58,7 +73,8 @@ exec 3<> "$location_of_bottom_fifo"; exec 3<> "$location_of_top_fifo"
 
 
 
-source "$origin/top_bar/_clock_song_cpu"
+. "$origin/top_bar/_clock"
+. "$origin/top_bar/_sensors"
 
 {
 

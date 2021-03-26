@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 #
-# Get tags of wm
+# Description
+#   Get tags of dynamic window manager
 #
 # Dependencies
 #   dwm
@@ -72,4 +73,4 @@ _get_layout() {
 
 }
 
-_get_tags #& _get_layout
+_get_tags & _get_layout

@@ -1,6 +1,15 @@
 #!/usr/bin/env sh
+#
+# Description
+#   To start 'bars' file on the same path
+#
+# Note
+#   Change the icon path for something you want or just remove it
+#   This loads after 15 seconds (change for your needs)
+#
+# BeyondMagic © 2021
 
-origin=$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )
+origin=$(cd -- "$(dirname "$0")" >/dev/null 2>&1 && pwd -P)
 
 notify-send -i "/usr/share/icons/BeautyLine/apps/scalable/deskbar.svg" "Starting lemonbar in 15 seconds."
 
