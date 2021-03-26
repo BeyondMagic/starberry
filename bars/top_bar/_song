@@ -44,8 +44,10 @@ _music() {
 
       # stop song
       pkill -KILL -f "__loop_status";
-      # run thes scrip then disown it to kill it later
+      # run thes script
       $origin/mpd/__loop_status &
+
+      dash ~/github/scripts/mpd/song &
 
     }
 

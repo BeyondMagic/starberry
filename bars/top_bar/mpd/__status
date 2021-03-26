@@ -16,13 +16,12 @@
 # BeyondMagic © 2021
 
              info=$(mpc)
-             song=$(echo "$info" | sed -n '1,1p')
+             song=$(echo "$info" | head -n 1)
       song_length=${#song}
 max_length_scroll="$3"
 
  start_st="%%{F$1}"
 middle_st="%%{F$2}"
-
 
 [ ! -n $(pidof mpd) ] && {
 
@@ -63,7 +62,7 @@ middle_st="%%{F$2}"
 
   }
 
-[ "$(($offset + $max_length_scroll - 1))" -ge "$song_length" ] && {
+  [ "$(($offset + $max_length_scroll - 1))" -ge "$song_length" ] && {
 
     rm /tmp/mpdoffset
     offset=0
@@ -73,6 +72,10 @@ middle_st="%%{F$2}"
   # Write offset back to file
   echo "$offset\n$song" > /tmp/mpdoffset
   song="$(expr substr "$song" $offset $max_length_scroll)"
+
+} || {
+
+  song=$(echo "$info" | head -n 1)
 
 }
 

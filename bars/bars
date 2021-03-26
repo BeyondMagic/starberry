@@ -9,8 +9,10 @@
 #   This uses external fonts
 #   The size of the bar is compatible with my monitor, change
 #     for your needs
-#   It's recomendded to change the location of fifos as well
+#   It's recommended to change the location of fifos as well
 #   And icons for scripts
+#   It's recommended to use dash to run this (link sh to dash),
+#     since it will be way faster
 #
 # TODO
 #   Add clickable commands
@@ -29,6 +31,7 @@
 #     mpc
 #   dwm
 #     dwm-msg
+#   imagemagick
 #
 # BeyondMagic © 2021
 

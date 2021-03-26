@@ -1,0 +1,33 @@
+#!/usr/bin/env sh
+#
+# Description
+#   Load a notification for current song with 
+#   cover :)
+#
+# Dependencies
+#
+#   libnotify ; notify-send
+#   mpd
+#     mpc
+#   imagemagick
+#
+# BeyondMagic © 2021
+
+
+unset music_path artist title file
+
+
+cover_path="/tmp/cover.jpg"
+music_path="$HOME/music/libraria"
+artist=$(mpc -f "%artist%" | head -n 1)
+ title=$(mpc -f "%title%"  | head -n 1)
+  file=$(mpc -f "%file%"   | head -n 1)
+
+
+ffmpeg -loglevel quiet -i "$music_path/$file" "$cover_path"
+
+
+notify-send.sh -a "ncmpcpp" -i "$cover_path" "$title" "$artist"
+
+
+rm -rf /tmp/cover.jpg
