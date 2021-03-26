@@ -8,9 +8,6 @@
 #   mpd
 #     mpc
 #
-# TODO
-#   fix for songs with all UTF-8 characters
-#
 # Arguments
 #   $1 : colour of progress
 #   $2 : colour of rest of the bar
@@ -53,7 +50,7 @@ middle_st="%%{F$2}"
 [ "$song_length" -ge "$max_length_scroll" ] && {
 
   # Read offset from file
-  offset="$(($(cat /tmp/mpdoffset | head -n 1)))"
+  offset="$(cat /tmp/mpdoffset | head -n 1 | sed 's/-e //')"
 
   # Add one
   offset="$(($offset + 1))"
@@ -74,8 +71,8 @@ middle_st="%%{F$2}"
   }
 
   # Write offset back to file
-  echo -e "$offset\n$song" > /tmp/mpdoffset
-  song="${song:$offset:$max_length_scroll}"
+  echo "$offset\n$song" > /tmp/mpdoffset
+  song="$(expr substr "$song" $offset $max_length_scroll)"
 
 }
 
@@ -89,8 +86,6 @@ middle_st="%%{F$2}"
 perc=$(echo "$info" | grep -oie "([[:digit:]]*%)" | tr '%' ' ' | tr '(' ' ' | tr ')' ' ')
 song_length=${#song}
 perc_chr=$(awk -v n="$song_length" -v m="$perc" 'BEGIN{ print int( n*(m/100)) }')
-
-
 
 
 
