@@ -44,41 +44,55 @@ middle_st="%%{F$2}"
 
 }
 
+#[ "$song_length" -ge "$max_length_scroll" ] && {
+
+  # Read offset from file
+#  offset="$(cat /tmp/mpdoffset | head -n 1 | sed 's/-e //')"
+
+  # Add one
+ # offset="$(($offset + 1))"
+
+  # Test if offset should be reset
+  #[ "$song" != "$(sed "2q;d" /tmp/mpdoffset)" ] && {
+
+#    rm /tmp/mpdoffset
+   # offset=0
+
+ # }
+
+#  [ "$(($offset + $max_length_scroll - 1))" -ge "$song_length" ] && {
+
+#    rm /tmp/mpdoffset
+#    offset=0
+
+#  }
+
+  # Write offset back to file
+#  echo "$offset\n$song" > /tmp/mpdoffset
+#  song="$(expr substr "$song" $offset $max_length_scroll)"
+
+#} 
+
 [ "$song_length" -ge "$max_length_scroll" ] && {
 
   # Read offset from file
-  offset="$(cat /tmp/mpdoffset | head -n 1 | sed 's/-e //')"
-
   # Add one
-  offset="$(($offset + 1))"
+  offset="$(($(cat /tmp/mpdoffset | head -n 1) + 1))" 
 
   # Test if offset should be reset
-  [ "$song" != "$(sed "2q;d" /tmp/mpdoffset)" ] && {
+  # If it gets to max
+  [ "$(($offset + $max_length_scroll - 1))" -ge "$song_length" ] || [ "$song" != "$(sed "2q;d" /tmp/mpdoffset)" ] && {
 
     rm /tmp/mpdoffset
-    offset=0
+    offset=1
 
   }
 
-  [ "$(($offset + $max_length_scroll - 1))" -ge "$song_length" ] && {
-
-    rm /tmp/mpdoffset
-    offset=0
-
-  }
-
-  # Write offset back to file
-  echo "$offset\n$song" > /tmp/mpdoffset
-  song="$(expr substr "$song" $offset $max_length_scroll)"
-
-} || {
-
-  song=$(echo "$info" | head -n 1)
+   # Write offset back to file
+   echo "$offset\n$song" > /tmp/mpdoffset
+   song="$(expr substr "$song" $offset $max_length_scroll)"
 
 }
-
-
-
 
 # Parse the info to get the progress in %
 #   total=$(echo "$info" | sed -r "s/duration //;t;d")
