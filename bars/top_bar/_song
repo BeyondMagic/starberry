@@ -34,9 +34,9 @@ _music() {
       # stop song
       pkill -KILL -f "__loop_status";
       # get formated icon (lol)
-      formated_icon=$(_icon_music "$icon_paused " "$background_icon" "$background_icon_name" )
+#      formated_icon=$(_icon_music "$icon_paused " "$background_icon" "$background_icon_name" )
       # echo the formated paused label
-      echo 'M' "%{T1 O-4}$formated_icon %{F$second_running_song_name} $extra_icon_paused %{B- F-}"
+      echo 'M' "%{F$second_running_song_name} $extra_icon_paused %{B- F-}"
 
     # if running
     #   If running, then continues the loop function
@@ -46,8 +46,6 @@ _music() {
       pkill -KILL -f "__loop_status";
       # run thes script
       $origin/mpd/__loop_status &
-
-      dash ~/github/scripts/mpd/song &
 
     }
 

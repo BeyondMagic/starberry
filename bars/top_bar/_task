@@ -30,19 +30,19 @@ _get_tasks() {
       end_hour=$(echo "$line" | sed -r "s_:__g" | cut -c 6-9) #| sed -r "s_^0+__g")
       task_line=$(echo "$line" | sed -r "s_:__g" | cut -c 13-)
 
-      [ "$date_now" = "$start_hour" ] && {
+      [ "$date_now" -ge "$start_hour" ] && [ "$date_now" -le "$end_hour" ] && {
 
-        notify-send.sh -i "/usr/share/icons/BeautyLine/apps/scalable/preferences-calendar-and-tasks.svg" "$task_line"
+        echo 'T' "%{O-4 T3 F$fg_icon}$icon_routine %{T1 F$fg} $task_line%{B- F-}　　"
 
-      } || [ "$date_now" -ge "$start_hour" ] && [ "$date_now" -le "$end_hour" ] && {
-
-         echo 'T' "%{O-4 T3 F$fg_icon}$icon_routine %{T1 F$fg} $task_line%{B- F-}　　"
+        [ "$date_now" = "$start_hour" ] && { 
+          notify-send.sh -u "critical" -i "/usr/share/icons/BeautyLine/apps/scalable/preferences-calendar-and-tasks.svg" "$task_line"
+        }
 
       }
 
     done < $file_task
 
-    sleep 60
+    sleep 29
 
   done
 }

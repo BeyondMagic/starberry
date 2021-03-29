@@ -44,8 +44,6 @@ middle_st="%%{F$2}"
 
 }
 
-
-
 [ "$song_length" -ge "$max_length_scroll" ] && {
 
   # Read offset from file

@@ -45,9 +45,9 @@ height_bbar="19"; width_bbar="1400"; offset_by="+20"; offset_bx="+10"
 # Constants of Fonts
 #   Each font is beautifully chosen :)
 normal_font="Noto Sans CJK JP Medium:antialias=true:size=10" # 1
-  bold_font="Noto Sans CJK JP Black:antialias=true:size=10" # 2
- emoji_font="NotoEmoji Nerd Font:antialias=true"            # 3
-
+  bold_font="Noto Sans CJK JP Black:antialias=true:size=10"  # 2
+ emoji_font="NotoEmoji Nerd Font:antialias=true"             # 3
+script_font="Noto Sans CJK JP Black:antialias=true:size=9"  # 4
 
 # Constants of places
 #   :)
@@ -84,10 +84,10 @@ exec 3<> "$location_of_bottom_fifo"; exec 3<> "$location_of_top_fifo"
   _clock &
   _sensors &
   $origin/top_bar/_song &
-  $origin/top_bar/_gmail &
+#  $origin/top_bar/_gmail &
   $origin/top_bar/_power &
   $origin/top_bar/_task &
-  $origin/top_bar/_tuxi_temp &
+#  $origin/top_bar/_tuxi_temp &
 
 } > "$location_of_top_fifo" &
 
@@ -112,20 +112,20 @@ read_top_bar() {
         music="${line#?}";;
 
       # Gmail
-      G*)
-        gmail="${line#?}";;
+#      G*)
+#        gmail="${line#?}";;
       
       # Tasks
       T*)
         task="${line#?}";;
   
-      # tuxi Math
-      W*)
-        tuxi="${line#?}";;
+      # tuxi
+#      W*)
+#        tuxi="${line#?}";;
 
     esac
 
-    printf "%s%s%s\n" "$clock  %{F- B-}$sensors%{B-}%{c}$music%{r}$task$tuxi$gmail$power"
+    printf "%s%s%s\n" "$clock  %{F- B-}$sensors%{c}$music%{r}$task$power"
 
   done < "$location_of_top_fifo" 
 }
@@ -172,8 +172,19 @@ read_bottom_bar() {
 
 
 
-   read_top_bar |    lemonbar -p -g "${width_tbar}x${height_tbar}${offset_ty}${offset_tx}" -B "#14181B" -f "$normal_font" -f "$bold_font" -f "$emoji_font:size=10.3" &
-read_bottom_bar | lemonbar -b -p -g "${width_bbar}x${height_bbar}${offset_by}${offset_bx}" -B "#14181b" -o 0 -f "$normal_font" -o 0 -f "$bold_font" -o 2 -f "$emoji_font:size=11" -n "bottom_bar"
+read_top_bar |    lemonbar -p -g "${width_tbar}x${height_tbar}${offset_ty}${offset_tx}" \
+  -B "#14181B" \
+  -o 0 -f "$normal_font" \
+  -o 0 -f "$bold_font" \
+  -o 0 -f "$emoji_font:size=10.3" \
+  -o 0 -f "$script_font" &
+
+read_bottom_bar | lemonbar -b -p -g "${width_bbar}x${height_bbar}${offset_by}${offset_bx}" \
+  -B "#14181b" \
+  -o 0 -f "$normal_font" \
+  -o 0 -f "$bold_font" \
+  -o 2 -f "$emoji_font:size=11" \
+  -n "bottom_bar"
 
 
 

@@ -94,7 +94,7 @@ format_active_window() {
   
   #  julia
 
-    # Reduce length if it's bigger than 25 characters
+    # Reduce length if it's bigger than 40 characters
   [ "${#total}" -gt "40" ] && total="$(echo "$total" | cut -c -40)..."
     # If there's no icon, then just prints out the name
   [ ! -n "$icon" ] && icon="$name" || icon="%{T3}$icon"

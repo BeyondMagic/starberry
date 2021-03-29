@@ -20,7 +20,21 @@
 _loop_song() {
 
   dance="$dance_r"
-  formated_icon=$(_icon_music "$icon_running" "$background_song_name" "$first_running_song_name" )
+#  formated_icon=$(_icon_music "$icon_running" "$background_song_name" "$first_running_song_name" )
+  
+  # notify song for first time
+  
+
+  while :; do
+  
+    mpc current --wait >/dev/null 2>&1
+
+    # notify song
+    $HOME/github/scripts/mpd/song &
+    _run_song
+    
+
+  done &
 
   while :; do
 

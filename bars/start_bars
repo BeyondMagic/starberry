@@ -11,8 +11,6 @@
 
 origin=$(cd -- "$(dirname "$0")" >/dev/null 2>&1 && pwd -P)
 
-notify-send -i "/usr/share/icons/BeautyLine/apps/scalable/deskbar.svg" "Starting lemonbar in 15 seconds."
-
-sleep 15
+notify-send -i "/usr/share/icons/BeautyLine/apps/scalable/deskbar.svg" "lemonbars" "Starting lemonbar."
 
 eval "$origin/bars" & disown
