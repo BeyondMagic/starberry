@@ -41,7 +41,7 @@ _clock() {
 
     prefix="%{O-3}$(_icon_right "$(expr substr "$icons" $icon 1)" "$affix" "$fg" "$bg" "$f_bg")"
 
-    echo 'C' "$prefix%{B#ffffff F#123456}$(date | sed -r -e 's/ -03//' -e 's/:/%{F#BDCDD7}:%{F#123456}/g')"
+    echo 'C' "$prefix%{B#ffffff F#123456} $(date | sed -r -e 's/ -03//' -e 's/:/%{F#BDCDD7}:%{F#123456}/g')"
     
     [ "$icon" = "$max_icon" ] && icon=1 || icon=$(($icon + 1))
 

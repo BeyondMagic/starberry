@@ -2,30 +2,30 @@
 
 ---
 
-<h4>colour/pick</h4>
+<h4 align="left">colour/pick</h4>
 
-Pick a colour from screen and copy it to the clipboard system.
-
-- Dependencies: 
-  + imagemagick
-  + xclip : https://github.com/Jack12816/colorpicker
-  + colorpicker
-  + libnotify ; notify-send
+Pick a colour from screen and<br>copy it to the clipboard system.
 
 <img align="right" src="/_docs/pick.png">
 
---
++ Dependencies:
+  - imagemagick
+  - xclip : https://github.com/Jack12816/colorpicker
+  - colorpicker
+  - libnotify ; notify-send.sh
+
+---
 
 <h4>screenhot/fullscreen</h4>
 
 Copy the fullscreen to clipboard.
 
+<img align="right" src="/_docs/fullscreen.png">
+
 - Dependencies:
   + imagemagick
-  + libnotify ; notify-send
-  + unclutter (optional, just delete the lines that use it)
-
-<img align="right" src="/_docs/fullscreen.png">
+  + libnotify ; notify-send.sh
+  + uncutter (optional, just delete the lines that use it)
 
 ---
 
@@ -33,24 +33,25 @@ Copy the fullscreen to clipboard.
 
 Copy the fullscreen to clipboard.
 
+<img align="right" src="/_docs/screen.png">
+
 - Dependencies:
   + imagemagick
-  + libnotify ; notify-send
+  + libnotify ; notify-send.sh
   + unclutter (optional, just delete the lines that use it)
-
-<img align="right" src="/_docs/screen.png">
 
 ---
 
+<img align="right" src="/_docs/doasedit.png">
+
 <h4>root/doasedit</h4>
 
-Edit a file  from root using **doas** and `$EDITOR` local user configuration, script made by @AN322. Thank you.
-
+Edit a file  from root using **doas** and `$EDITOR` local user configuration; script made by [@AN322](https://github.com/AN3223/scripts/), thanks :)
 
 - Dependencies:
   + doas
 
-<img align="right" src="/_docs/doasedit.png">
+...
 
 ---
 
@@ -58,13 +59,13 @@ Edit a file  from root using **doas** and `$EDITOR` local user configuration, sc
 
 Load kaomoji from a simple file.
 
+<img align="right" src="/_docs/loademoji.png">
+
 - Dependencies:
   + dmenu
   + xdotool
-  + libnotify ; notify-send
+  + libnotify ; notify-send.sh
   + xclip
-
-<img align="right" src="/_docs/loademoji.png">
 
 ---
 
@@ -91,4 +92,4 @@ I do have a **.md** file explaining a little bit of how this whole script was bo
     * dwm-msg
 
 - Todo:
-  + Redirect all colours to a single files for fast switch theming
+  + Redirect all colours to a single files for fast switch themingl

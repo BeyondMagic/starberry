@@ -81,7 +81,7 @@ middle_st="%%{F$2}"
 
   # Test if offset should be reset
   # If it gets to max
-  [ "$(($offset + $max_length_scroll - 1))" -ge "$song_length" ] || [ "$song" != "$(sed "2q;d" /tmp/mpdoffset)" ] && {
+  [ "$(($offset + $max_length_scroll - 1))" -gt "$song_length" ] || [ "$song" != "$(sed "2q;d" /tmp/mpdoffset)" ] && {
 
     rm /tmp/mpdoffset
     offset=1

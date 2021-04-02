@@ -23,6 +23,9 @@
 name_fg="#FFFFFF"; name_bg="#1D1D1D"
 icon_fg="#FF5EA4"
 
+origin=$(cd -- "$(dirname "$0")" >/dev/null 2>&1 && pwd -P)
+
+
 # Format a Process name based on ID
 #   Note: it's ID, not PID
 format_active_window() {
@@ -120,6 +123,10 @@ get_active_window() {
 
       }
     done
+
+  echo "DWM died, resetting connection in 5 seconds"; sleep 5
+
+  exec "$origin/_title"
 
 }
 

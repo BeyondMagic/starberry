@@ -32,10 +32,8 @@ _music() {
     [ "$song" = "paused" ] && {
 
       # stop song
-      pkill -KILL -f "__loop_status";
-      # get formated icon (lol)
-#      formated_icon=$(_icon_music "$icon_paused " "$background_icon" "$background_icon_name" )
-      # echo the formated paused label
+      pkill -KILL -f "__loop_status"; pkill -KILL -f "mpc\ current\ \-\-wait" 
+      
       echo 'M' "%{F$second_running_song_name} $extra_icon_paused %{B- F-}"
 
     # if running
@@ -50,6 +48,10 @@ _music() {
     }
 
   done
+
+  echo "MPD died, resetting connection in 5 seconds"; sleep 5
+
+  exec "$origin/_song"
 
 }
 

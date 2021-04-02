@@ -27,6 +27,9 @@ layout_fg="#14181B"; layout_bg="#ffffff"
 
 affix=""
 
+origin=$(cd -- "$(dirname "$0")" >/dev/null 2>&1 && pwd -P)
+
+
 _get_tags() {
 
   dwm-msg --ignore-reply subscribe tag_change_event |
@@ -60,6 +63,7 @@ _get_tags() {
     echo 'W' "%{T3 B$bg_tags}$out  %{F- B-}"
     
   done
+
 }
 
 _get_layout() {
@@ -70,6 +74,10 @@ _get_layout() {
     echo 'L' "%{O-5 B$layout_bg F$layout_fg T1}  $tagid %{F$bg_tags B$layout_bg}$affix%{B$bg_tags F-}"
 
   done
+
+  echo "DWM died, resetting connection in 5 seconds"; sleep 5
+
+  exec "$origin/_layout"
 
 }
 

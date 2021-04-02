@@ -11,15 +11,13 @@
 # BeyondMagic © 2021
 
 
-stdbuf -i0 -o0 -e0 colorpicker | while IFS=$'\n' read -r id_colour; do
+stdbuf -i0 -o0 -e0 colorpicker --short --one-shot | while IFS=$'\n' read -r id_colour; do
 
-  id_colour=$(printf "$id_colour" | sed -r 's/^[^#]*//' | tr -d '\n' )
+  id_colour=$(printf "$id_colour" | tr -d '\n' )
 
-  printf "$id_colour" | xclip -sel c
+  printf "$id_colour" | xclip -sel c &
   convert -size 50x50 xc:"$id_colour" /tmp/colour.png
   notify-send -i "/tmp/colour.png" "'$id_colour' was copied to your clipboard."
-
-  killall colorpicker
 
   exit
 
