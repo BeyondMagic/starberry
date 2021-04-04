@@ -10,6 +10,9 @@
 # BeyondMagic © 2021
 
 
+# This source file will get two functions which are loaded every time you stop MPD
+#   See (https://github.com/BeyondMagic/config/blob/main/_desktop/status_info)
+#       (https://github.com/BeyondMagic/config/blob/main/_desktop/colours)
 . $HOME/desktop/status_info
 
 
