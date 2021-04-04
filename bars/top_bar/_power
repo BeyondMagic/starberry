@@ -21,8 +21,8 @@
 #
 # BeyondMagic © 2021
 
+. $HOME/desktop/colours
+
 icon=" "; affix=""
 
-fg="#FaFaFa"; bg="#C92430"
-
-echo 'P' "%{F#000000 B$bg}$affix%{B$bg F$fg} $icon %{B- F-}"
+echo 'P' "%{A:doas halt:}%{F$power_before B$power_bg}$affix%{B$power_bg F$power_fg} $icon %{B- F-}%{A}"

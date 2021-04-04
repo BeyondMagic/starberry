@@ -16,9 +16,12 @@
 # 
 # BeyondMagic © 2021
 
+export PATH="$PATH:$HOME/.cargo/bin"
+
 origin=$(cd -- "$(dirname "$0")" >/dev/null 2>&1 && pwd -P)
 emojis="$origin/kaomojis"
-chosen=$(cut -d ';' -f1 $emojis | dmenu -i -l 10 | sed "s/ ###.*//")
+chosen=$(fcat "$emojis" | dmenu -i -l 10 | sed "s/ ###.*//")
+
 
 # Exit if none chosen.
 [ -z "$chosen" ] && exit

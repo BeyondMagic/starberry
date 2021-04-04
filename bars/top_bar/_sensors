@@ -8,11 +8,14 @@
 #
 # BeyondMagic © 2021
 
+. $HOME/desktop/colours
 
 _icon_sensors() {
+
   icon="$1"; bg_icon="$2"; fg_icon="$3"
   
-  echo "%{T3 B$bg_icon F#FFFFFF}%{F$fg_icon}$icon%{F$bg_icon B#2B2B2B}%{T2}%{F$bg_icon B#2B2B2B}"
+  echo "%{T3 B$bg_icon F$sensors_fg_affix}%{F$fg_icon}$icon%{F$bg_icon B$sensors_bg_affix}%{T2}"
+
 }
 
 
@@ -24,16 +27,16 @@ _sensors() {
     mmm=""
 
     #  0 < sss < 50
-                             [ "$sss" -lt "52" ] && mmm="$(_icon_sensors " " "#BDCDD7" "#0D2331" ) $sss"
+                             [ "$sss" -lt "52" ] && mmm="$(_icon_sensors " " "$low_low_bg" "$low_low_fg" ) $sss"
 
     # 50 < sss < 67
-      [ "$sss" -gt "51" ] && [ "$sss" -lt "68" ] && mmm="$(_icon_sensors " " "#87C7E4" "#0D2331" ) $sss"
+      [ "$sss" -gt "51" ] && [ "$sss" -lt "68" ] && mmm="$(_icon_sensors " " "$nor_low_bg" "$nor_low_fg" ) $sss"
 
     # 67 < sss < 77
-      [ "$sss" -gt "67" ] && [ "$sss" -lt "77" ] && mmm="$(_icon_sensors " " "#FAFBC2" "#340010" ) $sss"
+      [ "$sss" -gt "67" ] && [ "$sss" -lt "77" ] && mmm="$(_icon_sensors " " "$med_med_bg" "$med_med_fg" ) $sss"
 
     # 77 < sss < 95
-      [ "$sss" -gt "76" ] && [ "$sss" -lt "95" ] && mmm="$(_icon_sensors " " "#FF4464" "#0D2331" ) $sss"
+      [ "$sss" -gt "76" ] && [ "$sss" -lt "95" ] && mmm="$(_icon_sensors " " "$hig_med_bg" "$hig_med_fg" ) $sss"
 
 
 

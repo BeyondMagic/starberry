@@ -14,61 +14,6 @@ icons_second="\033[90m   \033[91m   \033[92m   \033[93m   \033[94m�
 unset p id
  
 
-# If there are not enough icons
-#   Minimum: 16
-[ "${#icons_second}" -le 8 ] || [ "${#icons_first}" -le 8 ] && {
-
-  echo "Please, add more icons, currently there are $((${#icons_first} - 1)) & $((${#icons_second} - 1)). There should be at least 16 counting both."
-  exit 1
-
-}
-
-
-# Method
-#   Format line for logo
-format_line() {
-
-  # $1 : id
-  # $2 : line
-  id=$1; line="$2"
-
-  # Information for every line
-
-
-  printf '%b' "$line\n"
-
-}
-
-
-# Function
-#   Artix logo
-logo() {
-
-  a_logo=$(echo "
-              AR            
-             AAAR           
-            AAAAAR          
-           AAAAAAAR         
-          AAAAAAAAAR        
-              AAAAAAR       
-        AAA      AAAAR       
-       AAAAAAA       AR      
-      AAAAAAAAAAA            
-     AAAAAAAAAAAAAAA         
-    AAAAAAAAAA/        AAR   
-   AAAAAAA/         :AAAAAR  
-  AAA/                  AAAA 
-  " | sed -re "s/[^ ]/\\\033[47m \\\033[49m/g")
-
-  # Loop through every line to format
-  i=1; echo "$a_logo" | while IFS= read line; do
-
-    format_line "$i" "$line"
-
-  i=$((i+1)); done 
-
-}
-
 
 # Function
 #   Center input text based on the terminal's size
@@ -84,9 +29,70 @@ center() {
 
   done 
 
-  printf '%b' "$spaces$1\n"
+  printf '%b' "$spaces$1\n" 
 
 }
+
+# If there are not enough icons
+#   Minimum: 16
+[ "${#icons_second}" -le 8 ] || [ "${#icons_first}" -le 8 ] && {
+
+  echo "Please, add more icons, currently there are $((${#icons_first} - 1)) & $((${#icons_second} - 1)). There should be at least 16 counting both."
+  exit 1
+
+}
+
+
+# Method
+#   Format line for logo
+format_line() {
+
+  # Information for every line
+  [ $i = 5 ] && line="$line \033[31m \033[39m  $(id | sed -r 's/(uid=1000\()|\) gid.*//g') : flora"
+  [ $i = 6 ] && line="$line \033[32m \033[39m  $(cat /etc/*release | head -n 1 | sed -r 's/(NAME=")|("$)//g')"
+  [ $i = 7 ] && line="$line \033[33m \033[39m  $(uname -r)"
+  [ $i = 8 ] && line="$line \033[34m \033[39m  $(uptime -p | sed 's/up //')"
+  [ $i = 9 ] && line="$line \033[35m \033[39m  $(echo $SHELL)"
+  [ $i = 10 ] && line="$line \033[36m \033[39m  $(pacman -Q | wc -l)"
+
+#  center "$line" ""
+
+  printf '%b' "$line\n"
+
+}
+
+
+# Function
+#   Artix logo
+logo() {
+
+  a_logo=$(echo "
+                AR             
+               AAAR            
+              AAAAAR           
+             AAAAAAAR          
+            AAAAAAAAAR         
+                AAAAAAR        
+          AAA      AAAAR       
+         AAAAAAA       AR      
+        AAAAAAAAAAA            
+       AAAAAAAAAAAAAAA         
+      AAAAAAAAAA/        AAR   
+     AAAAAAA/         :AAAAAR  
+    AAA/                  AAAA 
+  " | sed -re "s/[^ ]/\\\033[47m \\\033[49m/g")
+
+  # Loop through every line to format
+  i=1; echo "$a_logo" | while IFS= read line; do
+
+    format_line "$i" "$line"
+
+  i=$((i+1)); done 
+
+}
+
+
+
 
 # Logo and information
 logo

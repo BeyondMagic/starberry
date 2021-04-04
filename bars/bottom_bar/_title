@@ -20,8 +20,9 @@
 # BeyondMagic © 2021
 
   affix=""
-name_fg="#FFFFFF"; name_bg="#1D1D1D"
-icon_fg="#FF5EA4"
+
+. $HOME/desktop/colours "b"
+
 
 origin=$(cd -- "$(dirname "$0")" >/dev/null 2>&1 && pwd -P)
 
@@ -102,7 +103,7 @@ format_active_window() {
     # If there's no icon, then just prints out the name
   [ ! -n "$icon" ] && icon="$name" || icon="%{T3}$icon"
 
-  echo 'T' "%{B$name_bg F$icon_fg}  $icon %{T2 F$name_fg}$total  %{T1 B- F-}"
+  echo 'T' "%{B$title_name_bg F$title_icon_fg}  $icon %{T2 F$title_name_fg}$total  %{T1 B- F-}"
 
 }
 

@@ -2,6 +2,23 @@
 
 ---
 
+<h4 align="left">system/readmem</h4>
+
+<img align="right" src="/_docs/readmem.png">
+
+Shows the process that are using most memory.
+
+.<br>
+.<br>
+.<br>
+.<br>
+.<br>
+.<br>
+
+---
+
+---
+
 <h4 align="left">colour/pick</h4>
 
 Pick a colour from screen and<br>copy it to the clipboard system.

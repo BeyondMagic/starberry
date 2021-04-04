@@ -1,0 +1,26 @@
+#!/usr/bin/env sh
+#
+# Description
+#   Display the top applications of memory usage
+#
+# Initial Credits
+#   http://www.cyberciti.biz/faq/linux-check-memory-usage/#comment-51021
+#
+# BeyondMagic © 2021
+
+
+processes_to_show=20
+
+
+ps -A --sort -rss -o comm,pmem,rss | head -n $processes_to_show | while read command percent rss; do 
+
+  [ ! "$command" = "COMMAND" ] && {
+
+    rss="$(echo "scale=2;${rss}/1024" | bc)" 
+
+  }
+
+  printf " %-26s%-8s%s\n" "$command" "$percent" "$rss MB" \
+         | sed 's/COMMAND/PROGRAM/' | sed 's/RSS MB/#MEM/'
+
+done

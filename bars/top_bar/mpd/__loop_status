@@ -19,10 +19,9 @@
 #   Is the one being used to stop this loop.
 _loop_song() {
 
-  dance="$dance_r"
-  formated_icon=$(_icon_music "$icon_running" "$background_song_name" "$first_running_song_name" )
+#  dance="$dance_r"
+#  formated_icon=$(_icon_music "$icon_running" "$background_song_name" "$first_running_song_name" )
   
-   notify song for first time
   
   while :; do
   

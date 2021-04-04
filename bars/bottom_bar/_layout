@@ -13,22 +13,17 @@
 #   while IFS=$'\n' read -r selected && read -r occupied; do
 # error: _layout:  Unterminated heredoc found, EOF reached. Wanted: <$tag))>, opened in line 35
 
-bg_tags="#14181B"
 
          icon_selected=" "
 icon_selected_occupied=" "
          icon_unselect=" "
 icon_unselect_occupied=" "
 
-         fg_selected="#ffffff";          fg_unselect="#696969"
-fg_selected_occupied="#ffffff"; fg_unselect_occupied="#82CDD2"
-
-layout_fg="#14181B"; layout_bg="#ffffff"
-
 affix=""
 
-origin=$(cd -- "$(dirname "$0")" >/dev/null 2>&1 && pwd -P)
+. $HOME/desktop/colours
 
+origin=$(cd -- "$(dirname "$0")" >/dev/null 2>&1 && pwd -P)
 
 _get_tags() {
 
@@ -71,7 +66,7 @@ _get_layout() {
   dwm-msg --ignore-reply subscribe layout_change_event | grep --line-buffered -oP '(?<=new_symbol": ").*' | sed -u 's/",$//' |
   while IFS=$'\n' read -r tagid; do
 
-    echo 'L' "%{O-5 B$layout_bg F$layout_fg T1}  $tagid %{F$bg_tags B$layout_bg}$affix%{B$bg_tags F-}"
+    echo 'L' "%{O-5 B$layout_bg F$layout_fg T1}   $tagid %{F$bg_tags B$layout_bg}$affix%{B$bg_tags F-}"
 
   done
 

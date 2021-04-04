@@ -11,8 +11,9 @@
 #
 # BeyondMagic © 2021
 
-mem_color="#FFFFFF"
-swap_color="#FFFFFF"
+
+. $HOME/desktop/colours "b"
+
 
 _get_ram() {
 
@@ -23,15 +24,15 @@ _get_ram() {
     memory=$(free -h | grep 'Mem:')
     memory_total=$(echo $memory | awk {'print $2'} | tr -d ' ')
     memory_used=$(echo $memory | awk {'print $3'} | tr -d ' ')
-    mem_msg="$memory_used%{F#666666}/%{F-}$memory_total"
+    mem_msg="$memory_used%{F$mem_barra}/%{F-}$memory_total"
 
     swap=$(free -h | grep 'Swap:')
     swap_total=$(echo $swap | awk {'print $2'} | tr -d ' ')
     swap_used=$(echo $swap | awk {'print $3'} | tr -d ' ')
-    swap_msg="$swap_used%{F#000000}/%{F#333333}$swap_total"
+    swap_msg="$swap_used%{F$swap_barra}/%{F$swap_colour}$swap_total"
 
-    msg="$msg%{F#666666 T3} %{F#FFFFFF T2}$mem_msg"
-    msg="$msg%{F#444444 T3}  %{F#333333 T2}$swap_msg"
+    msg="$msg%{F$mem_barra T3} %{F$mem_colour T2}$mem_msg"
+    msg="$msg%{F$swap_icon_colour T3}  %{F$swap_colour T2}$swap_msg"
 
     echo 'M' "$msg　　%{F- B-} "
     sleep 30

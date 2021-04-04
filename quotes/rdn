@@ -31,9 +31,11 @@ length_file=$(jq length "$quotes_path")
 random_numb=$(shuf -i 0-$((length_file - 1)) -n 1)
 quote_chose=$(jq -r ".[$random_numb]" "$quotes_path")
 
-first_line=$(echo "$quote_chose" | jq -r ".[0]")
-secon_line=$(echo "$quote_chose" | jq -r ".[1]")
-third_line=$(echo "$quote_chose" | jq -r ".[2]")
+first_line=$(echo "$quote_chose" | tr '\r\n' ' ' | jq -r ".[0]")
+secon_line=$(echo "$quote_chose" | tr '\r\n' ' ' | jq -r ".[1]")
+third_line=$(echo "$quote_chose" | tr '\r\n' ' ' | jq -r ".[2]")
+
+
 
 # Function
 #   Center input text based on the terminal's size
