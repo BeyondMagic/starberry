@@ -40,7 +40,7 @@ _sensors() {
 
 
 
-      echo 'S' "%{T1 O-4}$mmm ºC  %{B- F-}"
+      echo 'S' "%{T1 O-4}$mmm ºC  %{F$sensors_bg_affix B-}%{T2 F-}"
 
     sleep 5
   done

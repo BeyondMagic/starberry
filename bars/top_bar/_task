@@ -16,6 +16,7 @@
 . $HOME/desktop/colours
 
    file_task="$HOME/github/routine.txt"
+svg_icon="/usr/share/icons/BeautyLine/apps/scalable/preferences-calendar-and-tasks.svg"
 icon_routine=""
 
 
@@ -32,17 +33,19 @@ _get_tasks() {
 
       [ "$date_now" -ge "$start_hour" ] && [ "$date_now" -le "$end_hour" ] && {
 
-        echo 'T' "%{O-4 T3 F$task_fg_icon}$icon_routine %{T1 F$task_fg} $task_line%{B- F-}　　"
+        echo 'T' \
+        "%{O-4 T3 F$task_fg_icon}$icon_routine %{T1 F$task_fg} $task_line%{B- F-}　　"
 
         [ "$date_now" = "$start_hour" ] && { 
-          notify-send.sh -u "critical" -i "/usr/share/icons/BeautyLine/apps/scalable/preferences-calendar-and-tasks.svg" "$task_line"
+          notify-send.sh -u critical -i \
+          $svg_icon "$task_line"
         }
 
       }
 
     done < $file_task
 
-    sleep 29
+    sleep 34
 
   done
 }

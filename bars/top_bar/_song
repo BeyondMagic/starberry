@@ -37,7 +37,7 @@ _music() {
       # stop song
       pkill -KILL -f "__loop_status"; pkill -KILL -f "mpc\ current\ \-\-wait" 
       
-      echo 'M' "%{F$second_running_song_name} $extra_icon_paused %{B- F-}"
+      echo 'M' "%{F$second_running_song_name} $extra_icon_paused %{F-}"
 
     # if running
     #   If running, then continues the loop function

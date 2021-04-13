@@ -12,8 +12,6 @@ icons_second="\033[90m   \033[91m   \033[92m   \033[93m   \033[94m�
 
 
 unset p id
- 
-
 
 # Function
 #   Center input text based on the terminal's size
@@ -29,9 +27,10 @@ center() {
 
   done 
 
-  printf '%b' "$spaces$1\n" 
+  printf '%b' "$spaces$1\n"
 
 }
+
 
 # If there are not enough icons
 #   Minimum: 16
@@ -51,13 +50,13 @@ format_line() {
   [ $i = 5 ] && line="$line \033[31m \033[39m  $(id | sed -r 's/(uid=1000\()|\) gid.*//g') : flora"
   [ $i = 6 ] && line="$line \033[32m \033[39m  $(cat /etc/*release | head -n 1 | sed -r 's/(NAME=")|("$)//g')"
   [ $i = 7 ] && line="$line \033[33m \033[39m  $(uname -r)"
-  [ $i = 8 ] && line="$line \033[34m \033[39m  $(uptime -p | sed 's/up //')"
+  [ $i = 8 ] && line="$line \033[34m \033[39m  $(uptime -p | sed 's/^up //')"
   [ $i = 9 ] && line="$line \033[35m \033[39m  $(echo $SHELL)"
-  [ $i = 10 ] && line="$line \033[36m \033[39m  $(pacman -Q | wc -l)"
-
-#  center "$line" ""
+  [ $i = 10 ] && line="$line \033[36m \033[39m  $(pacman -Q | wc -l) packages"
 
   printf '%b' "$line\n"
+
+  #printf '%b' "$i $line\n"
 
 }
 
@@ -80,7 +79,7 @@ logo() {
       AAAAAAAAAA/        AAR   
      AAAAAAA/         :AAAAAR  
     AAA/                  AAAA 
-  " | sed -re "s/[^ ]/\\\033[47m \\\033[49m/g")
+  " | sed -re "s/[^ ]/\\\033[22m:\\\033[39m/g")
 
   # Loop through every line to format
   i=1; echo "$a_logo" | while IFS= read line; do
@@ -92,14 +91,12 @@ logo() {
 }
 
 
-
-
 # Logo and information
 logo
 
 # Print pallete
 
-center "$icons_first" "11"
-center "$icons_second" "11"
+center "$icons_first" "14"
+center "$icons_second" "14"
 
 printf "\n"

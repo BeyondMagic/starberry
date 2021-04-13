@@ -36,13 +36,21 @@
 #
 # BeyondMagic © 2021
 
+
 quotes_path="$HOME/github/quotes.json"
+      quote=$(printf "$1" | awk 1 ORS='\\\\n' | head -c -2 )
+
 
 # See if file exists
 
    [ ! -e "$quotes_path" ] && {
 
-  echo -e "No file encountered, current path being passed is:\n  \$quotes_path : $quotes_path\n\nEdit this executable file to change the path or execute it with 'quotes_path' variable, for example:\n  quotes_path=\"/path_to_quotes/quotes_file.json\"$basename $0 \"Life is cool.\" \"Me\""
+  echo -e "No file encountered, current path being passed is:" \
+  "\n\$quotes_path : $quotes_path\n" \
+  "\nEdit this executable file to change the path or execute it with " \
+  "'quotes_path' variable, for example:\n  " \
+  "quotes_path=\"/path_to_quotes/quotes_file.json\"$basename $0" \
+  " \"Life is cool.\" \"Me\""
   exit 1
 
 }
@@ -57,7 +65,16 @@ quotes_path="$HOME/github/quotes.json"
 } || [ ! "$3" = "" ] && {
 
   echo "Three arguments passed:\n\$1 : $1\n\$2 : $2\n\$3 : $3"
-  sed -e '1 a ¨¨[' -e "1 a ¨¨¨¨\"$1\"," -e "1 a ¨¨¨¨\"$2\"," -e "1 a ¨¨¨¨\"$3\"" -e '1 a ¨¨],' "$quotes_path" | sed '2,6s/¨/ /g' > "$quotes_path.tmp" && mv "$quotes_path.tmp" "$quotes_path" || { echo "Failed to save quote, please review the error message and be sure that you're using GNU sed."; exit 1; }
+  sed \
+    -e '1 a ¨¨[' \
+    -e "1 a ¨¨¨¨\"$quote\"," \
+    -e "1 a ¨¨¨¨\"$2\"," \
+    -e "1 a ¨¨¨¨\"$3\"" \
+    -e '1 a ¨¨],' "$quotes_path" | \
+    sed '2,6s/¨/ /g' > "$quotes_path.tmp" \
+    && mv "$quotes_path.tmp" "$quotes_path" || \
+    { echo "Failed to save quote, please review the error" \
+      "message and be sure that you're using GNU sed."; exit 1; }
   echo "Saved new quote."
   exit 0
 
@@ -65,7 +82,15 @@ quotes_path="$HOME/github/quotes.json"
 } || [ ! "$2" = "" ] && {
 
   echo "Tho arguments passed:\n\$1 : $1\n\$2 : $2"
-  sed -e '1 a ¨¨[' -e "1 a ¨¨¨¨\"$1\"," -e "1 a ¨¨¨¨\"$2\"" -e '1 a ¨¨],' "$quotes_path" | sed '2,5s/¨/ /g' > "$quotes_path.tmp" && mv "$quotes_path.tmp" "$quotes_path" || { echo "Failed to save quote, please review the error message and be sure that you're using GNU sed."; exit 1; }
+  sed \
+    -e '1 a ¨¨[' \
+    -e "1 a ¨¨¨¨\"$quote\"," \
+    -e "1 a ¨¨¨¨\"$2\"" \
+    -e '1 a ¨¨],' "$quotes_path" | \
+    sed '2,5s/¨/ /g' > "$quotes_path.tmp" \
+    && mv "$quotes_path.tmp" "$quotes_path" || \
+    { echo "Failed to save quote, please review the error" \
+      "message and be sure that you're using GNU sed."; exit 1; }
   echo "Saved new quote."
   exit 0
 
@@ -73,7 +98,14 @@ quotes_path="$HOME/github/quotes.json"
 } || [ ! "$1" = "" ] && {
 
   echo "One arguments passed:\n\$1 : $1"
-  sed -e '1 a ¨¨[' -e "1 a ¨¨¨¨\"$1\"" -e '1 a ¨¨],' "$quotes_path" | sed '2,4s/¨/ /g' > "$quotes_path.tmp" && mv "$quotes_path.tmp" "$quotes_path" || { echo "Failed to save quote, please review the error message and be sure that you're using GNU sed."; exit 1; }
+  sed \
+    -e '1 a ¨¨[' \
+    -e "1 a ¨¨¨¨\"$quote\"" \
+    -e '1 a ¨¨],' "$quotes_path" | \
+    sed '2,4s/¨/ /g' > "$quotes_path.tmp" \
+    && mv "$quotes_path.tmp" "$quotes_path" || \
+    { echo "Failed to save quote, please review the error" \
+      "message and be sure that you're using GNU sed."; exit 1; }
   echo "Saved new quote."
   exit 0
 
@@ -81,6 +113,6 @@ quotes_path="$HOME/github/quotes.json"
 } || {
   
   echo "Please, pass at least one arguments (quote)."
-  exit 1
+  exit o1
 
 }

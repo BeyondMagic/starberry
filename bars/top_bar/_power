@@ -25,4 +25,4 @@
 
 icon=" "; affix=""
 
-echo 'P' "%{A:doas halt:}%{F$power_before B$power_bg}$affix%{B$power_bg F$power_fg} $icon %{B- F-}%{A}"
+echo 'P' "%{A:doas halt:}%{F#14181b B$power_bg}$affix%{F$power_fg} $icon%{A}"
