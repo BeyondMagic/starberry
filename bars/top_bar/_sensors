@@ -14,7 +14,7 @@ _icon_sensors() {
 
   icon="$1"; bg_icon="$2"; fg_icon="$3"
   
-  echo "%{T3 B$bg_icon F$sensors_fg_affix}%{F$fg_icon}$icon%{F$bg_icon B$sensors_bg_affix}%{T2}"
+  echo "%{T3 B$bg_icon F$sensors_fg_affix}%{F$fg_icon}$icon%{F$bg_icon B$sensors_bg_affix}%{T2}" &
 
 }
 
@@ -27,21 +27,20 @@ _sensors() {
     mmm=""
 
     #  0 < sss < 50
-                             [ "$sss" -lt "52" ] && mmm="$(_icon_sensors " " "$low_low_bg" "$low_low_fg" ) $sss"
+                           [ "$sss" -lt "52" ] && mmm="$(_icon_sensors " " "$low_low_bg" "$low_low_fg" ) $sss"
 
     # 50 < sss < 67
-      [ "$sss" -gt "51" ] && [ "$sss" -lt "68" ] && mmm="$(_icon_sensors " " "$nor_low_bg" "$nor_low_fg" ) $sss"
+    [ "$sss" -gt "51" ] && [ "$sss" -lt "68" ] && mmm="$(_icon_sensors " " "$nor_low_bg" "$nor_low_fg" ) $sss"
 
     # 67 < sss < 77
-      [ "$sss" -gt "67" ] && [ "$sss" -lt "77" ] && mmm="$(_icon_sensors " " "$med_med_bg" "$med_med_fg" ) $sss"
+    [ "$sss" -gt "67" ] && [ "$sss" -lt "77" ] && mmm="$(_icon_sensors " " "$med_med_bg" "$med_med_fg" ) $sss"
 
     # 77 < sss < 95
-      [ "$sss" -gt "76" ] && [ "$sss" -lt "95" ] && mmm="$(_icon_sensors " " "$hig_med_bg" "$hig_med_fg" ) $sss"
+    [ "$sss" -gt "76" ] && [ "$sss" -lt "95" ] && mmm="$(_icon_sensors " " "$hig_med_bg" "$hig_med_fg" ) $sss"
 
-
-
-      echo 'S' "%{T1 O-4}$mmm ºC  %{F$sensors_bg_affix B-}%{T2 F-}"
+    echo 'S' "%{T1 O-4}$mmm ºC  %{F$sensors_bg_affix B-}%{T2 F-}" &
 
     sleep 5
+
   done
 }

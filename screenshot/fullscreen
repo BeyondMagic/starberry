@@ -5,7 +5,9 @@
 # BeyondMagic © 2021
 
 killall unclutter
+
 import -window root png:- | xclip -selection c -t image/png &
-notify-send -i "/usr/share/icons/BeautyLine/actions/scalable/editimage.svg" "Full screenshot was copied to clipboard."
+notify-send -i '/usr/share/icons/BeautyLine/actions/scalable/editimage.svg' \
+    'Full screenshot was copied to clipboard.'
 nohup unclutter --timeout 1 >/dev/null 2>&1 &
-exit
+exit 0

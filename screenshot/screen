@@ -5,6 +5,7 @@
 # BeyondMagic © 2021
 
 killall unclutter
+ps aux | grep -q "xclip -selection clipboard -t image/png"
 import png:- | xclip -selection clipboard -t image/png
 notify-send -i "/usr/share/icons/BeautyLine/actions/scalable/editimage.svg" "Partial screenshot was copied to clipboard." &
 nohup unclutter --timeout 1 >/dev/null 2>&1 &

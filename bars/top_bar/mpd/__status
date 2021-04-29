@@ -30,48 +30,21 @@ middle_st="%%{F$2}"
 
 } || {
 
-    # mpd is running, so find out if it's playing or paused and echo the corresponding glyph
+    # mpd is running, so find out if it's playing or paused and echo the
+    # corresponding glyph
     echo "$info" | grep -q "playing" && {
 
       sleep 0
 
     } || {
 
-      printf "paused";
+      printf "paused" &
       exit
 
     }
 
 }
 
-#[ "$song_length" -ge "$max_length_scroll" ] && {
-
-  # Read offset from file
-#  offset="$(cat /tmp/mpdoffset | head -n 1 | sed 's/-e //')"
-
-  # Add one
- # offset="$(($offset + 1))"
-
-  # Test if offset should be reset
-  #[ "$song" != "$(sed "2q;d" /tmp/mpdoffset)" ] && {
-
-#    rm /tmp/mpdoffset
-   # offset=0
-
- # }
-
-#  [ "$(($offset + $max_length_scroll - 1))" -ge "$song_length" ] && {
-
-#    rm /tmp/mpdoffset
-#    offset=0
-
-#  }
-
-  # Write offset back to file
-#  echo "$offset\n$song" > /tmp/mpdoffset
-#  song="$(expr substr "$song" $offset $max_length_scroll)"
-
-#} 
 
 [ "$song_length" -ge "$max_length_scroll" ] && {
 
@@ -81,15 +54,16 @@ middle_st="%%{F$2}"
 
   # Test if offset should be reset
   # If it gets to max
-  [ "$(($offset + $max_length_scroll - 1))" -gt "$song_length" ] || [ "$song" != "$(sed "2q;d" /tmp/mpdoffset)" ] && {
+  [ "$(($offset + $max_length_scroll - 1))" -gt "$song_length" ] || \
+    [ "$song" != "$(sed "2q;d" /tmp/mpdoffset)" ] && {
 
-    rm /tmp/mpdoffset
+    rm /tmp/mpdoffset &
     offset=1
 
   }
 
    # Write offset back to file
-   echo "$offset\n$song" > /tmp/mpdoffset
+   echo "$offset\n$song" > /tmp/mpdoffset &
    song="$(expr substr "$song" $offset $max_length_scroll)"
 
 }
@@ -105,4 +79,4 @@ perc_chr=$(awk -v n="$song_length" -v m="$perc" 'BEGIN{ print int( n*(m/100)) }'
 
 
 
-printf "$start_st$(expr substr "$song" 1 $perc_chr)$middle_st$(expr substr "$song" $(($perc_chr + 1)) $song_length)"
+printf "$start_st$(expr substr "$song" 1 $perc_chr)$middle_st$(expr substr "$song" $(($perc_chr + 1)) $song_length)" &

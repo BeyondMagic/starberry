@@ -44,8 +44,7 @@ use="$first_line"
 #   Center input text based on the terminal's size
 center() {
 
-#  cols=$(tput cols)
-  cols=171
+  cols=100
   string="$@"
 
   [ "$string" = "null" ] || printf "%*s\n" $(((${#string}+$cols)/2)) "$string"
@@ -58,4 +57,4 @@ center() {
 [ "$secon_line" = "null" ] || use="$use\n$(center "$secon_line")"
 [ "$third_line" = "null" ] || use="$use\n$(center "$third_line")"
 
-slock -m "$(echo "$use")"
+slock -m "$(printf "$use")"

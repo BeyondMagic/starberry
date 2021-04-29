@@ -24,7 +24,7 @@ _get_ram() {
     memory=$(free -h | grep 'Mem:')
     memory_total=$(echo $memory | awk {'print $2'} | tr -d ' ')
     memory_used=$(echo $memory | awk {'print $3'} | tr -d ' ')
-    mem_msg="$memory_used%{F$mem_barra}/%{F-}$memory_total"
+    mem_msg="$memory_used%{F$mem_barra}/%{F$mem_barra}$memory_total"
 
     swap=$(free -h | grep 'Swap:')
     swap_total=$(echo $swap | awk {'print $2'} | tr -d ' ')
@@ -34,7 +34,7 @@ _get_ram() {
     msg="$msg%{F$mem_barra T3} %{F$mem_colour T2}$mem_msg"
     msg="$msg%{F$swap_icon_colour T3}  %{F$swap_colour T2}$swap_msg"
 
-    echo 'M' "$msg　　%{F- B-} "
+    echo 'M' "$msg　　%{F- B-} " &
     sleep 30
 
   done

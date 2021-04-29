@@ -28,7 +28,7 @@ _loop_song() {
     mpc current --wait >/dev/null 2>&1 
 
     # notify song
-    $HOME/github/scripts/mpd/song &
+    $HOME/github/scripts/mpd/song
 
     _run_song
 

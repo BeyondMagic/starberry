@@ -103,7 +103,7 @@ read_top_bar() {
       S*)
         sensors="${line#?}";;
 
-      # Volume
+      # Power icon
       P*)
         power="${line#?}";;
 
@@ -153,7 +153,7 @@ read_bottom_bar() {
 
     esac
 
-    printf "%s%s%s\n" "$layouts%{T3}$tags%{T1 c}$title%{r}$memory$(whoami) %{T3 F#7EABF8}%{T2 F#FFFFFF} flora  "
+    printf "%s%s%s\n" "$layouts%{T3}$tags%{T1 c}$title%{r}$memory$nickname"
 
    done < "$location_of_bottom_fifo"  
 }
@@ -173,14 +173,16 @@ read_bottom_bar() {
 
 
 read_top_bar |    lemonbar -p -g "${width_tbar}x${height_tbar}${offset_ty}${offset_tx}" \
-  -B "#14181B" \
+  -B "$bg_bar" \
+  -F "$fg_bar" \
   -o 0 -f "$normal_font" \
   -o 0 -f "$bold_font" \
   -o 0 -f "$emoji_font:size=10.3" \
   -o 0 -f "$script_font" &
 
 read_bottom_bar | lemonbar -b -p -g "${width_bbar}x${height_bbar}${offset_by}${offset_bx}" \
-  -B "#14181b" \
+  -B "$bg_bar" \
+  -F "$fg_bar" \
   -o 0 -f "$normal_font" \
   -o 0 -f "$bold_font" \
   -o 2 -f "$emoji_font:size=11" \

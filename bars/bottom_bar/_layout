@@ -9,10 +9,7 @@
 #
 # BeyondMagic © 2021
 
-# possible bashism in _layout line 29 ($'...' should be "$(printf '...')"):
-#   while IFS=$'\n' read -r selected && read -r occupied; do
-# error: _layout:  Unterminated heredoc found, EOF reached. Wanted: <$tag))>, opened in line 35
-
+origin=$(cd -- "$(dirname "$0")" >/dev/null 2>&1 && pwd -P); . $HOME/desktop/colours
 
          icon_selected=" "
 icon_selected_occupied=" "
@@ -21,59 +18,150 @@ icon_unselect_occupied=" "
 
 affix=""
 
-. $HOME/desktop/colours
 
-origin=$(cd -- "$(dirname "$0")" >/dev/null 2>&1 && pwd -P)
 
 _get_tags() {
+
+
+  # A local function to shout out a tag name based
+  # on their IDs, you can change it to whatever
+  # you want to
+  get_name_of_tag() {
+
+    case $1 in
+      1)   name='Fox tail'        ;; 
+      2)   name='Simple Anything' ;; 
+      4)   name='Simple Terminal' ;; 
+      8)   name='Simple Neovim'   ;; 
+      16)  name='Simple ZShell'   ;; 
+      32)  name='Binoculus'       ;;
+      64)  name='Popcorn'         ;;
+      128) name='Breakdance'      ;;
+      256) name='Friends'         ;;
+      511) name='Everything'      ;; 
+    esac
+
+    # Change to your notify program, I recommend a lot this though
+    # Pretty lightweight!
+    notify-send.sh \
+      -a dwm-tag-change \
+      -u low \
+      -t "$bnotification_time" \
+      -f "$name" &
+
+  }
+
 
   dwm-msg --ignore-reply subscribe tag_change_event |
   jq --unbuffered '.tag_change_event.new_state | .selected, .occupied' |
   while IFS=$'\n' read -r selected && read -r occupied; do 
 
-    out=""
 
-    tag=0; while [ $tag -le 8 ]; do
+    # Loop through all the 9 tags
+    # It starts from 0
+    out=""; tag=0; while [ $tag -le 8 ]; do
 
+
+      # Does this really needs any explanation?
       bit=$((1 << $tag))
 
+      # Selected and with programs
       if [ $(($selected & $bit)) -ne 0 ] && [ $(($occupied & $bit)) -ne 0 ]; then
+        # Pretty output (with external variables)
         out="${out}%{F$fg_selected_occupied} $icon_selected_occupied"
+        # Simple output
+        # out="${out} X"
 
-      # selected
+      # Selected without programs
       elif [ $(($selected & $bit)) -ne 0 ]; then
+        # Pretty output (with external variables)
         out="${out}%{F$fg_selected} $icon_selected"
+        # Simple output
+        # out="${out} o"
 
-      # have windows on it
+      # Not selected with programs
       elif [ $(($occupied & $bit)) -ne 0 ]; then
+        # Pretty output (with external variables)
         out="${out}%{F$fg_unselect} $icon_unselect"
+        # Simple output
+        # out="${out} +"
 
-      # nothing
+      # Nothing at all
       else
+        # Pretty output (with external variables)
         out="${out}%{F$fg_unselect} $icon_unselect_occupied"
+        # Simple output
+        # out="${out} -"
+
       fi
+
 
     tag=$((tag+1)); done
 
-    echo 'W' "%{T3 B$bg_tags}$out  %{F- B-}"
-    
+
+    # If the last select is the same as the one right now, then does not print
+    # out anything
+    [ "$last_selected" = "$selected" ] || {
+
+      # Give a quick notification
+      get_name_of_tag "$selected" &
+      
+    }
+
+    # Define last selected to be used on the next tag change
+    last_selected="$selected"
+
+
+    # Pretty output (with external variables)
+    echo 'W' "%{T3 B$bg_tags}$out  %{F- B-}" &
+    # Simple output
+    # echo 'W' "$out"
+
   done
 
 }
 
+
+# Layout of the tag, the symbol that appears can be changed
 _get_layout() {
 
-  dwm-msg --ignore-reply subscribe layout_change_event | grep --line-buffered -oP '(?<=new_symbol": ").*' | sed -u 's/",$//' |
-  while IFS=$'\n' read -r tagid; do
+  # Loop through every change and wait for the next one :)
+  # If it breaks, see the last comments!
+  dwm-msg --ignore-reply subscribe layout_change_event | \
+    grep --line-buffered -oP '(?<=new_symbol": ").*' | \
+    sed -u 's/",$//' | \
+    while IFS=$'\n' read -r tagid; do
 
-    echo 'L' "%{O-5 B$layout_bg F$layout_fg T1}   $tagid %{F$bg_tags B$layout_bg}$affix%{B$bg_tags F-}"
+      # Beautify with colours, I recommend using the later one if
+      # you don't have idea where the rest of the colours/variables come
+      echo 'L' "%{O-5 B$layout_bg F$layout_fg T1}  " \
+               "$tagid %{F$bg_tags B$layout_bg}$affix%{B$bg_tags F-}" &
 
-  done
+      # Simple output
+      # echo 'L' "$tagid"
 
+    done
+
+  # Just a little warning that well, something died!
+  # This is necessary because the loop isn't supposed to break,
+  # however, it does when dwm is killed or restarted.
+  # So this resets it!
   echo "DWM died, resetting connection in 5 seconds"; sleep 5
 
+  # Execute itself and/by killing this
   exec "$origin/_layout"
 
 }
 
-_get_tags & _get_layout
+
+# Initilization :)
+_get_layout & _get_tags &
+
+# Sleep for some time just to relax
+sleep 4
+
+# Change view to 4th tag
+dwm-msg run_command view 8 &
+
+# Open a st terminal with float :)
+nohup st -t floatst >/dev/null 2>&1 &

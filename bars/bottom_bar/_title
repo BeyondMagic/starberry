@@ -16,6 +16,7 @@
 #   xorg
 #   dwm
 #     dwm-msg
+#   recode
 #
 # BeyondMagic © 2021
 
@@ -53,7 +54,7 @@ format_active_window() {
   }; [ "$name" = "firefox" ] && {
 
     icon=""
-    total=$(echo "$total" | sed -r 's/(\[Sidebery\] )|( — Firefox.*)//g')
+    total=$(echo "$total" | sed -r 's/(\[Sidebery\] )|( — Firefox.*)//g' | recode html..ISO-8859-1)
 
   # gcolor2
   }; [ "$name" = "gcolor2" ] && {
@@ -74,6 +75,7 @@ format_active_window() {
   }; [ "$name" = "mpv" ] && {
     
     icon=""
+    total=$(printf "$total" | sed 's/ - mpv$//')
 
   # qbittorrent
   }; [ "$name" = "qbittorrent" ] && {
@@ -99,11 +101,11 @@ format_active_window() {
   #  julia
 
     # Reduce length if it's bigger than 40 characters
-  [ "${#total}" -gt "40" ] && total="$(echo "$total" | cut -c -40)..."
+  [ "${#total}" -gt "60" ] && total="$(echo "$total" | cut -c -60)..."
     # If there's no icon, then just prints out the name
   [ ! -n "$icon" ] && icon="$name" || icon="%{T3}$icon"
 
-  echo 'T' "%{F$title_icon_fg}  $icon %{T2 F$title_name_fg}$total  %{T1 F-}"
+  echo 'T' "%{F$title_icon_fg}  $icon %{T2 F$title_name_fg}$total  %{T1 F-}" &
 
 }
 
@@ -116,11 +118,11 @@ get_active_window() {
     while IFS=$'\n' read -r winid; do
       [ $winid = "null" ] && {
 
-        echo 'T'
+        echo 'T' &
 
       } || {
 
-        format_active_window "$winid"
+        format_active_window "$winid" &
 
       }
     done

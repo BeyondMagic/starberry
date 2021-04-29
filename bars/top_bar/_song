@@ -35,16 +35,17 @@ _music() {
     [ "$song" = "paused" ] && {
 
       # stop song
-      pkill -KILL -f "__loop_status"; pkill -KILL -f "mpc\ current\ \-\-wait" 
+      pkill -KILL -f "__loop_status"; pkill -KILL -f "mpc\ current\ \-\-wait"
       
-      echo 'M' "%{F$second_running_song_name} $extra_icon_paused %{F-}"
+      echo 'M' "%{F$second_running_song_name} $extra_icon_paused %{F-}" &
 
     # if running
     #   If running, then continues the loop function
     } || {
 
       # stop song
-      pkill -KILL -f "__loop_status";
+      pkill -KILL -f "__loop_status"
+
       # run thes script
       $origin/mpd/__loop_status &
 
@@ -52,8 +53,7 @@ _music() {
 
   done
 
-  echo "MPD died, resetting connection in 5 seconds"; sleep 5
-
+  echo "- : •́ ◇ •̀ : -"; sleep 5
   exec "$origin/_song"
 
 }
@@ -61,3 +61,5 @@ _music() {
 
 # Start
 _music
+
+

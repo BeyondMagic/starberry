@@ -5,7 +5,6 @@
 # 
 # TODO
 #   Label for power in Linux
-#   Some commands that the sidebar will be able to use with password is
 #     shutdown -h now ; shutdown
 #     shutdown -r now ; reboot
 #     command to suspend
@@ -25,4 +24,4 @@
 
 icon=" "; affix=""
 
-echo 'P' "%{A:doas halt:}%{F#14181b B$power_bg}$affix%{F$power_fg} $icon%{A}"
+echo 'P' "%{A:doas halt:}%{F$bg_before_power B$power_bg}$affix%{F$power_fg} $icon  %{A}" &
