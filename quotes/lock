@@ -57,4 +57,6 @@ center() {
 [ "$secon_line" = "null" ] || use="$use\n$(center "$secon_line")"
 [ "$third_line" = "null" ] || use="$use\n$(center "$third_line")"
 
+mpc pause &
+
 slock -m "$(printf "$use")"

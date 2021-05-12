@@ -40,62 +40,76 @@ format_active_window() {
   
 
   # st
-       [ "$name" = "st" ] && {
-
+  case "$name" in
+  st)
     icon=""
     title_program=$(echo "$total" | sed -r 's/ .*//')
     total=$(echo "$total" | sed -r 's/\w* //')
     
-    [ "$title_program" = "v" ] && icon=""
-    [ "$title_program" = "mpd" ] && { icon=""; total=$(echo "$total" | sed -r "s/» *//g"); }
-    [ "$title_program" = "n" ] && icon=""
+    case "$title_program" in
+      v) icon="";;
+      mpd) 
+        icon=""
+        total=$(echo "$total" | sed -r "s/» *//g");;
+      n) icon="";;
+    esac
+
+    ;;
 
   # Firefox-Developer-Edition
-  }; [ "$name" = "firefox" ] && {
+  firefox)
 
     icon=""
     total=$(echo "$total" | sed -r 's/(\[Sidebery\] )|( — Firefox.*)//g' | recode html..ISO-8859-1)
+    ;;
 
   # gcolor2
-  }; [ "$name" = "gcolor2" ] && {
+  gcolor2)
     
     icon=""
+    ;;
 
   # sxiv
-  }; [ "$total" = "sxiv" ] && {
+  sxiv)
     
     icon=""
+    ;;
 
   # gimp
-  }; [ "$name" = "gimp" ] && {
+  gimp)
     
     icon=""
+    ;;
 
   # mpv
-  }; [ "$name" = "mpv" ] && {
+  mpv)
     
     icon=""
     total=$(printf "$total" | sed 's/ - mpv$//')
+    ;;
 
   # qbittorrent
-  }; [ "$name" = "qbittorrent" ] && {
+  qbittorrent)
     
     icon=""
+    ;;
 
-  }; [ "$name" = "visualboyadvanc" ] && {
+  visualboyadvanc)
     
     icon=""
+    ;;
 
-  }; [ "$name" = "zathura" ] && {
+  zathura)
     
     icon=""
+    ;;
 
-  }; [ "$name" = "telegram-deskto" ] && {
+  telegram-deskto)
     
     icon=""
-
-  }
+    ;;
   
+  esac
 
   
   #  julia

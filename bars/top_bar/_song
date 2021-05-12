@@ -18,6 +18,7 @@
 
 origin=$(cd -- "$(dirname "$0")" >/dev/null 2>&1 && pwd -P)
 
+
 # This function is the main one and will get the information of MPD
 #   It uses "mpc idleloop" method to gather MPD updates
 #   This can be further simplified to only use MPD protocol,
@@ -25,10 +26,11 @@ origin=$(cd -- "$(dirname "$0")" >/dev/null 2>&1 && pwd -P)
 #   not with the will to do.
 _music() {
 
-  # Note: Neither "new_change" and "double_change" variables will be used
-  mpc idleloop | while IFS=$'\n' read -r new_change && read -r double_change; do
+  mpc idleloop | \
+    while IFS=$'\n' read -r new_change && read -r double_change; do
 
-    song=$($origin/mpd/__status "$first_running_song_name" "$second_running_song_name" "$limit_extra_length")
+    song=$($origin/mpd/__status "$first_running_song_name" \
+      "$second_running_song_name" "$limit_extra_length")
 
     # if paused
     #   If paused, then stop loop function
@@ -43,11 +45,19 @@ _music() {
     #   If running, then continues the loop function
     } || {
 
-      # stop song
-      pkill -KILL -f "__loop_status"
+      [ "$new_change" = 'mixer' ] && [ "$double_change" = 'mixer' ] && {
 
-      # run thes script
-      $origin/mpd/__loop_status &
+        printf "Volume only\n"
+
+      } || {
+
+        # stop song
+        pkill -KILL -f "__loop_status"
+
+        # run thes script
+        $origin/mpd/__loop_status &
+
+      }
 
     }
 

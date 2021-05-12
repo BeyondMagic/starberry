@@ -34,13 +34,14 @@ _get_tasks() {
       [ "$date_now" -ge "$start_hour" ] && [ "$date_now" -le "$end_hour" ] && {
 
         echo 'T' \
-        "%{O-4 T3 F$task_fg_icon}$icon_routine %{T1 F$task_fg} $task_line%{B- F-}　　" &
+        "%{O-4 T3 F$task_fg_icon}$icon_routine %{T1 F$task_fg}" \
+        "$task_line%{B- F-}　　" &
 
       }
 
     done < $file_task
 
-    sleep 34
+    sleep 60
 
   done
 }

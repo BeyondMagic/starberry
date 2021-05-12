@@ -37,7 +37,7 @@ _loop_song() {
   while :; do
 
     _run_song
-    sleep 2
+    sleep 1
 
   done
 
