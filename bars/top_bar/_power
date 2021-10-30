@@ -3,12 +3,6 @@
 # Description
 #   Button to open a sidebar, it doesn't work yet
 # 
-# TODO
-#   Label for power in Linux
-#     shutdown -h now ; shutdown
-#     shutdown -r now ; reboot
-#     command to suspend
-# 
 # Note
 #   It's just a label for now, I will create clickable button
 #   When I find a minimalist siderbar for Linux
@@ -18,10 +12,12 @@
 #   But that it'll take long time because I want to create it
 #   in C++
 #
-# BeyondMagic © 2021
+# BeyondMagic  GPL3 LICENSE  2021
 
-. $HOME/desktop/colours
+_get_power() {
+  
+  icon=" "; affix=""
+  echo 'P' "%{A:dash $HOME/git/scripts/bars/top_bar/power/__power:}%{F$power_bg B-}$affix%{F$power_fg B$power_bg} $icon  %{A}"
+}
 
-icon=" "; affix=""
 
-echo 'P' "%{A:doas halt:}%{F$bg_before_power B$power_bg}$affix%{F$power_fg} $icon  %{A}" &

@@ -7,7 +7,7 @@
 #   This setting is working Japanese systems
 #   Change the "echo 'C'" line to change this
 #
-# BeyondMagic © 2021
+# BeyondMagic  GPL3 LICENSE  2021
 
 
 # Function of the top bar for Lemonnbar
@@ -18,7 +18,8 @@
 # %{T2} : normal font bold
 # ${T3} : emoji font
 
-. $HOME/desktop/colours
+# VERBOSE
+# echo "top_bar/_clock: Starting"
 
 # set icon to right
 _icon_right() {
@@ -40,12 +41,19 @@ _clock() {
 
     prefix="%{O-3}$(_icon_right "$(expr substr "$icons" $icon 1)" "$affix" "$clock_fg" "$clock_bg" "$clock_f_bg")"
 
-    echo 'C' "$prefix%{B$clock_f_bg F$clock_fg}$(date | sed -r -e 's/ -03//' -e "s/:/%{F$clock_hg}:%{F$clock_fg}/g")" &
+    echo 'C' "$prefix%{B$clock_f_bg F$clock_fg}$(date +%H:%M:%S | sed -re "s/:/%{F$clock_hg}:%{F$clock_fg}/g")" &
     
     [ "$icon" = "$max_icon" ] && icon=1 || icon=$(($icon + 1))
 
     sleep 1
 
   done
+  
+}
+
+[ "$1" = "run" ] && {
+
+  . "$(cd -- "$(dirname "$0")" >/dev/null 2>&1 && pwd -P)/../config"
+  _clock 
 
 }

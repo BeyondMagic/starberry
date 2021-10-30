@@ -36,7 +36,6 @@
 # BeyondMagic © 2021
 
 
-
 # Config of Bars
 #   Geometry
 height_tbar="19"; width_tbar="1400"; offset_ty="+20"; offset_tx="+10"
@@ -47,20 +46,16 @@ height_bbar="19"; width_bbar="1400"; offset_by="+20"; offset_bx="+10"
 normal_font="Noto Sans CJK JP Medium:antialias=true:size=10" # 1
   bold_font="Noto Sans CJK JP Black:antialias=true:size=10"  # 2
  emoji_font="NotoEmoji Nerd Font:antialias=true"             # 3
-script_font="Noto Sans CJK JP Black:antialias=true:size=9"  # 4
+script_font="Fira Code:pixelsize=12.25:antialias=true"  # 4
 
 # Constants of places
 #   :)
-location_of_bottom_fifo="$HOME/desktop/bottom.fifo"
-   location_of_top_fifo="$HOME/desktop/top.fifo"
+location_of_bottom_fifo="$HOME/Base/lemon_bars/bottom.fifo"
+   location_of_top_fifo="$HOME/Base/lemon_bars/top.fifo"
 
 
 # Start basic config
 origin=$(cd -- "$(dirname "$0")" >/dev/null 2>&1 && pwd -P)
-
-# Start bars
-notify-send -i "/usr/share/icons/BeautyLine/apps/scalable/deskbar.svg" "Bar is born :)"
-
 
 # Clean later processes
 killall lemonbar
@@ -71,25 +66,10 @@ rm -rf "$location_of_bottom_fifo" "$location_of_top_fifo"
 mkfifo "$location_of_bottom_fifo" "$location_of_top_fifo"
 exec 3<> "$location_of_bottom_fifo"; exec 3<> "$location_of_top_fifo"
 
+# Sleep for a few seconds to wait for mpd and dwm
+#sleep 3
 
-
-
-
-
-. "$origin/top_bar/_clock"
-. "$origin/top_bar/_sensors"
-
-{
-
-  _clock &
-  _sensors &
-  $origin/top_bar/_song &
-#  $origin/top_bar/_gmail &
-  $origin/top_bar/_power &
-  $origin/top_bar/_task &
-#  $origin/top_bar/_tuxi_temp &
-
-} > "$location_of_top_fifo" &
+. $origin/config
 
 read_top_bar() {
   while read -r line; do
@@ -111,21 +91,17 @@ read_top_bar() {
       M*)
         music="${line#?}";;
 
-      # Gmail
-#      G*)
-#        gmail="${line#?}";;
-      
-      # Tasks
+      # Sound
       T*)
-        task="${line#?}";;
-  
-      # tuxi
-#      W*)
-#        tuxi="${line#?}";;
+        sound="${line#?}";;
+	
+      # Tasks
+      #T*)
+       # task="${line#?}";;
 
     esac
 
-    printf "%s%s%s\n" "$clock  %{F- B-}$sensors%{c}$music%{r}$task$power"
+    printf "%s%s%s\n" "$clock  %{F- B-}$sensors%{c}$music%{r}$sound  $power"
 
   done < "$location_of_top_fifo" 
 }
@@ -159,26 +135,15 @@ read_bottom_bar() {
 }
 
 
-{
-
-  $origin/bottom_bar/_title &
-  $origin/bottom_bar/_layout &
-  $origin/bottom_bar/_memory &
-
-} > "$location_of_bottom_fifo" &
-
-
-
-
-
-
-read_top_bar |    lemonbar -p -g "${width_tbar}x${height_tbar}${offset_ty}${offset_tx}" \
+read_top_bar | lemonbar -p -g "${width_tbar}x${height_tbar}${offset_ty}${offset_tx}" \
   -B "$bg_bar" \
   -F "$fg_bar" \
   -o 0 -f "$normal_font" \
   -o 0 -f "$bold_font" \
   -o 0 -f "$emoji_font:size=10.3" \
-  -o 0 -f "$script_font" &
+	| while read -r line; do
+		[ $(echo "$line" | awk '{print $1}') = 'dash' ] && eval "$line"
+  done &
 
 read_bottom_bar | lemonbar -b -p -g "${width_bbar}x${height_bbar}${offset_by}${offset_bx}" \
   -B "$bg_bar" \
@@ -186,15 +151,40 @@ read_bottom_bar | lemonbar -b -p -g "${width_bbar}x${height_bbar}${offset_by}${o
   -o 0 -f "$normal_font" \
   -o 0 -f "$bold_font" \
   -o 2 -f "$emoji_font:size=11" \
-  -n "bottom_bar"
+  -o 0 -f "$script_font" \
+  -n "bottom_bar" &
 
+# Load information on bars
+{
 
+  . "$origin"/bottom_bar/_title;
+  . "$origin"/bottom_bar/_layout;
+  . "$origin"/bottom_bar/_memory;
+  _get_layout & _get_tags &
+  _get_ram &
 
+  _get_active_window &
 
-# Lemonbar exiting
-#   It will look always for thetop bar, so if it dies
-#   everything dies!
-printf " - It seems that your top bar just died, oh no! We're exiting.\n"
-pkill -KILL "$!"; killall lemonbar; pkill -KILL -f "_gmail.sh"; pkill -KILL -f "bars.sh"; pkill -KILL -f "sleep"; pkill -KILL -f "sleep"
-rm -rf "$location_of_bottom_fifo" "$location_of_top_fifo"
+} > "$location_of_bottom_fifo"
+
+{
+
+  "$origin/"top_bar/_song run &
+  . "$origin/"top_bar/_clock
+  . "$origin/"top_bar/_power
+  . "$origin/"top_bar/_sensors
+  . "$origin/"top_bar/_sound
+  _clock &
+  _sensors &
+  _get_audio
+  _get_power
+
+} > "$location_of_top_fifo"
+
+mpc toggle && mpc toggle
+dwm-msg run_command view 128 && dwm-msg run_command view 1
+
+#   Set Keyboard to Portuguese ABNT 2 (I know it shouldn't be here, but whatever)
+setxkbmap -model abnt2 -layout br -variant abnt2 &
+
 exit 0

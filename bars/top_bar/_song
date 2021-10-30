@@ -9,11 +9,6 @@
 #
 # BeyondMagic  GPL3 LICENSE  2021
 
-
-# This source file will get two functions which are loaded every time you stop MPD
-#   See (https://github.com/BeyondMagic/config/blob/main/Base/status_info)
-#       (https://github.com/BeyondMagic/config/blob/main/Base/colours)
-
 song_format() {
   
                info=$(mpc)
@@ -111,8 +106,8 @@ _run_song() {
 _loop_song() {
   
   while :; do
-    
-    mpc current --wait >/dev/null 2>&1 || exit 1
+
+    mpc current --wait >/dev/null 2>&1 || exec sleep 0
 
     # notify song
     $origin/../mpd/song
@@ -128,6 +123,17 @@ _loop_song() {
 
   done &
 
+}
+
+# This function will kill all the children and subchildren
+_kill_children() {
+
+  pid="$(pgrep -P $$ | tail -n1)"
+  list_pid="$(pgrep -P $pid | tail -n1)" 
+  
+  pkill -P "$pid"
+  pkill -9 -f "mpc current --wait"
+  
 }
 
 # This function is the main one and will get the information of MPD
@@ -149,15 +155,13 @@ _music() {
     #   If paused, then stop loop function
     [ "$song" = "paused" ] && {
 
-      pkill -P "$(pgrep -P $$ | tail -n1)"
-    
-      # save to archive
+     _kill_children 
       echo 'M' "%{F$second_running_song_name} $extra_icon_paused %{F-}"
 
     # if running
     #   If running, then continues the loop function
     } || {
-
+      
       [ "$new_change" = 'mixer' ] && [ "$double_change" = 'mixer' ] && {
 
         #printf "Volume only\n"
@@ -165,7 +169,7 @@ _music() {
 
       } || {
 
-        pkill -P "$(pgrep -P $$ | tail -n1)"
+        _kill_children
         _loop_song
 
       }
@@ -174,15 +178,15 @@ _music() {
 
   done
 
-  echo "- : •́ ◇ •̀ : -"; sleep 5
+  echo 'M' "- : •́ ◇ •̀ : -"; sleep 5
   exec "$origin/top_bar/_song" "$origin"
 
 }
 
 [ "$1" = "run" ] && {
 
-  origin="$(cd -- "$(dirname "$0")" >/dev/null 2>&1 && pwd -P)/../"
-  . "$origin/config/colours"
+  origin="$(cd -- "$(dirname "$0")" >/dev/null 2>&1 && pwd -P)/.."
+  . "$origin/config"
   _music "$origin"
 
 }

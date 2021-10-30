@@ -1,0 +1,41 @@
+#!/usr/bin/env sh
+#
+# Dependencies
+#   Display current volume percentage.
+# 
+# Dependencies:
+#   pamixer
+#
+# BeyondMagic  GPL3 LICENSE  2021
+
+_get_audio() {
+
+          symbol='='
+      multiplier=1
+      min_volume=17
+      max_volume=125
+  current_volume=$(echo "$(pamixer --get-volume) - $min_volume" | bc)
+  
+  progress=$(echo "($current_volume*100/$max_volume*100)/100" | bc)
+
+  # Format Icon
+  [ $progress -ge 50 ] && icon="ﰝ"
+  [ $progress -lt 50 ] && icon="蓼"
+  [ $progress -le 0 ]  && icon="遼"
+  
+  done=$(echo "($progress*$multiplier)/10" | bc)
+  left=$(echo "${multiplier}0-$done" | bc)
+
+  done=$(printf "%${done}s" | sed -r "s/^/%{F$sound_bar_on}/g")
+  left=$(printf "%${left}s" | sed -r "s/^/%{F$sound_bar_off}/g")
+  
+  echo 'T' "%{T3 F$sound_icon_on}$icon $(echo "%{T0}$done$left" | sed "s/ /$symbol/g")"
+ 
+}
+
+[ "$1" = "run" ] && {
+
+  . "$(cd -- "$(dirname "$0")" >/dev/null 2>&1 && pwd -P)/../config"
+  _get_audio 
+
+}

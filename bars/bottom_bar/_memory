@@ -4,16 +4,13 @@
 #   Just get the swap and format it to lemonbar
 #
 # Dependencies
+#   bc
 #   
 # Note
 #   A swap file running in your system, or just disable it
 #   by removing correctly where it contains `swap` names
 #
-# BeyondMagic © 2021
-
-
-. $HOME/desktop/colours "b"
-
+# BeyondMagic  GPL3 LICENSE  2021
 
 _get_ram() {
 
@@ -23,7 +20,7 @@ _get_ram() {
   while :; do
 
     # Destroy last msg variable before looping again
-    unset msg
+    unset msg mem_msg
 
     # Get current memory
     # Get only the used memory in 3rd line
@@ -34,10 +31,8 @@ _get_ram() {
     msg="$msg%{F$mem_barra T3} %{F$mem_colour T2}$mem_msg%{F$mem_barra}%"
 
     echo 'M' "$msg　　%{F- B-} " &
-    sleep 5
+    sleep 1
 
   done
 
 }
-
-_get_ram

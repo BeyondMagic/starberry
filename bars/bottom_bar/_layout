@@ -9,15 +9,18 @@
 #
 # BeyondMagic © 2021
 
-origin=$(cd -- "$(dirname "$0")" >/dev/null 2>&1 && pwd -P); . $HOME/desktop/colours
+#    kill $!
+
+origin="$(echo "$(cd -- "$(dirname "$0")" >/dev/null 2>&1 && pwd -P)" | sed -re 's/\/bottom_bar//g')"
+
 
          icon_selected=" "
 icon_selected_occupied=" "
          icon_unselect=" "
 icon_unselect_occupied=" "
 
-affix=""
-
+   affix=""
+rv_affix=""
 
 
 _get_tags() {
@@ -43,11 +46,7 @@ _get_tags() {
 
     # Change to your notify program, I recommend a lot this though
     # Pretty lightweight!
-    notify-send.sh \
-      -a dwm-tag-change \
-      -u low \
-      -t "$bnotification_time" \
-      -f "$name" &
+    echo "$name" > "$XNOTIFY_FIFO"
 
   }
 
@@ -89,7 +88,7 @@ _get_tags() {
       # Nothing at all
       else
         # Pretty output (with external variables)
-        out="${out}%{F$fg_unselect} $icon_unselect_occupied"
+        out="${out}%{F$fg_unselect_all} $icon_unselect_occupied"
         # Simple output
         # out="${out} -"
 
@@ -98,7 +97,8 @@ _get_tags() {
 
     tag=$((tag+1)); done
 
-
+    #kill $!
+    
     # If the last select is the same as the one right now, then does not print
     # out anything
     [ "$last_selected" = "$selected" ] || {
@@ -113,13 +113,14 @@ _get_tags() {
 
 
     # Pretty output (with external variables)
-    echo 'W' "%{T3 B$bg_tags}$out  %{F- B-}" &
+    echo 'W' "%{T3 B$bg_tags}$out  %{F$bg_tags B-}$rv_affix"
     # Simple output
     # echo 'W' "$out"
 
   done
-
+  
 }
+
 
 
 # Layout of the tag, the symbol that appears can be changed
@@ -135,7 +136,7 @@ _get_layout() {
       # Beautify with colours, I recommend using the later one if
       # you don't have idea where the rest of the colours/variables come
       echo 'L' "%{O-5 B$layout_bg F$layout_fg T1}  " \
-               "$tagid %{F$bg_tags B$layout_bg}$affix%{B$bg_tags F-}" &
+               "$tagid %{F$bg_tags B$layout_bg}$affix%{B$bg_tags F-}"
 
       # Simple output
       # echo 'L' "$tagid"
@@ -146,22 +147,17 @@ _get_layout() {
   # This is necessary because the loop isn't supposed to break,
   # however, it does when dwm is killed or restarted.
   # So this resets it!
-  echo "DWM died, resetting connection in 5 seconds"; sleep 5
+  echo "DWM died, resetting connection in 5 seconds"; sleep 3
 
   # Execute itself and/by killing this
-  exec "$origin/_layout"
+  exec "$origin/bottom_bar/_layout" 'run'
 
 }
 
+[ "$1" = "run" ] && {
 
-# Initilization :)
-_get_layout & _get_tags &
+  . $origin/config
+  _get_layout &
+  _get_tags
 
-# Sleep for some time just to relax
-sleep 4
-
-# Change view to 4th tag
-dwm-msg run_command view 8 &
-
-# Open a st terminal with float :)
-nohup st -t floatst >/dev/null 2>&1 &
+}

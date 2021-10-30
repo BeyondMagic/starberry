@@ -24,7 +24,7 @@
 #
 # BeyondMagic © 2021
 
-quotes_path="$HOME/github/quotes.json"
+quotes_path="$HOME/git/quotes.json"
 
 
 length_file=$(jq length "$quotes_path")

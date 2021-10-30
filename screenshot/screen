@@ -1,12 +1,12 @@
 #!/usr/bin/env sh
 #
-# This takes a screenshot using imagemagic and puts unclutter back to its state
+# This takes a screenshot using Imagemagick and puts unclutter back to its state.
 #
 # BeyondMagic © 2021
 
 killall unclutter
-ps aux | grep -q "xclip -selection clipboard -t image/png"
 import png:- | xclip -selection clipboard -t image/png
-notify-send -i "/usr/share/icons/BeautyLine/actions/scalable/editimage.svg" "Partial screenshot was copied to clipboard." &
+xclip -selection clipboard -t image/png -o > "/tmp/last_shot.png"
+notify-send.sh -i "/tmp/last_shot.png" "Partial screenshot was copied to clipboard." &
 nohup unclutter --timeout 1 >/dev/null 2>&1 &
 exit

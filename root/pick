@@ -17,7 +17,7 @@ stdbuf -i0 -o0 -e0 colorpicker --short --one-shot | while IFS=$'\n' read -r id_c
 
   printf "$id_colour" | xclip -sel c &
   convert -size 50x50 xc:"$id_colour" /tmp/colour.png
-  notify-send -i "/tmp/colour.png" "'$id_colour' was copied to your clipboard."
+  notify-send.sh -i "/tmp/colour.png" "'$id_colour'" "Was copied to your clipboard."
 
   exit
 

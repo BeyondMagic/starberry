@@ -18,15 +18,10 @@
 #     dwm-msg
 #   recode
 #
-# BeyondMagic © 2021
+# BeyondMagic  GPL3 LICENSE  2021
 
-  affix=""
-
-. $HOME/desktop/colours "b"
-
-
-origin=$(cd -- "$(dirname "$0")" >/dev/null 2>&1 && pwd -P)
-
+# origin=$(cd -- "$(dirname "$0")" >/dev/null 2>&1 && pwd -P)
+origin="$(echo "$(cd -- "$(dirname "$0")" >/dev/null 2>&1 && pwd -P)" | sed -re 's/\/bottom_bar//g')"
 
 # Format a Process name based on ID
 #   Note: it's ID, not PID
@@ -57,7 +52,7 @@ format_active_window() {
     ;;
 
   # Firefox-Developer-Edition
-  firefox)
+  GeckoMain)
 
     icon=""
     total=$(echo "$total" | sed -r 's/(\[Sidebery\] )|( — Firefox.*)//g' | recode html..ISO-8859-1)
@@ -69,8 +64,8 @@ format_active_window() {
     icon=""
     ;;
 
-  # sxiv
-  sxiv)
+  # nsxiv
+  nsxiv)
     
     icon=""
     ;;
@@ -119,32 +114,38 @@ format_active_window() {
     # If there's no icon, then just prints out the name
   [ ! -n "$icon" ] && icon="$name" || icon="%{T3}$icon"
 
-  echo 'T' "%{F$title_icon_fg}  $icon %{T2 F$title_name_fg}$total  %{T1 F-}" &
+  echo 'T' "%{F$title_icon_fg B$bg_bar}  $icon %{T2 F$title_name_fg}$total  %{T1 F-}"
 
 }
 
-get_active_window() {
+_get_active_window() {
 
-  format_active_window "$(xdotool getwindowfocus)"
+  echo 'T' 'Hello there!'
 
   dwm-msg --ignore-reply subscribe focused_title_change_event client_focus_change_event |
     grep --line-buffered -oP '((?<=new_win_id": ).*)|((?<=client_window_id": )\d*)' |
     while IFS=$'\n' read -r winid; do
       [ $winid = "null" ] && {
 
-        echo 'T' &
+        echo 'T'
 
       } || {
 
-        format_active_window "$winid" &
+        format_active_window "$winid"
 
       }
     done
 
-  echo "DWM died, resetting connection in 5 seconds"; sleep 5
+  echo "DWM died, resetting connection in 3 seconds"; sleep 3
 
-  exec "$origin/_title"
+	#pkill -f "sh /home/magic/github/scripts/bars/bottom_bar/_title"
+  exec "$origin/bottom_bar/_title" 'run'
 
 }
 
-get_active_window
+[ "$1" = "run" ] && {
+
+  . $origin/config
+  _get_active_window
+
+}
