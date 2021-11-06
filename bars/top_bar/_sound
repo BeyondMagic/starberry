@@ -29,7 +29,7 @@ _get_audio() {
   done=$(printf "%${done}s" | sed -r "s/^/%{F$sound_bar_on}/g")
   left=$(printf "%${left}s" | sed -r "s/^/%{F$sound_bar_off}/g")
   
-  echo 'T' "%{T3 F$sound_icon_on}$icon $(echo "%{T0}$done$left" | sed "s/ /$symbol/g")"
+  echo 'T' "%{T3}%{F$sound_icon_on}$icon $(echo "%{T0}$done$left" | sed "s/ /$symbol/g")"
  
 }
 

@@ -63,8 +63,6 @@ song_format() {
   song_length=${#song}
   perc_chr=$(awk -v n="$song_length" -v m="$perc" 'BEGIN{ print int( n*(m/100)) }')
 
-  #echo lol; exit
-
   printf "$start_st$(expr substr "$song" 1 $perc_chr)$middle_st$(expr substr "$song" $(($perc_chr + 1)) $song_length)" &
     
 }
@@ -95,7 +93,7 @@ _run_song() {
 
   [ "$after" ] && after="$(echo "$after" | cut -c -$song_limit)..."
 
-  echo 'M' "%{T4 F$neighbors_fg}$before  %{T2 F$first_running_song_name}$song  %{T4 F$neighbors_fg}$after%{T1 F-}" &
+  echo 'M' "%{T1}%{F$neighbors_fg}$before  %{T2}%{F$first_running_song_name}$song  %{T1}%{F$neighbors_fg}$after%{F-}" &
 
 }
 

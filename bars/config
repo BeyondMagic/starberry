@@ -41,9 +41,9 @@ swap_colour="#333333"; swap_barra="#000000"; swap_icon_colour="#444444"
 #--------------------------------------------------------------------------------
 
 # Sound bar
-sound_icon_on="#7889f8"
+sound_icon_on="#ffffff"
 sound_icon_off="#525659"
-sound_bar_on="#7889f8"
+sound_bar_on="#ffffff"
 sound_bar_off="#392d4d"
 
 

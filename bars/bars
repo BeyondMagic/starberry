@@ -22,11 +22,11 @@
 #   dash
 #   xorg
 #   xdotools
-#   lemonbar-xft (or forks that have fontconfig)
+#   lemonbar (or forks that have fontconfig)
 #   tuxi
 #   sensors
 #   lm_sensors ; sensors
-#   libnotify ; notify-send
+#   notify-send.sh
 #   mpd
 #     mpc
 #   dwm
@@ -46,16 +46,16 @@ height_bbar="19"; width_bbar="1400"; offset_by="+20"; offset_bx="+10"
 normal_font="Noto Sans CJK JP Medium:antialias=true:size=10" # 1
   bold_font="Noto Sans CJK JP Black:antialias=true:size=10"  # 2
  emoji_font="NotoEmoji Nerd Font:antialias=true"             # 3
-script_font="Fira Code:pixelsize=12.25:antialias=true"  # 4
+#script_font="Fira Code:pixelsize=12.25:antialias=true"       # 4
 
 # Constants of places
 #   :)
-location_of_bottom_fifo="$HOME/Base/lemon_bars/bottom.fifo"
-   location_of_top_fifo="$HOME/Base/lemon_bars/top.fifo"
+location_of_bottom_fifo="/tmp/bottom.fifo"
+   location_of_top_fifo="/tmp/top.fifo"
 
 
 # Start basic config
-origin=$(cd -- "$(dirname "$0")" >/dev/null 2>&1 && pwd -P)
+origin="$(cd -- "$(dirname "$0")" >/dev/null 2>&1 && pwd -P)"
 
 # Clean later processes
 killall lemonbar
@@ -101,7 +101,7 @@ read_top_bar() {
 
     esac
 
-    printf "%s%s%s\n" "$clock  %{F- B-}$sensors%{c}$music%{r}$sound  $power"
+    printf "%s%s%s\n" "$clock  %{F-}%{B-}$sensors%{c}$music%{r}$sound  $power"
 
   done < "$location_of_top_fifo" 
 }
@@ -129,29 +129,28 @@ read_bottom_bar() {
 
     esac
 
-    printf "%s%s%s\n" "$layouts%{T3}$tags%{T1 c}$title%{r}$memory$nickname"
+    printf "%s%s%s\n" "$layouts%{T3}$tags%{T1}%{c}$title%{r}$memory$nickname"
 
    done < "$location_of_bottom_fifo"  
 }
 
 
-read_top_bar | lemonbar -p -g "${width_tbar}x${height_tbar}${offset_ty}${offset_tx}" \
+read_top_bar | lemonbar -H -p -g "${width_tbar}x${height_tbar}${offset_ty}${offset_tx}" \
   -B "$bg_bar" \
   -F "$fg_bar" \
   -o 0 -f "$normal_font" \
   -o 0 -f "$bold_font" \
-  -o 0 -f "$emoji_font:size=10.3" \
+  -o 1 -f "$emoji_font:size=10.3" \
 	| while read -r line; do
 		[ $(echo "$line" | awk '{print $1}') = 'dash' ] && eval "$line"
   done &
 
-read_bottom_bar | lemonbar -b -p -g "${width_bbar}x${height_bbar}${offset_by}${offset_bx}" \
+read_bottom_bar | lemonbar -H -b -p -g "${width_bbar}x${height_bbar}${offset_by}${offset_bx}" \
   -B "$bg_bar" \
   -F "$fg_bar" \
   -o 0 -f "$normal_font" \
   -o 0 -f "$bold_font" \
-  -o 2 -f "$emoji_font:size=11" \
-  -o 0 -f "$script_font" \
+  -o 1 -f "$emoji_font:size=10.5" \
   -n "bottom_bar" &
 
 # Load information on bars
@@ -183,8 +182,5 @@ read_bottom_bar | lemonbar -b -p -g "${width_bbar}x${height_bbar}${offset_by}${o
 
 mpc toggle && mpc toggle
 dwm-msg run_command view 128 && dwm-msg run_command view 1
-
-#   Set Keyboard to Portuguese ABNT 2 (I know it shouldn't be here, but whatever)
-setxkbmap -model abnt2 -layout br -variant abnt2 &
 
 exit 0
