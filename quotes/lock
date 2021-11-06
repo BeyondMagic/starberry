@@ -26,7 +26,7 @@
 
 unset use
 
-quotes_path="$HOME/git/quotes.json"
+quotes_path="$HOME/git/startpage/data/quotes.json"
 
 length_file=$(jq length "$quotes_path")
 random_numb=$(shuf -i 0-$((length_file - 1)) -n 1)

@@ -37,7 +37,7 @@
 # BeyondMagic © 2021
 
 
-quotes_path="$HOME/git/quotes.json"
+quotes_path="$HOME/git/startpage/data/quotes.json"
       quote=$(printf "$1" | awk 1 ORS='\\\\n' | head -c -2 )
 
 
