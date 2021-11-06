@@ -1,0 +1,61 @@
+#!/usr/bin/env sh
+#
+# Description
+#   Simple recording tool with ffmpeg.
+#
+# Dependencies
+#   ffmpeg
+#   notify-send.sh
+#   pkill (coreutils)
+#
+# BeyondMagic © 2021
+
+
+
+SIZE_MONITOR="1440x900"
+FRAME_RATE="30"
+
+PATH_RECORDINGS="$HOME/.cache/ffmpeg"
+FORMAT_FILE="mkv"
+NAME_FILE="$PATH_RECORDINGS/record_fullscreen_$(date +'%a_%b_%d_%H:%M:%S').$FORMAT_FILE"
+
+FIFO_BAR="/tmp/bottom.fifo"
+IS_RECORDING="/tmp/is_recording"
+ICON_CAMERA="$HOME/Base/icons/camera.png"
+
+mkdir -p "$PATH_RECORDINGS"
+
+
+
+# Send a sign of recording to lemonbar so that you know it is being recorded.
+# echo 'R' 'IS RECORDING!!!' > "$FIFO_BAR"
+
+[ -f "$IS_RECORDING" ] || {
+
+  touch "$IS_RECORDING"
+
+  ffmpeg -f alsa -ac 1 -i pulse \
+         -f x11grab -r "$FRAME_RATE" -s "$SIZE_MONITOR" -i :0.0 \
+         -acodec pcm_s16le \
+         -vcodec libx264 -preset ultrafast -crf 0 \
+         -threads 0 \
+         "$NAME_FILE"
+
+  open_gtk="$(dunstify -i "$ICON_CAMERA" "Full recording was saved to '~/.cache/ffmpeg'." \
+    -A "default,nothing")"
+  
+  [ "$open_gtk" = "default" ] && {
+    nohup gtk-launch "$(xdg-mime query default inode/directory)" $NAME_FILE >/dev/null 2>&1 &
+  }
+
+  rm -rf "$IS_RECORDING"
+
+} && {
+
+  # Send signal to ffmpeg recorder
+  pkill -INT -f "ffmpeg -f alsa -ac 1 -i pulse -f x11grab -r 30 -s "
+
+  # Send a sign of recording to lemonbar so that you know it is not being recorded.
+  # echo 'R' '' > "$FIFO_BAR"
+
+}
