@@ -15,7 +15,7 @@ change_this_theme='moon'
 [ "$change_this_theme" = "moon" ] && {
 #--------------------------------------------------------------------------------
 
-nickname="iris %{T3 F#7EABF8}%{T2 F#FFFFFF} arcoiris  "
+nickname="iris %{T3}%{F#7EABF8}%{T2}%{F#FFFFFF} arcoiris  "
 bg_bar="#990A0C11"; fg_bar="#ffffff"
 
 
@@ -79,7 +79,7 @@ task_fg_icon="#243F76"
 #--------------------------------------------------------------------------------
 }; [ "$change_this_theme" = "suun" ] && {
 
-nickname="iris %{T3 F#D59FB1}%{T2 F-} arcoiris  "
+nickname="iris %{T3}%{F#D59FB1}%{T2}%{F-} arcoiris  "
 bg_bar="#99f0f0f0"; fg_bar="#1b1b1b"
 
 # Tags : Left
