@@ -8,34 +8,42 @@
 #
 # BeyondMagic  GPL3 LICENSE  2021
 
+origin="$(cd -- "$(dirname "$0")" >/dev/null 2>&1 && pwd -P)"
+
 _get_audio() {
 
-          symbol='='
+          symbol='─'
       multiplier=1
       min_volume=17
       max_volume=125
   current_volume=$(echo "$(pamixer --get-volume) - $min_volume" | bc)
+
+  [ "$current_volume" -gt "$max_volume" ] || [ "$current_volume" -lt 0 ] && exit
   
   progress=$(echo "($current_volume*100/$max_volume*100)/100" | bc)
-
+  
   # Format Icon
-  [ $progress -ge 50 ] && icon="ﰝ"
-  [ $progress -lt 50 ] && icon="蓼"
-  [ $progress -le 0 ]  && icon="遼"
+  [ $progress -ge 50 ] && icon=""
+  [ $progress -lt 50 ] && icon=""
+  [ $progress -le 0 ]  && icon=""
   
   done=$(echo "($progress*$multiplier)/10" | bc)
   left=$(echo "${multiplier}0-$done" | bc)
 
   done=$(printf "%${done}s" | sed -r "s/^/%{F$sound_bar_on}/g")
   left=$(printf "%${left}s" | sed -r "s/^/%{F$sound_bar_off}/g")
+
+  increase_volume="%{A4:execute dash $HOME/git/scripts/pulseaudio/set_volume increase:}"
+  decrease_volume="%{A5:execute dash $HOME/git/scripts/pulseaudio/set_volume:}"
+  click_icon="%{A1:execute pavucontrol:}"
   
-  echo 'T' "%{T3}%{F$sound_icon_on}$icon $(echo "%{T0}$done$left" | sed "s/ /$symbol/g")"
+  echo 'T' "%{T4}%{F$sound_icon_on}$click_icon$icon%{A1}  $decrease_volume$increase_volume$(echo "%{T3}$done%{T4}%{O-4}%{T3}%{O-}$left" | sed "s/ /$symbol/g")%{A4}%{A5}"
  
 }
 
 [ "$1" = "run" ] && {
 
-  . "$(cd -- "$(dirname "$0")" >/dev/null 2>&1 && pwd -P)/../config"
+  . "$origin"/../config
   _get_audio 
 
 }

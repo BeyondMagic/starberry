@@ -17,7 +17,9 @@
 _get_power() {
   
   icon=" "; affix=""
-  echo 'P' "%{A6:dash $HOME/git/scripts/bars/top_bar/power/__power:}%{F$power_bg}%{B-}$affix%{F$power_fg}%{B$power_bg} $icon  %{A6}"
+  hover_block="%{A1:execute dash $HOME/git/scripts/bars/top_bar/power/__power:}"
+  
+  echo 'P' "$hover_block%{F$power_bg}%{B-}$affix%{F$power_fg}%{B$power_bg} $icon  %{A1}"
 }
 
 

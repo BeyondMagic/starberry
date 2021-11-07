@@ -5,7 +5,11 @@
 #
 # BeyondMagic  GPL3 LICENSE  2021
 
-option=$(echo "Power: Turn off.\nRestart: Quick restart.\nSleep: I'm an ice bear in the summer." \
+option=$(echo "Power: Turn off." \
+  "\nRestart: Quick restart." \
+  "\nSleep: I'm an ice bear in the summer." \
+  "\n-------------------------------------" \
+  "\ndwm: Restart dwm instance." \
 	| 91menu -g 0x0+1195+40 \
 	| sed -r 's/:.+//')
 
@@ -29,6 +33,11 @@ case $option in
 
 	;;
 
+  dwm)
+
+		pkill -1 dwm
+
+	;;
 
 
 esac

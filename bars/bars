@@ -14,10 +14,6 @@
 #   It's recommended to use dash to run this (link sh to dash),
 #     since it will be way faster
 #
-# TODO
-#   Add clickable commands
-#     I don't have idea yet on what to run
-#
 # Dependencies
 #   dash
 #   xorg
@@ -36,6 +32,10 @@
 # BeyondMagic © 2021
 
 
+
+
+
+
 # Config of Bars
 #   Geometry
 height_tbar="19"; width_tbar="1400"; offset_ty="+20"; offset_tx="+10"
@@ -43,15 +43,23 @@ height_bbar="19"; width_bbar="1400"; offset_by="+20"; offset_bx="+10"
 
 # Constants of Fonts
 #   Each font is beautifully chosen :)
-normal_font="Noto Sans CJK JP Medium:antialias=true:size=10" # 1
-  bold_font="Noto Sans CJK JP Black:antialias=true:size=10"  # 2
- emoji_font="NotoEmoji Nerd Font:antialias=true"             # 3
-#script_font="Fira Code:pixelsize=12.25:antialias=true"       # 4
+  normal_font="Noto Sans CJK JP Medium:antialias=true:size=10"
+    bold_font="Noto Sans CJK JP Black:style=Black,Regular:antialias=true:size=10"
+   emoji_font="NotoEmoji Nerd Font:antialias=true"
+material_font="Material\-Design\-Iconic\-Font:style=Design-Iconic-Font:antialias=true:size=12"
 
-# Constants of places
-#   :)
+# Constants of fifos to transfer information of functions
 location_of_bottom_fifo="/tmp/bottom.fifo"
    location_of_top_fifo="/tmp/top.fifo"
+
+
+
+
+
+
+
+
+
 
 
 # Start basic config
@@ -70,6 +78,17 @@ exec 3<> "$location_of_bottom_fifo"; exec 3<> "$location_of_top_fifo"
 #sleep 3
 
 . $origin/config
+
+
+
+
+
+
+
+
+
+
+
 
 read_top_bar() {
   while read -r line; do
@@ -135,14 +154,25 @@ read_bottom_bar() {
 }
 
 
+
+
+
+
+
+
+
 read_top_bar | lemonbar -H -p -g "${width_tbar}x${height_tbar}${offset_ty}${offset_tx}" \
   -B "$bg_bar" \
   -F "$fg_bar" \
   -o 0 -f "$normal_font" \
   -o 0 -f "$bold_font" \
   -o 1 -f "$emoji_font:size=10.3" \
+  -o 0 -f "$material_font" \
 	| while read -r line; do
-		[ $(echo "$line" | awk '{print $1}') = 'dash' ] && eval "$line"
+    [ $(echo "$line" | awk '{print $1}') = 'execute' ] && {
+      line="$(echo "$line" | sed -r 's/^execute //')"
+      eval "$line"
+    }
   done &
 
 read_bottom_bar | lemonbar -H -b -p -g "${width_bbar}x${height_bbar}${offset_by}${offset_bx}" \
@@ -150,8 +180,13 @@ read_bottom_bar | lemonbar -H -b -p -g "${width_bbar}x${height_bbar}${offset_by}
   -F "$fg_bar" \
   -o 0 -f "$normal_font" \
   -o 0 -f "$bold_font" \
-  -o 1 -f "$emoji_font:size=10.5" \
+  -o 1 -f "$emoji_font:size=10.3" \
+  -o -3 -f "$material_font" \
   -n "bottom_bar" &
+
+
+
+
 
 # Load information on bars
 {
@@ -161,7 +196,6 @@ read_bottom_bar | lemonbar -H -b -p -g "${width_bbar}x${height_bbar}${offset_by}
   . "$origin"/bottom_bar/_memory;
   _get_layout & _get_tags &
   _get_ram &
-
   _get_active_window &
 
 } > "$location_of_bottom_fifo"
@@ -179,6 +213,13 @@ read_bottom_bar | lemonbar -H -b -p -g "${width_bbar}x${height_bbar}${offset_by}
   _get_power
 
 } > "$location_of_top_fifo"
+
+
+
+
+
+
+
 
 mpc toggle && mpc toggle
 dwm-msg run_command view 128 && dwm-msg run_command view 1
