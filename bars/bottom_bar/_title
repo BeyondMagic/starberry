@@ -106,9 +106,6 @@ format_active_window() {
   
   esac
 
-  
-  #  julia
-
     # Reduce length if it's bigger than 40 characters
   [ "${#total}" -gt "60" ] && total="$(echo "$total" | cut -c -60)..."
     # If there's no icon, then just prints out the name

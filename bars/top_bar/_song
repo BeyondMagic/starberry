@@ -177,7 +177,7 @@ _music() {
   done
 
   echo 'M' "- : •́ ◇ •̀ : -"; sleep 5
-  exec "$origin/top_bar/_song" "$origin"
+  exec "/home/iris/git/scripts/bars"/top_bar/_song "/home/iris/git/scripts/bars"
 
 }
 

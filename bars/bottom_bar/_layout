@@ -48,6 +48,9 @@ _get_tags() {
     # Pretty lightweight!
     echo "$name" > "$XNOTIFY_FIFO"
 
+    # Save image to preview later with nsxiv
+    scrot -q 50 -o /tmp/"$name".jpg
+    
   }
 
 
