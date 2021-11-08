@@ -11,13 +11,14 @@
 option=$(echo \
 	"st: Open Simple Terminal." \
 	"\nst-float: Open Simple Terminal in floating mode." \
-	"\ndwm: Quick restart of dwm." \
 	"\nfox: Open browser." \
 	"\ntelegram: Open Telegram Desktop." \
 	"\nrandom wallpaper: Random wallpaper." \
 	"\nprevious wallpaper: Select previous wallpaper." \
 	"\ndelete wallpaper: Delete current wallpaper." \
 	| 91menu | sed -r 's/:.+//')
+
+origin="$(cd -- "$(dirname "$0")" >/dev/null 2>&1 && pwd -P)"
 
 case "$option" in
 
@@ -29,13 +30,7 @@ case "$option" in
 
 	st-float)
 
-		nohup $HOME/git/scripts/terminal/st >/dev/null 2>&1 &
-
-	;;
-
-	dwm)
-
-		pkill -1 dwm
+		nohup $HOME/git/scripts/terminal/st_float >/dev/null 2>&1 &
 
 	;;
 
