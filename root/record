@@ -11,6 +11,21 @@
 # BeyondMagic © 2021
 
 
+
+IS_RECORDING="/tmp/is_recording"
+FIFO_BAR="/tmp/bottom.fifo"
+
+[ -f "$IS_RECORDING" ] && {
+
+  # Send signal to ffmpeg recorder
+  pkill -INT -f "ffmpeg -f alsa -ac 1 -i pulse -f x11grab -r 30 -s "
+
+  exit
+
+}
+
+
+
 SLOP_ARGS="$(slop -f "%w %h %x %y" | tr ' ' '\n')"
 
 [ "$(echo "$SLOP_ARGS" | wc -l)" = 4 ] || exit 0
@@ -23,21 +38,22 @@ PATH_RECORDINGS="$HOME/.cache/ffmpeg"
 FORMAT_FILE="mkv"
 NAME_FILE="$PATH_RECORDINGS/record_$(date +'%a_%b_%d_%H:%M:%S').$FORMAT_FILE"
 
-FIFO_BAR="/tmp/bottom.fifo"
-IS_RECORDING="/tmp/is_recording"
 ICON_CAMERA="$HOME/Base/icons/camera.png"
 
 mkdir -p "$PATH_RECORDINGS"
 
 
 
-# Send a sign of recording to lemonbar so that you know it is being recorded.
-# echo 'R' 'IS RECORDING!!!' > "$FIFO_BAR"
 
 [ -f "$IS_RECORDING" ] || {
 
+  # Create a file to verify if there is recording when this script is executed again
   touch "$IS_RECORDING"
 
+  # Send a sign of recording to lemonbar so that you know it is being recorded.
+  "$SCRIPTS_FOLDER/bars/bottom_bar/_recording" "$FIFO_BAR"
+
+  # Start recording
   ffmpeg -f alsa -ac 1 -i pulse \
          -f x11grab -r "$FRAME_RATE" -s "$SIZE" -i :0.0+"$POSITION" \
          -acodec pcm_s16le \
@@ -45,21 +61,18 @@ mkdir -p "$PATH_RECORDINGS"
          -threads 0 \
          "$NAME_FILE"
 
+  # Send a sign of recording to lemonbar so that you know it is not
+  # being recorded anymore.
+  echo 'R' '' > "$FIFO_BAR"
+
+  # Remove the file since it stopped recording and there's no need to reverify it
+  rm -rf "$IS_RECORDING"
+  
   open_gtk="$(dunstify -i "$ICON_CAMERA" "Full recording was saved to '~/.cache/ffmpeg'." \
     -A "default,nothing")"
   
   [ "$open_gtk" = "default" ] && {
     nohup gtk-launch "$(xdg-mime query default inode/directory)" $NAME_FILE >/dev/null 2>&1 &
   }
-
-  rm -rf "$IS_RECORDING"
-
-} && {
-
-  # Send signal to ffmpeg recorder
-  pkill -INT -f "ffmpeg -f alsa -ac 1 -i pulse -f x11grab -r 30 -s "
-
-  # Send a sign of recording to lemonbar so that you know it is not being recorded.
-  # echo 'R' '' > "$FIFO_BAR"
 
 }

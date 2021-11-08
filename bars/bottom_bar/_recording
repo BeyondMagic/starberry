@@ -1,0 +1,29 @@
+#!/usr/bin/env sh
+#
+# Description
+#   Just get the swap and format it to lemonbar
+#
+# Dependencies
+#   bc
+#   
+# Note
+#   A swap file running in your system, or just disable it
+#   by removing correctly where it contains `swap` names
+#
+# BeyondMagic  GPL3 LICENSE  2021
+
+
+[ "$1" = "open_menu" ] && {
+
+  notify-send.sh "$1"
+  exit
+
+}
+
+icon=""
+
+first_click="%{A1:execute dash $SCRIPTS_FOLDER/bars/bottom_bar/_recording open_menu:}"
+middle_click="%{A2:execute dash $SCRIPTS_FOLDER/root/record:}"
+
+# $1 is being used here as the fifo of the bar
+echo 'R' "%{T3}$first_click$middle_click$icon%{A1}%{A2}%{T2}　" > "$1"

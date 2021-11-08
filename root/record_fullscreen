@@ -32,14 +32,26 @@ mkdir -p "$PATH_RECORDINGS"
 
 [ -f "$IS_RECORDING" ] || {
 
+  # Create a file to verify if there is recording when this script is executed again
   touch "$IS_RECORDING"
 
+  # Send a sign of recording to lemonbar so that you know it is being recorded.
+  "$SCRIPTS_FOLDER/bars/bottom_bar/_recording" "$FIFO_BAR"
+
+  # Start recording
   ffmpeg -f alsa -ac 1 -i pulse \
          -f x11grab -r "$FRAME_RATE" -s "$SIZE_MONITOR" -i :0.0 \
          -acodec pcm_s16le \
          -vcodec libx264 -preset ultrafast -crf 0 \
          -threads 0 \
          "$NAME_FILE"
+
+  # Send a sign of recording to lemonbar so that you know it is not
+  # being recorded anymore.
+  echo 'R' '' > "$FIFO_BAR"
+
+  # Remove the file since it stopped recording and there's no need to reverify it
+  rm -rf "$IS_RECORDING"
 
   open_gtk="$(dunstify -i "$ICON_CAMERA" "Full recording was saved to '~/.cache/ffmpeg'." \
     -A "default,nothing")"
@@ -48,14 +60,11 @@ mkdir -p "$PATH_RECORDINGS"
     nohup gtk-launch "$(xdg-mime query default inode/directory)" $NAME_FILE >/dev/null 2>&1 &
   }
 
-  rm -rf "$IS_RECORDING"
-
 } && {
 
   # Send signal to ffmpeg recorder
   pkill -INT -f "ffmpeg -f alsa -ac 1 -i pulse -f x11grab -r 30 -s "
 
-  # Send a sign of recording to lemonbar so that you know it is not being recorded.
-  # echo 'R' '' > "$FIFO_BAR"
+  exit
 
 }

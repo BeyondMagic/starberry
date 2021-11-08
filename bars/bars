@@ -146,9 +146,13 @@ read_bottom_bar() {
       M*)
         memory="${line#?}";;
 
+      # Record/Utilities
+      R*)
+        record="${line#?}";;
+
     esac
 
-    printf "%s%s%s\n" "$layouts%{T3}$tags%{T1}%{c}$title%{r}$memory$nickname"
+    printf "%s%s%s\n" "$layouts%{T3}$tags%{T1}%{c}$title%{r}$record$memory$nickname"
 
    done < "$location_of_bottom_fifo"  
 }
@@ -182,7 +186,13 @@ read_bottom_bar | lemonbar -H -b -p -g "${width_bbar}x${height_bbar}${offset_by}
   -o 0 -f "$bold_font" \
   -o 1 -f "$emoji_font:size=10.3" \
   -o -3 -f "$material_font" \
-  -n "bottom_bar" &
+  -n "bottom_bar" \
+  | while read -r line; do
+    [ $(echo "$line" | awk '{print $1}') = 'execute' ] && {
+      line="$(echo "$line" | sed -r 's/^execute //')"
+      eval "$line"
+    }
+  done &
 
 
 
@@ -203,13 +213,12 @@ read_bottom_bar | lemonbar -H -b -p -g "${width_bbar}x${height_bbar}${offset_by}
 {
 
   "$origin/"top_bar/_song run &
+  "$origin/"top_bar/_sound run &
   . "$origin/"top_bar/_clock
   . "$origin/"top_bar/_power
   . "$origin/"top_bar/_sensors
-  . "$origin/"top_bar/_sound
   _clock &
   _sensors &
-  _get_audio
   _get_power
 
 } > "$location_of_top_fifo"
