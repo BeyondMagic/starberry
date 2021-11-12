@@ -53,7 +53,7 @@ _clock() {
 
 [ "$1" = "run" ] && {
 
-  . "$(cd -- "$(dirname "$0")" >/dev/null 2>&1 && pwd -P)/../config"
+  . "$SCRIPTS_FOLDER"/bars/config
   _clock 
 
 }

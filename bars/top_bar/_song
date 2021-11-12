@@ -87,7 +87,7 @@ _run_song() {
 	[ "$(echo "$playlist" | head -n1)" = "$current" ] && before="" || {
 
     # Reduce length if it's bigger than 40 characters
-    [ ${#before} -gt $song_limit ] && before="$(echo "$before" | cut -c -$song_limit)..."
+    [ "${#before}" -gt "$song_limit" ] && before="$(echo "$before" | cut -c -$song_limit)..."
 
   }
 
@@ -108,7 +108,7 @@ _loop_song() {
     mpc current --wait >/dev/null 2>&1 || exec sleep 0
 
     # notify song
-    $origin/../mpd/song
+    "$SCRIPTS_FOLDER"/mpd/song
 
     _run_song
 
@@ -140,8 +140,6 @@ _kill_children() {
 #   however you need to edit the source code... which I'm
 #   not with the will to do.
 _music() {
-  
-  [ "$1" ] && origin="$1"
 
   mpc idleloop | \
     while IFS=$'\n' read -r new_change && read -r double_change; do
@@ -176,15 +174,16 @@ _music() {
 
   done
 
+  # In case MPD dies
   echo 'M' "- : •́ ◇ •̀ : -"; sleep 5
-  exec "/home/iris/git/scripts/bars"/top_bar/_song "/home/iris/git/scripts/bars"
+  _kill_children
+  exec "$SCRIPTS_FOLDER"/bars/top_bar/_song "run"
 
 }
 
 [ "$1" = "run" ] && {
 
-  origin="$(cd -- "$(dirname "$0")" >/dev/null 2>&1 && pwd -P)"/..
-  . "$origin"/config
-  _music "$origin"
+  . "$SCRIPTS_FOLDER"/bars/config
+  _music
 
 }

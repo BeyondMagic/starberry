@@ -8,8 +8,6 @@
 #
 # BeyondMagic  GPL3 LICENSE  2021
 
-origin="$(cd -- "$(dirname "$0")" >/dev/null 2>&1 && pwd -P)"
-
 _get_audio() {
 
           symbol='─'
@@ -43,7 +41,7 @@ _get_audio() {
 
 [ "$1" = "run" ] && {
 
-  . "/home/iris/git/scripts/bars"/config
+  . "$SCRIPTS_FOLDER"/bars/config
   _get_audio 
 
 }

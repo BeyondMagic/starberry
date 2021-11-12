@@ -11,9 +11,6 @@
 
 #    kill $!
 
-origin="$(echo "$(cd -- "$(dirname "$0")" >/dev/null 2>&1 && pwd -P)" | sed -re 's/\/bottom_bar//g')"
-
-
          icon_selected=" "
 icon_selected_occupied=" "
          icon_unselect=" "
@@ -32,16 +29,16 @@ _get_tags() {
   get_name_of_tag() {
 
     case $1 in
-      1)   name='Fox tail'        ;; 
-      2)   name='Simple Anything' ;; 
-      4)   name='Simple Terminal' ;; 
-      8)   name='Simple Neovim'   ;; 
-      16)  name='Simple ZShell'   ;; 
-      32)  name='Binoculus'       ;;
-      64)  name='Popcorn'         ;;
-      128) name='Breakdance'      ;;
-      256) name='Friends'         ;;
-      511) name='Everything'      ;; 
+      1)   name="$name0" ;;
+      2)   name="$name1" ;;
+      4)   name="$name2" ;;
+      8)   name="$name3" ;;
+      16)  name="$name4" ;;
+      32)  name="$name5" ;;
+      64)  name="$name6" ;;
+      128) name="$name7" ;;
+      256) name="$name8" ;;
+      511) name="$name9" ;;
     esac
 
     # Change to your notify program, I recommend a lot this though
@@ -49,7 +46,10 @@ _get_tags() {
     echo "$name" > "$XNOTIFY_FIFO"
 
     # Save image to preview later with nsxiv
-    scrot -q 50 -o /tmp/"$name".jpg
+    {
+      sleep 0.125
+      scrot -q 50 -o /tmp/"$name".jpg
+    } &
     
   }
 
@@ -153,13 +153,13 @@ _get_layout() {
   echo "DWM died, resetting connection in 5 seconds"; sleep 3
 
   # Execute itself and/by killing this
-  exec "$origin/bottom_bar/_layout" 'run'
+  exec "$SCRIPTS_FOLDER/bars/bottom_bar/_layout" 'run'
 
 }
 
 [ "$1" = "run" ] && {
 
-  . $origin/config
+  . "$SCRIPTS_FOLDER"/bars/config
   _get_layout &
   _get_tags
 

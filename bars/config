@@ -1,159 +1,91 @@
 #!/usr/bin/env sh
 #
 # Description
-#   Colours for my system scripts¹.
+#   Colours for the lemonbars.
 #
 # Notes
 #   1: https://github.com/BeyondMagic/scripts
 #
-# by BeyondMagic - 2021
+# © by BeyondMagic - 2021
 
-change_this_theme='moon'
 
-#--------------------------------------------------------------------------------
-# Colours for lemonbar : bottom bar Black
-[ "$change_this_theme" = "moon" ] && {
-#--------------------------------------------------------------------------------
+# Whole bar
+bg_bar="$(xgetres bars.bg)"
+fg_bar="$(xgetres bars.fg)"
 
-nickname="iris %{T3}%{F#7EABF8}%{T2}%{F#FFFFFF} arcoiris  "
-bg_bar="#990A0C11"; fg_bar="#ffffff"
+# Names for tags (notification)
+name0="$(xgetres bars.name0)"
+name1="$(xgetres bars.name1)"
+name2="$(xgetres bars.name2)"
+name3="$(xgetres bars.name3)"
+name4="$(xgetres bars.name4)"
+name5="$(xgetres bars.name5)"
+name6="$(xgetres bars.name6)"
+name7="$(xgetres bars.name7)"
+name8="$(xgetres bars.name8)"
+name9="$(xgetres bars.name9)"
 
+# Nickname : Right
+nickname="$(xgetres bars.bottom.nickname)"
 
 # Tags : Left
-             bg_tags="#0A0C11"
-         fg_selected="#ffffff";          fg_unselect="#696969"
-fg_selected_occupied="#ffffff"; fg_unselect_occupied="#82CDD2"
-           layout_fg="#0A0C11";            layout_bg="#ffffff"
-
-fg_unselect_all="#444444"
+bg_tags="$(xgetres bars.bottom.tags.bg)"
+fg_selected="$(xgetres bars.bottom.tags.selected.fg)"
+fg_unselect="$(xgetres bars.bottom.tags.unselected.fg)"
+fg_selected_occupied="$(xgetres bars.bottom.tags.selected.occupied)"
+fg_unselect_occupied="$(xgetres bars.bottom.tags.unselected.occupied)"
+layout_fg="$(xgetres bars.bottom.layout.fg)"
+layout_bg="$(xgetres bars.bottom.layout.bg)"
+fg_unselect_all="$(xgetres bars.bottom.tags.unselected.all)"
 
 # Titles : Center
-title_name_fg="#FFFFFF"
-title_icon_fg="#698B2F"
+title_name_fg="$(xgetres bars.bottom.titles.title)"
+title_icon_fg="$(xgetres bars.bottom.titles.icon)"
 
 # Memory : Right
- mem_colour="#FFFFFF";  mem_barra="#666666"; 
-swap_colour="#333333"; swap_barra="#000000"; swap_icon_colour="#444444"
+mem_colour="$(xgetres bars.bottom.memory.colour)"
+mem_barra="$(xgetres bars.bottom.memory.bar)"
 
-
-#--------------------------------------------------------------------------------
-# Colours for lemonbar : top bar
-#--------------------------------------------------------------------------------
+# Recording S : Right
+recording_fg="$(xgetres bars.bottom.recording.fg)"
 
 # Sound bar
-sound_icon_on="#ffffff"
-sound_icon_off="#525659"
-sound_bar_on="#ffffff"
-sound_bar_off="#000000"
-
+sound_icon_on="$(xgetres bars.top.sound.icon.on)"
+sound_icon_off="$(xgetres bars.top.sound.icon.off)"
+sound_bar_on="$(xgetres bars.top.sound.bar.on)"
+sound_bar_off="$(xgetres bars.top.sound.bar.off)"
 
 # Clock : Left
-clock_fg="#123456"; clock_bg="#ECF3FA"; clock_f_bg="#ffffff"
-clock_hg="#BDCDD7"
+clock_fg="$(xgetres bars.top.clock.fg)"
+clock_bg="$(xgetres bars.top.clock.bg)"
+clock_f_bg="$(xgetres bars.top.clock.fbg)"
+clock_hg="$(xgetres bars.top.clock.ffg)"
 
 # Sensors : Left
-sensors_fg_affix="#FFFFFF"; sensors_bg_affix="#2B2B2B"
-      low_low_fg="#0D2331";       low_low_bg="#87C7E4"
-      nor_low_fg="#0D2331";       nor_low_bg="#BDCDD7"
-      med_med_fg="#340010";       med_med_bg="#FAFBC2"
-      hig_med_fg="#0D2331";       hig_med_bg="#FF4464"
+sensors_fg_affix="$(xgetres bars.top.sensors.affix.fg)"
+sensors_bg_affix="$(xgetres bars.top.sensors.affix.bg)"
+low_low_fg="$(xgetres bars.top.sensors.low.fg)"
+low_low_bg="$(xgetres bars.top.sensors.low.bg)"
+nor_low_fg="$(xgetres bars.top.sensors.normal.fg)"
+nor_low_bg="$(xgetres bars.top.sensors.normal.bg)"
+med_med_fg="$(xgetres bars.top.sensors.medium.fg)"
+med_med_bg="$(xgetres bars.top.sensors.medium.bg)"
+hig_med_fg="$(xgetres bars.top.sensors.high.fg)"
+hig_med_bg="$(xgetres bars.top.sensors.high.bg)"
 
 # Song : Center
-       background_before="#2b2b2b"
-         background_icon="#000000"
-    background_song_name="#000000"
- first_running_song_name="#FE4656"
-second_running_song_name="#E4F2FF"
-    background_icon_name="#FFFFFF"
-            neighbors_fg="#666666"
-
-# Tasks : Right
-     task_fg="#F8FFF8"
-task_fg_icon="#243F76"
+background_before="$(xgetres bars.top.songs.before)"
+background_icon="$(xgetres bars.top.songs.icon)"
+background_song_name="$(xgetres bars.top.songs.song)"
+first_running_song_name="$(xgetres bars.top.songs.song.first)"
+second_running_song_name="$(xgetres bars.top.songs.song.second)"
+background_icon_name="$(xgetres bars.top.songs.icon.name)"
+neighbors_fg="$(xgetres bars.top.songs.neighbours)"
+extra_icon_paused=$(xgetres bars.songs.icon.paused | sed -r 's/^"|"$//g')
+limit_extra_length=$(xgetres bars.songs.extra.limit)
+song_limit=$(xgetres bars.songs.title.limit)
+bnotification_time=$(xgetres bars.songs.notification.time)
 
 # Power But:wton : Right
-    power_fg="#FaFaFa"; power_bg="#C92430"; bg_before_power="#14181B"
-
-#--------------------------------------------------------------------------------
-# White Theme
-#--------------------------------------------------------------------------------
-}; [ "$change_this_theme" = "suun" ] && {
-
-nickname="iris %{T3}%{F#D59FB1}%{T2}%{F-} arcoiris  "
-bg_bar="#99f0f0f0"; fg_bar="#1b1b1b"
-
-# Tags : Left
-             bg_tags="#ffffff"
-         fg_selected="#14181B";          fg_unselect="#696969"
-fg_selected_occupied="#408245"; fg_unselect_occupied="#82CDD2"
-           layout_fg="#DEF1E4";            layout_bg="#14181B"
-
-# Titles : Center
-title_name_fg="#12171C"
-title_icon_fg="#246898"
-
-fg_unselect_all="#13171A"
-
-# Memory : Right
- mem_colour="#12171C";  mem_barra="#444444"; 
-swap_colour="#aaaaaa"; swap_barra="#eeeeee"; swap_icon_colour="#bbbbbb"
-
-
-#--------------------------------------------------------------------------------
-# Colours for lemonbar : top bar
-#--------------------------------------------------------------------------------
-
-# Sound bar
-sound_icon_on="#2C55A4"
-sound_icon_off="#525659"
-sound_bar_on="#2C55A4"
-sound_bar_off="#392d4d"
-
-# Clock : Left
-clock_fg="#FA9370"; clock_bg="#1E1E20"; clock_f_bg="#616164"
-clock_hg="#CC5044"
-
-# Sensors : Left
-sensors_fg_affix="#616164"; sensors_bg_affix="#616164"
-      low_low_fg="#0D2331";       low_low_bg="#87C7E4"
-      nor_low_fg="#0D2331";       nor_low_bg="#BDCDD7"
-      med_med_fg="#340010";       med_med_bg="#FAFBC2"
-      hig_med_fg="#0D2331";       hig_med_bg="#FF4464"
-
-# Song : Center
-       background_before="#ffffff"
-         background_icon="#f0f0f0"
-    background_song_name="#f0f0f0"
- first_running_song_name="#F05D94"
-second_running_song_name="#000000"
-    background_icon_name="#2b2b2b"
-            neighbors_fg="#787773"
-
-# Tasks : Right
-     task_fg="#0f0f0f"
-task_fg_icon="#913D45"
-
-# Power Button : Right
-    power_fg="#0f0f0f"; power_bg="#C92430"; bg_before_power="#f0f0f0"
-
-}
-
-#--------------------------------------------------------------------------------
-# String for lemonbar : top bar
-#--------------------------------------------------------------------------------
-
-
-       icon_affix=""
-      icon_paused=""
-     icon_running=""
-extra_icon_paused=": •́ ◇ •̀ : "
-
-
-#--------------------------------------------------------------------------------
-# Numbers for lemonbar : top bar
-#--------------------------------------------------------------------------------
-
-
-limit_extra_length=35
-        song_limit=20
-bnotification_time=550
+power_fg="$(xgetres bars.top.power.fg)"
+power_bg="$(xgetres bars.top.power.bg)"

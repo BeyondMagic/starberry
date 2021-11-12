@@ -28,11 +28,18 @@ _get_ram() {
     mem_msg="$(echo "scale=4; $(free | grep 'Mem:' | \
       awk {'print $3'})/$memory_total * 100" | bc | sed -r 's/0+$//')"
 
-    msg="$msg%{F$mem_barra T3} %{F$mem_colour T2}$mem_msg%{F$mem_barra}%"
+    msg="$msg%{F$mem_barra}%{T3} %{F$mem_colour}%{T2}$mem_msg%{F$mem_barra}%"
 
-    echo 'M' "$msg　　%{F- B-} " &
+    echo 'M' "$msg　　%{F-}%{B-} " &
     sleep 1
 
   done
+
+}
+
+[ "$1" = 'run' ] && {
+
+  . "$SCRIPTS_FOLDER"/bars/config
+  _get_ram
 
 }

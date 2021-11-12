@@ -36,21 +36,25 @@
 
 
 
-# Config of Bars
-#   Geometry
-height_tbar="19"; width_tbar="1400"; offset_ty="+20"; offset_tx="+10"
-height_bbar="19"; width_bbar="1400"; offset_by="+20"; offset_bx="+10"
 
 # Constants of Fonts
 #   Each font is beautifully chosen :)
-  normal_font="Noto Sans CJK JP Medium:antialias=true:size=10"
-    bold_font="Noto Sans CJK JP Black:style=Black,Regular:antialias=true:size=10"
-   emoji_font="NotoEmoji Nerd Font:antialias=true"
-material_font="Material\-Design\-Iconic\-Font:style=Design-Iconic-Font:antialias=true:size=12"
+  normal_font="$(xgetres bars.font.normal)"
+    bold_font="$(xgetres bars.font.bold)"
+   emoji_font="$(xgetres bars.font.emoji)"
+material_font="$(xgetres bars.font.material)"
 
 # Constants of fifos to transfer information of functions
-location_of_bottom_fifo="/tmp/bottom.fifo"
-   location_of_top_fifo="/tmp/top.fifo"
+[ "$BARS_TOP_FIFO"] && [ "$BARS_BOTTOM_FIFO" ] && {
+
+  location_of_bottom_fifo="$BARS_BOTTOM_FIFO"
+     location_of_top_fifo="$BARS_TOP_FIFO"
+
+} || {
+  
+  location_of_bottom_fifo="/tmp/bottom.fifo"
+     location_of_top_fifo="/tmp/top.fifo"
+}
 
 
 
@@ -113,10 +117,6 @@ read_top_bar() {
       # Sound
       T*)
         sound="${line#?}";;
-	
-      # Tasks
-      #T*)
-       # task="${line#?}";;
 
     esac
 
@@ -163,14 +163,12 @@ read_bottom_bar() {
 
 
 
-
-
-read_top_bar | lemonbar -H -p -g "${width_tbar}x${height_tbar}${offset_ty}${offset_tx}" \
+read_top_bar | lemonbar -H -p -g "$(xgetres bars.top.geometry)" \
   -B "$bg_bar" \
   -F "$fg_bar" \
   -o 0 -f "$normal_font" \
   -o 0 -f "$bold_font" \
-  -o 1 -f "$emoji_font:size=10.3" \
+  -o 1 -f "$emoji_font" \
   -o 0 -f "$material_font" \
 	| while read -r line; do
     [ $(echo "$line" | awk '{print $1}') = 'execute' ] && {
@@ -179,12 +177,12 @@ read_top_bar | lemonbar -H -p -g "${width_tbar}x${height_tbar}${offset_ty}${offs
     }
   done &
 
-read_bottom_bar | lemonbar -H -b -p -g "${width_bbar}x${height_bbar}${offset_by}${offset_bx}" \
+read_bottom_bar | lemonbar -H -b -p -g "$(xgetres bars.bottom.geometry)" \
   -B "$bg_bar" \
   -F "$fg_bar" \
   -o 0 -f "$normal_font" \
   -o 0 -f "$bold_font" \
-  -o 1 -f "$emoji_font:size=10.3" \
+  -o 1 -f "$emoji_font" \
   -o -3 -f "$material_font" \
   -n "bottom_bar" \
   | while read -r line; do

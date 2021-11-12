@@ -14,12 +14,58 @@
 #
 # BeyondMagic  GPL3 LICENSE  2021
 
+[ "$1" = "open_menu" ] && {
+
+  option=$(echo "Power: Turn off." \
+    "\nRestart: Quick restart." \
+    "\nSleep: I'm an ice bear in the summer." \
+    "\n-------------------------------------" \
+    "\ndwm: Restart dwm instance." \
+    | 91menu -g 0x0+1195+40 \
+    | sed -r 's/:.+//')
+
+  case $option in
+
+    Power)
+
+      doas halt
+
+    ;;
+
+    Restart)
+
+      doas -- shutdown -r now
+
+    ;;
+
+    Sleep)
+
+      doas -- zzz	
+
+    ;;
+
+    dwm)
+
+      pkill -1 dwm
+
+    ;;
+
+
+  esac
+
+}
+
 _get_power() {
   
   icon=" "; affix=""
-  hover_block="%{A1:execute dash $HOME/git/scripts/bars/top_bar/power/__power:}"
+  hover_block="%{A1:execute dash $SCRIPTS_FOLDER/bars/top_bar/_power open_menu:}"
   
   echo 'P' "$hover_block%{F$power_bg}%{B-}$affix%{F$power_fg}%{B$power_bg} $icon  %{A1}"
 }
 
+[ "$1" = "run" ] && {
 
+  . $SCRIPTS_FOLDER/bars/config
+  _get_power
+
+}
