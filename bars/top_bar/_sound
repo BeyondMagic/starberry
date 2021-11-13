@@ -44,4 +44,5 @@ _get_audio() {
   . "$SCRIPTS_FOLDER"/bars/config
   _get_audio 
 
+
 }

@@ -141,6 +141,8 @@ _kill_children() {
 #   not with the will to do.
 _music() {
 
+  echo 'M' "%{F$second_running_song_name} $extra_icon_paused %{F-}"
+
   mpc idleloop | \
     while IFS=$'\n' read -r new_change && read -r double_change; do
 

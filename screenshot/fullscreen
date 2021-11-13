@@ -6,8 +6,11 @@
 
 killall unclutter
 
+win_w=1440; win_h=900
+
 import -window root png:- | xclip -selection c -t image/png
 xclip -selection clipboard -t image/png -o > "/tmp/last_shot.png"
-notify-send.sh -i "/tmp/last_shot.png" 'Full screenshot was copied to clipboard.'
+convert "/tmp/last_shot.png" -resize $((${win_w}/4))x$((${win_h}/4)) "/tmp/last_shot_dunst.png"
+notify-send.sh -i "/tmp/last_shot_dunst.png" 'Full screenshot was copied to clipboard.'
 nohup unclutter --timeout 1 >/dev/null 2>&1 &
 exit 0
