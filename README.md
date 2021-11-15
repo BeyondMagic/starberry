@@ -1,5 +1,7 @@
 <h2 align="center">Dash Scripts</h2>
 
+Loads an ASCII art when opening a new terminal: [nincat](https://github.com/ninecath/nincat/).
+
 ---
 
 <h4 align="left">system/readmem</h4>
