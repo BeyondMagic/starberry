@@ -1,27 +1,26 @@
 #!/usr/bin/env sh
 #
-# Description
-#   Get tags of dynamic window manager
+# DESCRIPTION:
+#   Get tags of dwm.
 #
-# Dependencies
+# DEPENDENCIES:
 #   dwm
 #   dwm-msg
 #
-# BeyondMagic © 2021
+# TODO:
+#   Clickable tags.
+#
+# github.com/beyondmagic/scripts/tree/master/bars
 
-#    kill $!
+icon_selected=" $(xgetres bars.tags.selected)"
+icon_selected_occupied=" $(xgetres bars.tags.selected.occupied)"
+icon_unselect=" $(xgetres bars.tags.unselect)"
+icon_unselect_occupied=" $(xgetres bars.tags.unselect.occupied)"
 
-         icon_selected=" "
-icon_selected_occupied=" "
-         icon_unselect=" "
-icon_unselect_occupied=" "
-
-   affix=""
-rv_affix=""
-
+affix="$(xgetres bars.separator1)"
+rv_affix="$(xgetres bars.separator2)"
 
 _get_tags() {
-
 
   # A local function to shout out a tag name based
   # on their IDs, you can change it to whatever
@@ -153,7 +152,7 @@ _get_layout() {
   echo "DWM died, resetting connection in 5 seconds"; sleep 3
 
   # Execute itself and/by killing this
-  exec "$SCRIPTS_FOLDER/bars/bottom_bar/_layout" 'run'
+  exec "$SCRIPTS_FOLDER/bars/bottom/_layout" 'run'
 
 }
 

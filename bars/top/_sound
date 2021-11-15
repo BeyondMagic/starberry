@@ -1,12 +1,12 @@
 #!/usr/bin/env sh
 #
-# Dependencies
+# DESCRIPTION: 
 #   Display current volume percentage.
 # 
-# Dependencies:
+# DEPENDENCIES: 
 #   pamixer
 #
-# BeyondMagic  GPL3 LICENSE  2021
+# https://github.com/BeyondMagic/scripts/tree/master/bars
 
 _get_audio() {
 
@@ -16,14 +16,13 @@ _get_audio() {
       max_volume=125
   current_volume=$(echo "$(pamixer --get-volume) - $min_volume" | bc)
   
-  [ "$current_volume" -gt "$(($max_volume+5))" ] || [ "$current_volume" -lt 0 ] && exit
-  
   progress=$(echo "($current_volume*100/$max_volume*100)/100" | bc)
   
   # Format Icon
   [ $progress -ge 50 ] && icon=""
   [ $progress -lt 50 ] && icon=""
   [ $progress -le 0 ]  && icon=""
+  [ "$progress" -ge 100 ] && progress=100
   
   done=$(echo "($progress*$multiplier)/10" | bc)
   left=$(echo "${multiplier}0-$done" | bc)

@@ -1,10 +1,10 @@
 #!/usr/bin/env sh
 #
-# Description
+# DESCRIPTION: 
 #   Two lemonbars with fifo, events as well
 #   very lightweight, and low CPU usage
 #
-# Note
+# NOTE: 
 #   Low ram usage (30Mi)
 #   This uses external fonts
 #   The size of the bar is compatible with my monitor, change
@@ -14,25 +14,23 @@
 #   It's recommended to use dash to run this (link sh to dash),
 #     since it will be way faster
 #
-# Dependencies
+# DEPENDENCIES: 
+#   Xorg
 #   dash
-#   xorg
 #   xdotools
-#   lemonbar (or forks that have fontconfig)
-#   tuxi
+#   lemonbar (or forks that have fontconfig, clickable, hover in and out events)
 #   sensors
 #   lm_sensors ; sensors
-#   notify-send.sh
+#   notify-send
+#   xnotify
 #   mpd
 #     mpc
 #   dwm
 #     dwm-msg
 #   imagemagick
 #
-# BeyondMagic © 2021
-
-
-
+# MAINTAINER: (s)
+#   GPL3 ©  BeyondMagic <koetemagie/gmail.com> 2021-
 
 
 
@@ -66,29 +64,28 @@ material_font="$(xgetres bars.font.material)"
 
 
 
-# Start basic config
-origin="$(cd -- "$(dirname "$0")" >/dev/null 2>&1 && pwd -P)"
+# Start basic config:
+#origin="$(cd -- "$(dirname "$0")" >/dev/null 2>&1 && pwd -P)"
+origin="$SCRIPTS_FOLDER/bars/"
 
-# Clean later processes
-killall lemonbar
-rm -rf "$location_of_bottom_fifo" "$location_of_top_fifo" 
+# Clean old processes of lemonbar.
+[ "$(pgrep lemonbar | wc -l)" -gt 0 ] && {
+  rm -rf "$location_of_bottom_fifo" "$location_of_top_fifo" 
+
+  pkill -9 -f "lemonbar -H "
+  pgrep -f "sh $origin" | \
+    while read -r id; do
+      pkill -9 -P "$id"
+      kill -9 "$id"
+    done
+}
 
 
 # Start fifos
 mkfifo "$location_of_bottom_fifo" "$location_of_top_fifo"
 exec 3<> "$location_of_bottom_fifo"; exec 3<> "$location_of_top_fifo"
 
-# Sleep for a few seconds to wait for mpd and dwm
-#sleep 3
-
 . $origin/config
-
-
-
-
-
-
-
 
 
 
@@ -199,9 +196,9 @@ read_bottom_bar | lemonbar -H -b -p -g "$(xgetres bars.bottom.geometry)" \
 # Load information on bars
 {
 
-  . "$origin"/bottom_bar/_title;
-  . "$origin"/bottom_bar/_layout;
-  . "$origin"/bottom_bar/_memory;
+  . "$origin"/bottom/_title;
+  . "$origin"/bottom/_layout;
+  . "$origin"/bottom/_memory;
   _get_layout & _get_tags &
   _get_ram &
   _get_active_window &
@@ -210,11 +207,11 @@ read_bottom_bar | lemonbar -H -b -p -g "$(xgetres bars.bottom.geometry)" \
 
 {
 
-  "$origin/"top_bar/_song run &
-  "$origin/"top_bar/_sound run &
-  . "$origin/"top_bar/_clock
-  . "$origin/"top_bar/_power
-  . "$origin/"top_bar/_sensors
+  "$origin/"top/_song run &
+  "$origin/"top/_sound run &
+  . "$origin/"top/_clock
+  . "$origin/"top/_power
+  . "$origin/"top/_sensors
   _clock &
   _sensors &
   _get_power

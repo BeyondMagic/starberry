@@ -52,7 +52,7 @@ format_active_window() {
   GeckoMain)
 
     icon=""
-    total=$(echo "$total" | sed -r 's/(\[Sidebery\] )|( — Firefox.*)//g' | recode html..ISO-8859-1)
+    total=$(echo "$total" | sed -re 's/\\"/"/g' -e 's/(\[Sidebery\] )|( — Firefox.*)|( — Mozilla Firefox)//g' | recode html..ISO-8859-1)
     ;;
 
   # gcolor2
@@ -136,14 +136,13 @@ _get_active_window() {
 
   echo "DWM died, resetting connection in 3 seconds"; sleep 3
 
-	#pkill -f "sh /home/magic/github/scripts/bars/bottom_bar/_title"
-  exec "$SCRIPTS_FOLDER/bars/bottom_bar/_title" 'run'
+  exec "$SCRIPTS_FOLDER/bars/bottom/_title" 'run'
 
 }
 
 [ "$1" = "run" ] && {
 
-  . $SCRIPTS_FOLDER/config
+  . $SCRIPTS_FOLDER/bars/config
   _get_active_window
 
 }

@@ -1,25 +1,13 @@
 #!/usr/bin/env sh
 # 
-# Description
+# DESCRIPTION: 
 #   Get clock time :|
 #
-# Note
+# NOTE: 
 #   This setting is working Japanese systems
 #   Change the "echo 'C'" line to change this
 #
-# BeyondMagic  GPL3 LICENSE  2021
-
-
-# Function of the top bar for Lemonnbar
-#   Modules are:
-#     Date - CPU% - Song (bar) - Title of Active Window - Gmail Notifications
-
-# %{T1} : normal font
-# %{T2} : normal font bold
-# ${T3} : emoji font
-
-# VERBOSE
-# echo "top_bar/_clock: Starting"
+# https://github.com/BeyondMagic/scripts/tree/master/bars
 
 # set icon to right
 _icon_right() {
@@ -33,15 +21,13 @@ _clock() {
   icon=1; max_icon=25
   icons=""
 
-
-  affix=""
-  
+  affix="$(xgetres bars.separator4)"
 
   while :; do
 
     prefix="%{O-3}$(_icon_right "$(expr substr "$icons" $icon 1)" "$affix" "$clock_fg" "$clock_bg" "$clock_f_bg")"
 
-    echo 'C' "$prefix%{B$clock_f_bg}%{F$clock_fg}$(date +%H:%M:%S | sed -re "s/:/%{F$clock_hg}:%{F$clock_fg}/g")" &
+    echo 'C' "$prefix%{B$clock_f_bg}%{F$clock_fg}$(date +'%a %b %d %H:%M:%S' | sed -re "s/:/%{F$clock_hg}:%{F$clock_fg}/g")" &
     
     [ "$icon" = "$max_icon" ] && icon=1 || icon=$(($icon + 1))
 

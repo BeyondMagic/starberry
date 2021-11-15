@@ -1,22 +1,26 @@
 #!/usr/bin/env sh
 #
-# Dependencies
+# DESCRIPTION:
 #   Load MPD info every time it updates
 # 
-# Dependencies:
+# DEPENDENCIES: 
 #   sensors
 #
-# BeyondMagic  GPL3 LICENSE  2021
+# https://github.com/BeyondMagic/scripts/tree/master/bars
 
 _icon_sensors() {
 
   icon="$1"; bg_icon="$2"; fg_icon="$3"
 
-  echo "%{T3}%{B$bg_icon}%{F$sensors_fg_affix}%{F$fg_icon}$icon%{F$bg_icon}%{B$sensors_bg_affix}%{T2}"
+  affix_reverse="$(xgetres bars.separator3)"
+
+  echo "%{T3}%{B$bg_icon}%{F$sensors_fg_affix}$affix%{F$fg_icon}$icon%{F$bg_icon}%{B$sensors_bg_affix}$affix_reverse%{T2}"
 
 }
 
 _sensors() {
+
+  affix="$(xgetres bars.separator3)"
 
   while :; do
 
@@ -36,7 +40,7 @@ _sensors() {
     # 77 < sss < 95
     [ "$sss" -gt "76" ] && [ "$sss" -lt "95" ] && mmm="$(_icon_sensors " " "$hig_med_bg" "$hig_med_fg" ) $sss"
 
-    echo 'S' "%{T1}%{O-4}$mmm ºC  %{F$sensors_bg_affix}%{B-}%{T2}%{F-}"
+    echo 'S' "%{T1}%{O-4}$mmm ºC  %{F$sensors_bg_affix}%{B-}$affix%{T2}%{F-}"
 
     sleep 5
 

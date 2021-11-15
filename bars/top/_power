@@ -1,18 +1,12 @@
 #!/usr/bin/env sh
 #
-# Description
+# DESCRIPTION:
 #   Button to open a sidebar, it doesn't work yet
 # 
-# Note
-#   It's just a label for now, I will create clickable button
-#   When I find a minimalist siderbar for Linux
-#   As for right now, there's no sidebar at all :(
-# 
-#   Maybe one day I'll create one
-#   But that it'll take long time because I want to create it
-#   in C++
+# DEPENDENCIES: 
+#   91menu
 #
-# BeyondMagic  GPL3 LICENSE  2021
+# https://github.com/BeyondMagic/scripts/tree/master/bars
 
 [ "$1" = "open_menu" ] && {
 
@@ -57,8 +51,8 @@
 
 _get_power() {
   
-  icon=" "; affix=""
-  hover_block="%{A1:execute dash $SCRIPTS_FOLDER/bars/top_bar/_power open_menu:}"
+  icon=" "; affix="$(xgetres bars.separator4)"
+  hover_block="%{A1:execute dash $SCRIPTS_FOLDER/bars/top/_power open_menu:}"
   
   echo 'P' "$hover_block%{F$power_bg}%{B-}$affix%{F$power_fg}%{B$power_bg} $icon  %{A1}"
 }

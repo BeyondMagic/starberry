@@ -62,7 +62,7 @@
 
   icon=""
 
-  first_click="%{A1:execute dash $SCRIPTS_FOLDER/bars/bottom_bar/_recording open_menu:}"
+  first_click="%{A1:execute dash $SCRIPTS_FOLDER/bars/bottom/_recording open_menu:}"
   middle_click="%{A2:execute dash $SCRIPTS_FOLDER/record/record_size:}"
 
   # $1 is being used here as the fifo of the bar
