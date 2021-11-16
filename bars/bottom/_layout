@@ -27,7 +27,8 @@ _get_tags() {
   # you want to
   get_name_of_tag() {
 
-    case $1 in
+    # bring case to here
+    case $selected in
       1)   name="$name0" ;;
       2)   name="$name1" ;;
       4)   name="$name2" ;;
@@ -39,7 +40,7 @@ _get_tags() {
       256) name="$name8" ;;
       511) name="$name9" ;;
     esac
-
+    
     # Change to your notify program, I recommend a lot xnotify though;
     # Pretty lightweight!
     zsh -c "echo -ne '$(printf "$name" | sed -r 's/U\w{8}/\\&/g')'" > "$XNOTIFY_FIFO" &
@@ -61,43 +62,40 @@ _get_tags() {
     # Loop through all the 9 tags
     # It starts from 0
     out=""; tag=0; while [ $tag -le 8 ]; do
-
-
+    
       # Does this really needs any explanation?
       bit=$((1 << $tag))
+      click_button="%{A1:execute dwm-msg run_command view $bit:}"
 
       # Selected and with programs
       if [ $(($selected & $bit)) -ne 0 ] && [ $(($occupied & $bit)) -ne 0 ]; then
         # Pretty output (with external variables)
-        out="${out}%{F$fg_selected_occupied} $icon_selected_occupied"
+        out="${out}%{F$fg_selected_occupied}$click_button $icon_selected_occupied %{A1}"
         # Simple output
         # out="${out} X"
 
       # Selected without programs
       elif [ $(($selected & $bit)) -ne 0 ]; then
         # Pretty output (with external variables)
-        out="${out}%{F$fg_selected} $icon_selected"
+        out="${out}%{F$fg_selected}$click_button $icon_selected %{A1}"
         # Simple output
         # out="${out} o"
 
       # Not selected with programs
       elif [ $(($occupied & $bit)) -ne 0 ]; then
         # Pretty output (with external variables)
-        out="${out}%{F$fg_unselect} $icon_unselect"
+        out="${out}%{F$fg_unselect}$click_button $icon_unselect %{A1}"
         # Simple output
         # out="${out} +"
 
       # Nothing at all
       else
         # Pretty output (with external variables)
-        out="${out}%{F$fg_unselect_all} $icon_unselect_occupied"
+        out="${out}%{F$fg_unselect_all}$click_button $icon_unselect_occupied %{A1}"
         # Simple output
         # out="${out} -"
 
       fi
-
-      # bring case to here
-
 
     tag=$((tag+1)); done
 
