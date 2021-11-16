@@ -40,9 +40,9 @@ _get_tags() {
       511) name="$name9" ;;
     esac
 
-    # Change to your notify program, I recommend a lot this though
+    # Change to your notify program, I recommend a lot xnotify though;
     # Pretty lightweight!
-    echo "$name" > "$XNOTIFY_FIFO"
+    zsh -c "echo -ne '$(printf "$name" | sed -r 's/U\w{8}/\\&/g')'" > "$XNOTIFY_FIFO" &
 
     # Save image to preview later with nsxiv
     {
@@ -95,6 +95,8 @@ _get_tags() {
         # out="${out} -"
 
       fi
+
+      # bring case to here
 
 
     tag=$((tag+1)); done

@@ -80,6 +80,8 @@ origin="$SCRIPTS_FOLDER/bars/"
     done
 }
 
+[ "$1" = "clean" ] && exit
+
 
 # Start fifos
 mkfifo "$location_of_bottom_fifo" "$location_of_top_fifo"

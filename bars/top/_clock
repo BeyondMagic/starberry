@@ -21,7 +21,7 @@ _clock() {
   icon=1; max_icon=25
   icons=""
 
-  affix="$(xgetres bars.separator4)"
+  affix="$(xgetres bars.separator3)"
 
   while :; do
 
