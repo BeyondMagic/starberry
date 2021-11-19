@@ -17,4 +17,4 @@
   pactl -- set-sink-volume @DEFAULT_SINK@ -2% &
 }
 
-"$(cd -- "$(dirname "$0")" >/dev/null 2>&1 && pwd -P)"/../bars/top_bar/_sound run > /tmp/top.fifo
+"$SCRIPTS_FOLDER"/bars/top/_sound run > /tmp/top.fifo

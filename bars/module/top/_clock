@@ -27,7 +27,7 @@ _clock() {
 
     prefix="%{O-3}$(_icon_right "$(expr substr "$icons" $icon 1)" "$affix" "$clock_fg" "$clock_bg" "$clock_f_bg")"
 
-    echo 'C' "$prefix%{B$clock_f_bg}%{F$clock_fg}$(date +'%a %b %d %H:%M:%S' | sed -re "s/:/%{F$clock_hg}:%{F$clock_fg}/g")" &
+    echo 'C' "$prefix%{B$clock_f_bg}%{F$clock_fg}$(date +'%a %b %d - %H:%M:%S' | sed -re "s/:/%{F$clock_hg}:%{F$clock_fg}/g" -e "s/-/%{F$clock_hg}-%{F$clock_fg}/g")" &
     
     [ "$icon" = "$max_icon" ] && icon=1 || icon=$(($icon + 1))
 
@@ -40,6 +40,6 @@ _clock() {
 [ "$1" = "run" ] && {
 
   . "$SCRIPTS_FOLDER"/bars/config
-  _clock 
+  _clock
 
 }

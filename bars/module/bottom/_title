@@ -107,12 +107,16 @@ format_active_window() {
   
   esac
 
-    # Reduce length if it's bigger than 40 characters
-  [ "${#total}" -gt "60" ] && total="$(echo "$total" | cut -c -60)..."
-    # If there's no icon, then just prints out the name
-  [ ! -n "$icon" ] && icon="$name" || icon="%{T3}$icon"
+  [ "$name" ] && {
+  
+      # Reduce length if it's bigger than 40 characters
+    [ "${#total}" -gt "60" ] && total="$(echo "$total" | cut -c -60)..."
+      # If there's no icon, then just prints out the name
+    [ ! -n "$icon" ] && icon="$name" || icon="%{T3}$icon"
+    
+    echo 'T' "%{F$title_icon_fg}  $icon %{T2}%{F$title_name_fg}$total  %{T1}%{F-}"
 
-  echo 'T' "%{F$title_icon_fg}%{B$bg_bar}  $icon %{T2}%{F$title_name_fg}$total  %{T1}%{F-}"
+  }
 
 }
 

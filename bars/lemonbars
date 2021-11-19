@@ -1,0 +1,173 @@
+#!/usr/bin/env sh
+#
+# DESCRIPTION:
+#   Start both lemonbars.
+#
+# DEPENDENCIES:
+#   Xorg
+#   lemonbar -> https://github.com/PH111P/bar
+#
+# NOTE:
+# This is supposed to be used with 1:
+# 1 -> https://github.com/BeyondMagic/scripts/tree/master/bars/modules
+# 
+# NOTE: ENVIRONMENT VARIABLES
+#   BARS_TOP_FIFO    : /tmp/bottom.fifo
+#   BARS_BOTTOM_FIFO : /tmp/top.fifo
+#
+# MAINTAINER: (s)
+#   GPL3 ©  BeyondMagic <koetemagie/gmail.com> 2021-
+
+# ---------------------------------------------------------------------------------------------
+
+# NOTE: 1: Remove other lemonbars.
+# HACK : Make it cleaner and exact.
+[ "$1" = "clean" ] && {
+
+  pgrep -f "sh $SCRIPTS_FOLDER/bars/lemonbars" | \
+    while read -r id; do
+      pkill -9 -P "$id"
+      kill -9 "$id"
+    done
+
+  pkill -9 -f "lemonbar -H "
+
+  exit 0
+
+}
+
+{
+
+  # NOTE: 2: Constants of Fonts
+  #   Each font is beautifully chosen, we get them from xgetres (XResources source).
+    normal_font="$(xgetres bars.font.normal)"
+      bold_font="$(xgetres bars.font.bold)"
+     emoji_font="$(xgetres bars.font.emoji)"
+  material_font="$(xgetres bars.font.material)"
+  
+  # NOTE: 3: Get paths of fifos to transform
+  #   Constants of FIFOs paths to create as we will use them to send information of our modules.
+  [ "$BARS_TOP_FIFO" ] && [ "$BARS_BOTTOM_FIFO" ] && {
+
+    location_of_bottom_fifo="$BARS_BOTTOM_FIFO"
+       location_of_top_fifo="$BARS_TOP_FIFO"
+
+  } || {
+    
+    location_of_bottom_fifo="/tmp/bottom.fifo"
+       location_of_top_fifo="/tmp/top.fifo"
+  }
+
+  # NOTE: 4: Start fifos.
+  mkfifo "$location_of_bottom_fifo" "$location_of_top_fifo"
+  exec 3<> "$location_of_bottom_fifo"; exec 3<> "$location_of_top_fifo"
+
+}
+
+# NOTE: 5: Read function of our top bar. [MODULES]
+read_top_bar() {
+  
+  # NOTE: 5.1: Send information only when a function sends something.
+  while read -r line; do
+    case $line in
+
+      # Clock [./top/_clock]
+      C*)
+        clock="${line#?}";;
+
+      # Sensors of CPU [./top/_sensors]
+      S*)
+        sensors="${line#?}";;
+
+      # Power icon [./top/_power]
+      P*)
+        power="${line#?}";;
+
+      # Music [./top/_song]
+      M*)
+        music="${line#?}";;
+
+      # Sound [./top/_sound]
+      T*)
+        sound="${line#?}";;
+
+    esac
+
+    # NOTE: 5.2: Print information to our fifo.
+    printf "%s%s%s\n" "$clock  %{F-}%{B-}$sensors%{c}$music%{r}$sound  $power"
+
+  done < "$location_of_top_fifo"
+}
+
+# NOTE: 6: Read function of our bottom bar. [MODULES]
+read_bottom_bar() {
+
+  nickname="$(xgetres bars.bottom.nickname)"
+
+  # NOTE: 6.1: Send information only when a function sends something.
+  while read -r line; do
+    case $line in
+
+      # Title of Current Window
+      T*)
+        title="${line#?}";;
+
+      # Tags
+      W*)
+        tags="${line#?}";;
+
+      # Layouts
+      L*)
+        layouts="${line#?}";;
+
+      M*)
+        memory="${line#?}";;
+
+      # Record/Utilities
+      R*)
+        record="${line#?}";;
+
+    esac
+
+    # NOTE: 6.2: Print information to our fifo.
+    printf "%s%s%s\n" "$layouts%{T3}$tags%{T1}%{c}$title%{r}$record$memory$nickname　"
+
+   done < "$location_of_bottom_fifo"
+}
+
+# ---------------------------------------------------------------------------------------------
+
+# NOTE: 7: Finally starts top bar lemonbar as it reads from the top bar.
+#   While loop is used to execute commands, e.j: when you click in a module the information is,
+#   sent to lemonbar, but YOU must do something with it. In this case, executing it.
+read_top_bar | lemonbar -H -p -g "$(xgetres bars.top.geometry)" \
+  -B "$(xgetres bars.bg)" \
+  -F "$(xgetres bars.fg)" \
+  -o 0 -f "$normal_font" \
+  -o 0 -f "$bold_font" \
+  -o 1 -f "$emoji_font" \
+  -o 0 -f "$material_font" \
+	| while read -r line; do
+    [ $(echo "$line" | awk '{print $1}') = 'execute' ] && {
+      line="$(echo "$line" | sed -r 's/^execute //')"
+      eval "$line" &
+    }
+  done &
+
+# NOTE: 8: Finally starts bottom bar lemonbar as it reads from the top bar.
+#   While loop is used to execute commands, e.j: when you click in a module the information is,
+#   sent to lemonbar, but YOU must do something with it. In this case, executing it.
+read_bottom_bar | lemonbar -H -b -p -g "$(xgetres bars.bottom.geometry)" \
+  -B "$(xgetres bars.bg)" \
+  -F "$(xgetres bars.fg)" \
+  -o 0 -f "$normal_font" \
+  -o 0 -f "$bold_font" \
+  -o 1 -f "$emoji_font" \
+  -o -3 -f "$material_font" \
+  -n "bottom_bar" \
+  | while read -r line; do
+    [ $(echo "$line" | awk '{print $1}') = 'execute' ] && {
+      line="$(echo "$line" | sed -r 's/^execute //')"
+      eval "$line" &
+    }
+  done &

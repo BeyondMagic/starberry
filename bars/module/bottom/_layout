@@ -7,9 +7,6 @@
 #   dwm
 #   dwm-msg
 #
-# TODO:
-#   Clickable tags.
-#
 # github.com/beyondmagic/scripts/tree/master/bars
 
 icon_selected=" $(xgetres bars.tags.selected)"
@@ -43,13 +40,8 @@ _get_tags() {
     
     # Change to your notify program, I recommend a lot xnotify though;
     # Pretty lightweight!
+    # HACK: using zsh echo built-in to read the UNICODE UTF-32BE characters
     zsh -c "echo -ne '$(printf "$name" | sed -r 's/U\w{8}/\\&/g')'" > "$XNOTIFY_FIFO" &
-
-    # Save image to preview later with nsxiv
-    {
-      sleep 0.125
-      scrot -q 50 -o /tmp/"$name".jpg
-    } &
     
   }
 
@@ -65,33 +57,36 @@ _get_tags() {
     
       # Does this really needs any explanation?
       bit=$((1 << $tag))
-      click_button="%{A1:execute dwm-msg run_command view $bit:}"
+      click_button="%{A1:execute dwm-msg run_command view ${bit}:}"
+      #hover_button="%{A6:execute dash "$SCRIPTS_FOLDER"/bars/bottom/__preview_tag $bit:}"
+      #unhover_button="%{A7:execute dash "$SCRIPTS_FOLDER"/bars/bottom/__preview_tag close:}"
+      buttons="${click_button}"
 
       # Selected and with programs
       if [ $(($selected & $bit)) -ne 0 ] && [ $(($occupied & $bit)) -ne 0 ]; then
         # Pretty output (with external variables)
-        out="${out}%{F$fg_selected_occupied}$click_button $icon_selected_occupied %{A1}"
+        out="${out}%{F$fg_selected_occupied}$buttons $icon_selected_occupied %{A1}"
         # Simple output
         # out="${out} X"
 
       # Selected without programs
       elif [ $(($selected & $bit)) -ne 0 ]; then
         # Pretty output (with external variables)
-        out="${out}%{F$fg_selected}$click_button $icon_selected %{A1}"
+        out="${out}%{F$fg_selected}$buttons $icon_selected %{A1}"
         # Simple output
         # out="${out} o"
 
       # Not selected with programs
       elif [ $(($occupied & $bit)) -ne 0 ]; then
         # Pretty output (with external variables)
-        out="${out}%{F$fg_unselect}$click_button $icon_unselect %{A1}"
+        out="${out}%{F$fg_unselect}$buttons $icon_unselect %{A1}"
         # Simple output
         # out="${out} +"
 
       # Nothing at all
       else
         # Pretty output (with external variables)
-        out="${out}%{F$fg_unselect_all}$click_button $icon_unselect_occupied %{A1}"
+        out="${out}%{F$fg_unselect_all}$buttons $icon_unselect_occupied %{A1}"
         # Simple output
         # out="${out} -"
 
@@ -115,7 +110,7 @@ _get_tags() {
 
 
     # Pretty output (with external variables)
-    echo 'W' "%{T3 B$bg_tags}$out  %{F$bg_tags B-}$rv_affix"
+    echo 'W' "%{T3}%{B$bg_tags}$out  %{F$bg_tags}%{B-}$rv_affix"
     # Simple output
     # echo 'W' "$out"
 
@@ -152,7 +147,7 @@ _get_layout() {
   echo "DWM died, resetting connection in 5 seconds"; sleep 3
 
   # Execute itself and/by killing this
-  exec "$SCRIPTS_FOLDER/bars/bottom/_layout" 'run'
+  exec "$SCRIPTS_FOLDER/bars/module/bottom/_layout" 'run'
 
 }
 

@@ -34,7 +34,7 @@
 
     Sleep)
 
-      doas -- zzz	
+      doas -- zzz
 
     ;;
 
@@ -52,7 +52,7 @@
 _get_power() {
   
   icon=" "; affix="$(xgetres bars.separator4)"
-  hover_block="%{A1:execute dash $SCRIPTS_FOLDER/bars/top/_power open_menu:}"
+  hover_block="%{A1:execute dash $SCRIPTS_FOLDER/bars/module/top/_power open_menu:}"
   
   echo 'P' "$hover_block%{F$power_bg}%{B-}$affix%{F$power_fg}%{B$power_bg} $icon  %{A1}"
 }

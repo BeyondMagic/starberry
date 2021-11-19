@@ -1,19 +1,16 @@
 #!/usr/bin/env sh
 #
-# Description
-#   Colours for the lemonbars.
+# DESCRIPTION:
+#   Colours for the modules.
 #
-# Notes
-#   1: https://github.com/BeyondMagic/scripts
+# NOTE:
+#   This is supposed to be used in 1.
+#   1: https://github.com/BeyondMagic/scripts/tree/master/bars/modules
 #
-# © by BeyondMagic - 2021
+# MAINTAINER: (s)
+#   GPL3 ©  BeyondMagic <koetemagie/gmail.com> 2021-
 
-
-# Whole bar
-bg_bar="$(xgetres bars.bg)"
-fg_bar="$(xgetres bars.fg)"
-
-# Names for tags (notification)
+# Names for tags (notification) [./bottom/_layout]
 name0="$(xgetres bars.name0)"
 name1="$(xgetres bars.name1)"
 name2="$(xgetres bars.name2)"
@@ -25,10 +22,11 @@ name7="$(xgetres bars.name7)"
 name8="$(xgetres bars.name8)"
 name9="$(xgetres bars.name9)"
 
-# Nickname : Right
-nickname="$(xgetres bars.bottom.nickname)"
+# Preview [./bottom/_layout]
+preview_geometry="$(xgetres bars.preview.geometry)"
+preview_title="$(xgetres bars.preview.title)"
 
-# Tags : Left
+# Tags : Left [./bars/bottom/_layout]
 bg_tags="$(xgetres bars.bottom.tags.bg)"
 fg_selected="$(xgetres bars.bottom.tags.selected.fg)"
 fg_unselect="$(xgetres bars.bottom.tags.unselected.fg)"
@@ -38,15 +36,15 @@ layout_fg="$(xgetres bars.bottom.layout.fg)"
 layout_bg="$(xgetres bars.bottom.layout.bg)"
 fg_unselect_all="$(xgetres bars.bottom.tags.unselected.all)"
 
-# Titles : Center
+# Titles : Center [./bottom/_title]
 title_name_fg="$(xgetres bars.bottom.titles.title)"
 title_icon_fg="$(xgetres bars.bottom.titles.icon)"
 
-# Memory : Right
+# Memory : Right [./bottom/_memory]
 mem_colour="$(xgetres bars.bottom.memory.colour)"
 mem_barra="$(xgetres bars.bottom.memory.bar)"
 
-# Recording S : Right
+# Recording S : Right [./bottom/_recording] : Remote
 recording_fg="$(xgetres bars.bottom.recording.fg)"
 
 # Sound bar

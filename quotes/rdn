@@ -1,9 +1,10 @@
 #!/usr/bin/env sh
 #
-# Load random quote of a file like this and put in slock
+# DESCRIPTION: 
+#   Load random quote of a file.
 #
 # -------quotes.json--------
-#[
+#
 #  [
 #    "Your Majesty, we Catholic clergy have done our best to destroy the Church for the last eighteen hundred years. We have not succeeded, and neither will you.",
 #    "Massimo Faggioli"
@@ -16,11 +17,9 @@
 #]
 # ---------------------------
 #
-# Dependencies
+# DEPENDENCIES:
 #   jq
 #   shuf
-#   slock
-#     slock-message-xft
 #
 # BeyondMagic © 2021
 
@@ -34,19 +33,19 @@ first_line=$(echo "$quote_chose" | tr '\r\n' ' ' | jq -r ".[0]")
 secon_line=$(echo "$quote_chose" | tr '\r\n' ' ' | jq -r ".[1]")
 third_line=$(echo "$quote_chose" | tr '\r\n' ' ' | jq -r ".[2]")
 
-
-
 # Function
 #   Center input text based on the terminal's size
-center() {
+#center() {
 
-  cols=$(tput cols)
-  string="$@"
+#  cols=$(tput cols)
+#  string="$@"
 
-  [ "$string" = "null" ] || printf "%*s\n" $(((${#string}+$cols)/2)) "$string"
+#  [ "$string" = "null" ] || printf "%*s\n" $(((${#string}+$cols)/2)) "$string"
 
-}
+#}
 
-center "$first_line"
-center "$secon_line"
-center "$third_line"
+echo "$first_line"
+[ "$secon_line" != 'null' ] && echo "$secon_line"
+[ "$third_line" != 'null' ] && echo "$third_line"
+
+:
