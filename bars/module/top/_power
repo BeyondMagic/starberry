@@ -13,8 +13,11 @@
   option=$(echo "Power: Turn off." \
     "\nRestart: Quick restart." \
     "\nSleep: I'm an ice bear in the summer." \
-    "\n-------------------------------------" \
+    "\n────────────────" \
     "\ndwm: Restart dwm instance." \
+    "\n────────────────" \
+    "\nlog-out: Leave current session." \
+    "\nlock: Lock screen." \
     | 91menu -g 0x0+1195+40 \
     | sed -r 's/:.+//')
 

@@ -15,12 +15,12 @@
 #
 # DEPENDENCIES: 
 #   Xorg
+#   doas
 #   dash
 #   xdotools
 #   lemonbar (or forks that have fontconfig, clickable, hover in and out events)
-#   sensors
-#   lm_sensors ; sensors
-#   notify-send
+#   lm_sensors
+#   notify-send.sh
 #   xnotify
 #   mpd
 #     mpc

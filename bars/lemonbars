@@ -31,6 +31,7 @@
     done
 
   pkill -9 -f "lemonbar -H "
+  pkill -9 -f "sh $SCRIPTS_FOLDER/bars/lemonbars"
 
   exit 0
 

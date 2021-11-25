@@ -140,7 +140,7 @@ _get_active_window() {
 
   echo "DWM died, resetting connection in 3 seconds"; sleep 3
 
-  exec "$SCRIPTS_FOLDER/bars/bottom/_title" 'run'
+  exec "$SCRIPTS_FOLDER/bars/module/bottom/_title" 'run'
 
 }
 

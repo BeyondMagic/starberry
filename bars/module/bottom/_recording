@@ -62,10 +62,10 @@
 
   icon=""
 
-  first_click="%{A1:execute dash $SCRIPTS_FOLDER/bars/bottom/_recording open_menu:}"
+  first_click="%{A1:execute dash $SCRIPTS_FOLDER/bars/module/bottom/_recording open_menu:}"
   middle_click="%{A2:execute dash $SCRIPTS_FOLDER/record/record_size:}"
 
   # $1 is being used here as the fifo of the bar
   echo 'R' "%{T3}$first_click$middle_click%{F$recording_fg}$icon%{A1}%{A2}%{T2}　" > "$1"
 
-} || echo "/bars/bottom/_recording: You have to call this script with the first argument being the fifo of the bar."
+} || echo "/module/bottom/_recording: You have to call this script with the first argument being the fifo of the bar."
