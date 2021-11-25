@@ -2,7 +2,7 @@
 #
 # This takes a full screenshot using imagemagic and puts unclutter back to its state
 # 
-# BeyondMagic © 2021
+# BeyondMagic 🄯 2021
 
 killall unclutter
 

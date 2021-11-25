@@ -21,7 +21,7 @@
 #   jq
 #   shuf
 #
-# BeyondMagic © 2021
+# BeyondMagic 🄯 2021
 
 quotes_path="$HOME/git/startpage/data/quotes.json"
 

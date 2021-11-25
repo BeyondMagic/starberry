@@ -8,7 +8,7 @@
 #   1: https://github.com/BeyondMagic/scripts/tree/master/bars/modules
 #
 # MAINTAINER: (s)
-#   GPL3 ©  BeyondMagic <koetemagie/gmail.com> 2021-
+#   GPL3 🄯 BeyondMagic <koetemagie/gmail.com> 2021-
 
 # Names for tags (notification) [./bottom/_layout]
 name0="$(xgetres bars.name0)"

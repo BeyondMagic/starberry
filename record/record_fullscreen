@@ -1,14 +1,15 @@
 #!/usr/bin/env sh
 #
-# Description
+# DESCRIPTION:
 #   Simple recording tool with ffmpeg.
 #
-# Dependencies
+# DEPENDENCIES:
 #   ffmpeg
 #   notify-send.sh
 #   pkill (coreutils)
 #
-# BeyondMagic © 2021
+# MAINTAINER: (s)
+#   BeyondMagic 🄯 2021-
 
 
 
@@ -36,7 +37,7 @@ mkdir -p "$PATH_RECORDINGS"
   touch "$IS_RECORDING"
 
   # Send a sign of recording to lemonbar so that you know it is being recorded.
-  "$SCRIPTS_FOLDER/bars/bottom_bar/_recording" "$FIFO_BAR"
+  "$SCRIPTS_FOLDER/bars/module/bottom/_recording" "$FIFO_BAR"
 
   # Start recording
   ffmpeg -f alsa -ac 1 -i pulse \

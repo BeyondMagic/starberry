@@ -9,42 +9,61 @@
 # BeyondMagic  GPL3 LICENSE  2021
 
 option=$(echo \
-	"st: Open Simple Terminal." \
-	"\nst-float: Open Simple Terminal in floating mode." \
-	"\nfox: Open browser." \
-	"\ntelegram: Open Telegram Desktop." \
+	"lemonbar: Restart." \
+	"\nlemonbar-modules: Restart modules of bars." \
 	"\nrandom wallpaper: Random wallpaper." \
 	"\nprevious wallpaper: Select previous wallpaper." \
 	"\ndelete wallpaper: Delete current wallpaper." \
 	| 91menu | sed -r 's/:.+//')
 
+#	"st: Open Simple Terminal." \
+#	"st-float: Open Simple Terminal in floating mode." \
+#	"\nfox: Open browser." \
+#	"\ntelegram: Open Telegram Desktop." \
+
 origin="$(cd -- "$(dirname "$0")" >/dev/null 2>&1 && pwd -P)"
 
 case "$option" in
 
-	st)
+#	st)
 
-		nohup st >/dev/null 2>&1 &
+#		nohup st >/dev/null 2>&1 &
 
-	;;
+#	;;
 
-	st-float)
+#	st-float)
 
-		nohup $HOME/git/scripts/terminal/st_float >/dev/null 2>&1 &
+#		nohup $HOME/git/scripts/terminal/st_float >/dev/null 2>&1 &
 
-	;;
+#	;;
 
-	fox)
+#	fox)
 
-		xdo activate -N Nightly	|| nohup firefox-nightly >/dev/null 2>&1 &
+#		xdo activate -N Nightly	|| nohup firefox-nightly >/dev/null 2>&1 &
 
-	;;
+#	;;
 
-	telegram)
+#	telegram)
 
-		xdo activate -N telegram-desktop || nohup telegram-desktop >/dev/null 2>&1 &
+#		xdo activate -N telegram-desktop || nohup telegram-desktop >/dev/null 2>&1 &
 
-	;;
+#	;;
+
+  lemonbar)
+
+    ~/git/scripts/bars/modules clean
+    ~/git/scripts/bars/lemonbars clean
+    ~/git/scripts/bars/lemonbars
+    ~/git/scripts/bars/modules
+
+  ;;
+
+  lemonbar-modules)
+
+    ~/git/scripts/bars/modules clean
+    ~/git/scripts/bars/modules
+
+  ;;
 
 	'random wallpaper')
 

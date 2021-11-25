@@ -8,7 +8,7 @@
 #   notification-send
 #   imagemagick
 #
-# BeyondMagic © 2021
+# BeyondMagic 🄯 2021
 
 
 stdbuf -i0 -o0 -e0 colorpicker --short --one-shot | while IFS=$'\n' read -r id_colour; do

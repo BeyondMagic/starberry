@@ -34,7 +34,7 @@
 # Sets
 #   quotes_path = path of the quotes.json file
 #
-# BeyondMagic © 2021
+# BeyondMagic 🄯 2021
 
 
 quotes_path="$HOME/git/startpage/data/quotes.json"

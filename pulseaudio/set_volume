@@ -8,7 +8,7 @@
 #   libnotify ; notify-send
 #   libpulse ; pactl
 # 
-# BeyondMagic © 2021
+# BeyondMagic 🄯 2021
 
 [ "$1" = "increase" ] \
   && {
@@ -17,4 +17,4 @@
   pactl -- set-sink-volume @DEFAULT_SINK@ -2% &
 }
 
-"$SCRIPTS_FOLDER"/bars/top/_sound run > /tmp/top.fifo
+"$SCRIPTS_FOLDER"/bars/module/top/_sound run > /tmp/top.fifo

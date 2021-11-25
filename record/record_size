@@ -1,19 +1,19 @@
 #!/usr/bin/env sh
 #
-# Description
+# DESCRIPTION:
 #   Simple recording tool with ffmpeg.
 #
-# Dependencies
+# DEPENDENCIES:
 #   ffmpeg
 #   notify-send.sh
 #   pkill (coreutils)
 #
-# BeyondMagic © 2021
-
-
+# MAINTAINER: (s)
+#   BeyondMagic 🄯 2021-
 
 IS_RECORDING="/tmp/is_recording"
 FIFO_BAR="/tmp/bottom.fifo"
+
 
 [ -f "$IS_RECORDING" ] && {
 
@@ -24,8 +24,6 @@ FIFO_BAR="/tmp/bottom.fifo"
 
 }
 
-
-
 SLOP_ARGS="$(slop -f "%w %h %x %y" | tr ' ' '\n')"
 
 [ "$(echo "$SLOP_ARGS" | wc -l)" = 4 ] || exit 0
@@ -33,12 +31,12 @@ SLOP_ARGS="$(slop -f "%w %h %x %y" | tr ' ' '\n')"
 SIZE="$(echo "$SLOP_ARGS" | sed '1q;d')x$(echo "$SLOP_ARGS" | sed '2q;d')"
 POSITION="$(echo "$SLOP_ARGS" | sed '3q;d'),$(echo "$SLOP_ARGS" | sed '4q;d')"
 FRAME_RATE="30"
-
 PATH_RECORDINGS="$HOME/.cache/ffmpeg"
 FORMAT_FILE="mkv"
 NAME_FILE="$PATH_RECORDINGS/record_$(date +'%a_%b_%d_%H:%M:%S').$FORMAT_FILE"
-
 ICON_CAMERA="$HOME/Base/icons/camera.png"
+
+
 
 mkdir -p "$PATH_RECORDINGS"
 
@@ -51,7 +49,7 @@ mkdir -p "$PATH_RECORDINGS"
   touch "$IS_RECORDING"
 
   # Send a sign of recording to lemonbar so that you know it is being recorded.
-  "$SCRIPTS_FOLDER/bars/bottom_bar/_recording" "$FIFO_BAR"
+  "$SCRIPTS_FOLDER/bars/module/bottom/_recording" "$FIFO_BAR"
 
   # Start recording
   ffmpeg -f alsa -ac 1 -i pulse \

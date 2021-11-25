@@ -14,7 +14,7 @@
 # TODO
 #   add more descriptions for kaomojis
 # 
-# BeyondMagic © 2021
+# BeyondMagic 🄯 2021
 
 export PATH="$PATH:$HOME/.cargo/bin"
 
