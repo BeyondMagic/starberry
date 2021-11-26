@@ -107,8 +107,10 @@ exec 3<> "$location_of_top_fifo"; exec 3<> "$location_of_bottom_fifo"
   . "$origin"/module/top/_clock
   . "$origin"/module/top/_power
   . "$origin"/module/top/_sensors
+  . "$origin"/module/top/_packages
   _clock &
   _sensors &
+  _get_packages &
   _get_power
 
 } > "$location_of_top_fifo"

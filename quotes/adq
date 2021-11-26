@@ -1,14 +1,15 @@
 #!/usr/bin/env sh
 #
-# Add quote to a file like:
+# DESCRIPTION:
+#   Add a new quote to a .json file.
 #
-# Warning: this script will overwrite your scripts.
+# DEPENDENCIES:
+#   sed (gnu)
 #
-#   This was tested with GNU sed 4.8
-#   See your version with:
-#     info sed
+# WARNING:
+#   this script will overwrite the quote file.
 #
-#
+# NOTE:
 # -------quotes.json--------
 #[
 #  [
@@ -18,23 +19,22 @@
 #]
 # ---------------------------
 #
-# Examples
+# Examples:
 #   ./this_executable "This generation fights sex trafficking more than anyone ever has and more than anyone ever has this generation consumes pornography."
 #   ./this_executable "É a batalha pela mente, guerra psicológica. Levando a loucura, tortura neurológica." "Zamba" "A Arte da Guerra"
 #   quotes_path="$HOME/quotes.json" $HOME/scripts/thix_executable "That's why we sing for these kids who don't have a thing, except for a dream and a fucking rap magazine." "Eminem"
 #
-# Dependencies
-#   sed
 #
-# Arguments
+# Arguments:
 #   $1 : quote
 #   $2 : author (optional)
 #   $3 : source (optional)
 #
-# Sets
+# Set:
 #   quotes_path = path of the quotes.json file
 #
-# BeyondMagic 🄯 2021
+# MAINTAINER: (s)
+#   GPL3 🄯 BeyondMagic <koetemagie/gmail.com> 2021-
 
 
 quotes_path="$HOME/git/startpage/data/quotes.json"

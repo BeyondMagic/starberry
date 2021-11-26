@@ -1,3 +1,7 @@
+<h1 align="center">THIS README.md IS OUTDATED</h1>
+
+---
+
 <h2 align="center">Dash Scripts</h2>
 
 Loads an ASCII art when opening a new terminal: [nincat](https://github.com/ninecath/nincat/).

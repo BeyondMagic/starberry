@@ -1,14 +1,15 @@
 #!/usr/bin/env sh
 #
-# Description
+# DESCRIPTION:
 #   Simple script to notify the volume settings of both sides
 #   left and right
 #
-# Dependencies
+# DEPENDENCIES:
 #   libnotify ; notify-send
 #   libpulse ; pactl
-# 
-# BeyondMagic 🄯 2021
+#
+# MAINTAINER: (s)
+#   GPL3 🄯 BeyondMagic <koetemagie/gmail.com> 2021-
 
 [ "$1" = "increase" ] \
   && {

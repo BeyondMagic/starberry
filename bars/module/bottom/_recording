@@ -1,17 +1,17 @@
 #!/usr/bin/env sh
 #
-# Description
-#   Just get the swap and format it to lemonbar
+# DESCRIPTION:
+#   Just get the swap and format it to lemonbar.
 #
-# Dependencies
+# DEPENDENCIES:
 #   bc
-#   
-# Note
+#
+# NOTE:
 #   A swap file running in your system, or just disable it
 #   by removing correctly where it contains `swap` names
 #
-# BeyondMagic  GPL3 LICENSE  2021
-
+# MAINTAINER: (s)
+#   GPL3 🄯 BeyondMagic <koetemagie/gmail.com> 2021-
 
 [ "$1" = "open_menu" ] && {
 

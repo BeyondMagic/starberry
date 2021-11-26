@@ -1,23 +1,22 @@
 #!/usr/bin/env sh
 #
 # DESCRIPTION:
-#   Button to open a sidebar, it doesn't work yet
+#   Button to open a menu to do things.
 # 
-# DEPENDENCIES: 
+# DEPENDENCIES:
 #   91menu
 #
-# https://github.com/BeyondMagic/scripts/tree/master/bars
+# MAINTAINER: (s)
+#   GPL3 🄯 BeyondMagic <koetemagie/gmail.com> 2021-
 
 [ "$1" = "open_menu" ] && {
 
   option=$(echo "Power: Turn off." \
     "\nRestart: Quick restart." \
     "\nSleep: I'm an ice bear in the summer." \
+    "\nLog-out: Leave current session." \
     "\n────────────────" \
     "\ndwm: Restart dwm instance." \
-    "\n────────────────" \
-    "\nlog-out: Leave current session." \
-    "\nlock: Lock screen." \
     | 91menu -g 0x0+1195+40 \
     | sed -r 's/:.+//')
 
@@ -44,6 +43,13 @@
     dwm)
 
       pkill -1 dwm
+
+    ;;
+
+    Log-out)
+
+#      nohup exec clearlovemii >/dev/null 2>&1 &
+      exec clearlovemii
 
     ;;
 

@@ -1,0 +1,31 @@
+#!/usr/bin/env sh
+#
+# DESCRIPTION:
+#   Using the 'pacman' command, get a list of packages that needs to be upgraded.
+#
+# DEPENDENCIES:
+#   pacman
+#
+# MAINTAINER: (s)
+#   GPL3 🄯 BeyondMagic <koetemagie/gmail.com> 2021-
+
+_get_packages() {
+
+  icon_packages=""
+
+  while : ; do
+
+    list_packages="$(pacman -Qu | wc -l)"
+    echo 'p' "${icon_packages} ${list_packages}"
+    sleep 120
+
+  done
+
+}
+
+[ "$1" = "run" ] && {
+
+  . "$SCRIPTS_FOLDER"/bars/config
+  _get_packages
+
+}

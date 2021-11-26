@@ -3,11 +3,14 @@
 # DESCRIPTION:
 #   Opens Simple Terminal with random geomtry
 #
-# BeyondMagic 🄯 2021
+# DEPENDENCIES:
+#   st
+#   dwm (rule for the title 'floatst' to be floating)
+#
+# MAINTAINER: (s)
+#   BeyondMagic : 2021- : <koetemagie@gmail.com>
 
   random_lines=$(shuf -i 10-20 -n 1)
 random_columns=$(shuf -i 30-70 -n 1)
-
-#cd ~
 
 nohup st -g ${random_columns}x${random_lines}+0+0 -T floatst >/dev/null 2>&1 &

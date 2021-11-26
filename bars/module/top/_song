@@ -1,16 +1,17 @@
 #!/usr/bin/env sh
 #
 # DESCRIPTION:
-#   Load MPD info every time MPD updates
-# 
+#   Load MPD info every time MPD updates.
+#
 # DEPENDENCIES:
 #   mpd
-#     mpc
+#   mpc
 #
-# https://github.com/BeyondMagic/scripts/tree/master/bars
+# MAINTAINER: (s)
+#   GPL3 🄯 BeyondMagic <koetemagie/gmail.com> 2021-
 
 song_format() {
-  
+
                info=$(mpc)
                song=$(echo "$info" | head -n 1)
         song_length=${#song}

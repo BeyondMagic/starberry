@@ -92,10 +92,14 @@ read_top_bar() {
       T*)
         sound="${line#?}";;
 
+      # Packages [./top/_packages]
+      p*)
+        packages="${line#?}";;
+
     esac
 
     # NOTE: 5.2: Print information to our fifo.
-    printf "%s%s%s\n" "$clock  %{F-}%{B-}$sensors%{c}$music%{r}$sound  $power"
+    printf "%s%s%s\n" "$clock  %{F-}%{B-}$sensors%{c}$music%{r}$packages　$sound  $power"
 
   done < "$location_of_top_fifo"
 }

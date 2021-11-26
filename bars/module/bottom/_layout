@@ -7,7 +7,9 @@
 #   dwm
 #   dwm-msg
 #
-# github.com/beyondmagic/scripts/tree/master/bars
+# MAINTAINER: (s)
+#   GPL3 🄯 BeyondMagic <koetemagie/gmail.com> 2021-
+
 
 icon_selected=" $(xgetres bars.tags.selected)"
 icon_selected_occupied=" $(xgetres bars.tags.selected.occupied)"

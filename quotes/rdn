@@ -3,6 +3,7 @@
 # DESCRIPTION: 
 #   Load random quote of a file.
 #
+# NOTE:
 # -------quotes.json--------
 #
 #  [
@@ -21,7 +22,8 @@
 #   jq
 #   shuf
 #
-# BeyondMagic 🄯 2021
+# MAINTAINER: (s)
+#   BeyondMagic : 2021- : <koetemagie@gmail.com>
 
 quotes_path="$HOME/git/startpage/data/quotes.json"
 

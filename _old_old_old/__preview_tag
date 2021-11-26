@@ -6,7 +6,11 @@
 # DEPENDENCIES:
 #   nsxiv
 #
-# github.com/beyondmagic/scripts/tree/master/bars
+# NOTE:
+#   github.com/beyondmagic/scripts/tree/master/bars
+#
+# MAINTAINER: (s)
+#   GPL3 🄯 BeyondMagic <koetemagie/gmail.com> 2021-
 
 title_nsxiv="$(xgetres bars.preview.title)"
 

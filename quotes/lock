@@ -1,7 +1,9 @@
 #!/usr/bin/env sh
 #
-# Load random quote of a file like this and put in slock
+# DESCRIPTION:
+#   Load random quote of a file like this and put in slock.
 #
+# NOTE:
 # -------quotes.json--------
 #[
 #  [
@@ -16,13 +18,14 @@
 #]
 # ---------------------------
 #
-# Dependencies
+# DEPENDENCIES:
 #   jq
 #   shuf
 #   slock
 #     slock-message-xft
 #
-# BeyondMagic 🄯 2021
+# MAINTAINER: (s)
+#   BeyondMagic : 2021- : <koetemagie@gmail.com>
 
 unset use
 

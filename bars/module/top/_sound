@@ -1,12 +1,13 @@
 #!/usr/bin/env sh
 #
-# DESCRIPTION: 
+# DESCRIPTION:
 #   Display current volume percentage.
 # 
-# DEPENDENCIES: 
+# DEPENDENCIES:
 #   pamixer
 #
-# https://github.com/BeyondMagic/scripts/tree/master/bars
+# MAINTAINER: (s)
+#   GPL3 🄯 BeyondMagic <koetemagie/gmail.com> 2021-
 
 _get_audio() {
 
@@ -35,7 +36,7 @@ _get_audio() {
   decrease_volume="%{A5:execute dash $HOME/git/scripts/pulseaudio/set_volume:}"
        click_icon='%{A1:execute pavucontrol:}'
   
-  echo 'T' "%{T4}%{F$sound_icon_on}$click_icon$icon%{A1}  $decrease_volume$increase_volume$(echo "%{T3}$done%{T4}%{O-4}%{T3}%{O-}$left" | sed "s/ /$symbol/g")%{A4}%{A5}"
+  echo 'T' "%{T4}%{F$sound_icon_on}$click_icon$icon%{A1}  $decrease_volume$increase_volume$(echo "%{T4}$done%{T3}%{O-4}%{T3}%{O-}$left" | sed "s/ /$symbol/g")%{A4}%{A5}"
  
 }
 

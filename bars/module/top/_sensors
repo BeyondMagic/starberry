@@ -1,12 +1,13 @@
 #!/usr/bin/env sh
 #
 # DESCRIPTION:
-#   Load MPD info every time it updates
+#   Load MPD info every time it updates.
 # 
-# DEPENDENCIES: 
+# DEPENDENCIES:
 #   sensors
 #
-# https://github.com/BeyondMagic/scripts/tree/master/bars
+# MAINTAINER: (s)
+#   GPL3 🄯 BeyondMagic <koetemagie/gmail.com> 2021-
 
 _icon_sensors() {
 

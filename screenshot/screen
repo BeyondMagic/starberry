@@ -1,8 +1,16 @@
 #!/usr/bin/env sh
 #
-# This takes a screenshot using Imagemagick and puts unclutter back to its state.
+# DESCRIPTION:
+#   This takes a screenshot using Imagemagick and puts unclutter back to its state.
 #
-# BeyondMagic 🄯 2021
+# DEPENDENCIES:
+#   xclip
+#   notify-send.sh
+#   imagemagick
+#   unclutter (optional)
+#
+# MAINTAINER: (s)
+#   BeyondMagic : 2021- : <koetemagie@gmail.com>
 
 killall unclutter
 import png:- | xclip -selection clipboard -t image/png

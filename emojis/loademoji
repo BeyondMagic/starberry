@@ -1,20 +1,17 @@
 #!/usr/bin/env sh
 #
-# The famous "get a menu of emojisto copy" script.
-# Get user selection via dmenu from emoji file.
+# DESCRIPTION:
+#   The famous "get a menu of emojisto copy" script.
+#   Get user selection via dmenu from emoji file.
 #
-# Dependencies
+# DEPENDENCIES:
 #   dmenu
 #   xdotool
 #   libnotify ; notify-send
 #   xclip
 #
-# Thanks LukeSmith for the base script
-#
-# TODO
-#   add more descriptions for kaomojis
-# 
-# BeyondMagic 🄯 2021
+# MAINTAINER: (s)
+#   GPL3 🄯 BeyondMagic <koetemagie/gmail.com> 2021-
 
 export PATH="$PATH:$HOME/.cargo/bin"
 

@@ -1,24 +1,25 @@
 #!/usr/bin/env sh
 #
-# Description
+# DESCRIPTION:
 #   Get the title of the active windows
 #   You can set an icon for specific programs that you
 #   Often use :)
 #
-# Note
+# NOTE:
 #   This formats for certain windows invidivually.
 #   For example, for simple terminal (st), it
 #   will display a certain icon.
 #   You can change that by just creating a new 
 #   condition in 'format_active_window'
 #
-# Dependencies
+# DEPENDENCIES:
 #   xorg
 #   dwm
 #     dwm-msg
 #   recode
 #
-# BeyondMagic  GPL3 LICENSE  2021
+# MAINTAINER: (s)
+#   GPL3 🄯 BeyondMagic <koetemagie/gmail.com> 2021-
 
 # Format a Process name based on ID
 #   Note: it's ID, not PID
@@ -27,7 +28,7 @@ format_active_window() {
   icon=""
   process_id="$1"
 
-  total=$(xprop -id "$process_id" | grep "_NET_WM_NAME" | sed -r -e 's/(_NET_WM_NAME\(UTF8_STRING\) = ")|"$//g')
+  total=$(xprop -id "$process_id" | grep "_NET_WM_NAME" | sed -re 's/(_NET_WM_NAME\(UTF8_STRING\) = ")|"$//g' -e "")
   name=$(cat /proc/$(xdotool getwindowpid "$process_id")/comm)
   
 

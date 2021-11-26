@@ -1,13 +1,14 @@
 #!/usr/bin/env sh
 # 
-# DESCRIPTION: 
-#   Get clock time :|
+# DESCRIPTION:
+#   Get clock time using the command date.
 #
-# NOTE: 
+# NOTE:
 #   This setting is working Japanese systems
 #   Change the "echo 'C'" line to change this
 #
-# https://github.com/BeyondMagic/scripts/tree/master/bars
+# MAINTAINER: (s)
+#   GPL3 🄯 BeyondMagic <koetemagie/gmail.com> 2021-
 
 # set icon to right
 _icon_right() {

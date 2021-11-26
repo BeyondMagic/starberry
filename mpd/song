@@ -1,18 +1,17 @@
 #!/usr/bin/env sh
 #
-# Description
+# DESCRIPTION:
 #   Load a notification for current song with 
 #   cover :)
 #
-# Dependencies
-#
+# DEPENDENCIES:
 #   libnotify ; notify-send
 #   mpd
 #     mpc
 #   imagemagick
 #
-# BeyondMagic 🄯 2021
-
+# MAINTAINER: (s)
+#   GPL3 🄯 BeyondMagic <koetemagie/gmail.com> 2021-
 
 unset music_path artist title file
 
