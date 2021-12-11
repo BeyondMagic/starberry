@@ -7,6 +7,7 @@
 #   ffmpeg
 #   notify-send.sh
 #   pkill (coreutils)
+#   slop
 #
 # MAINTAINER: (s)
 #   BeyondMagic : 2021- : <koetemagie@gmail.com>
