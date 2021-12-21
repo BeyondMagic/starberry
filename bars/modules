@@ -104,6 +104,7 @@ exec 3<> "$location_of_top_fifo"; exec 3<> "$location_of_bottom_fifo"
 
   "$origin"/module/top/_song run &
   "$origin"/module/top/_sound run &
+  "$origin"/module/top/_tasks update &
   . "$origin"/module/top/_clock
   . "$origin"/module/top/_power
   . "$origin"/module/top/_sensors
@@ -120,7 +121,7 @@ exec 3<> "$location_of_top_fifo"; exec 3<> "$location_of_bottom_fifo"
 # HACK: It toggles MPD for "./top/_song" read.
 mpc toggle && mpc toggle
 # HACK: It switches tag of DWM for "./bottom/_layout" read.
-dwm-msg run_command view 128 && dwm-msg run_command view 1
+# dwm-msg run_command view 128 && dwm-msg run_command view 1
 
 # ---------------------------------------------------------------------------------------------
 

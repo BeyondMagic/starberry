@@ -52,11 +52,24 @@ _get_tags() {
   jq --unbuffered '.tag_change_event.new_state | .selected, .occupied' |
   while IFS=$'\n' read -r selected && read -r occupied; do 
 
+    set noadd
 
     # Loop through all the 9 tags
     # It starts from 0
     out=""; tag=0; while [ $tag -le 8 ]; do
-    
+
+      case $tag in
+        0) name="1" ; icon="";;
+        1) name="2" ; icon="";;
+        2) name="3" ; icon="";;
+        3) name="4" ; icon="";;
+        4) name="5" ; icon="";;
+        5) name="6" ; icon="";;
+        6) name="7" ; icon="";;
+        7) name="8" ; icon="";;
+        8) name="9" ; icon="";;
+      esac
+
       # Does this really needs any explanation?
       bit=$((1 << $tag))
       click_button="%{A1:execute dwm-msg run_command view ${bit}:}"
@@ -67,34 +80,47 @@ _get_tags() {
       # Selected and with programs
       if [ $(($selected & $bit)) -ne 0 ] && [ $(($occupied & $bit)) -ne 0 ]; then
         # Pretty output (with external variables)
-        out="${out}%{F$fg_selected_occupied}$buttons $icon_selected_occupied %{A1}"
+        out="${out}%{F$fg_selected_occupied}$buttons $icon$name %{A1}"
         # Simple output
         # out="${out} X"
+
+        noadd="$((1 << ($tag + 1)))"
+
+        [ $name = 9 ] && unset noadd
 
       # Selected without programs
       elif [ $(($selected & $bit)) -ne 0 ]; then
         # Pretty output (with external variables)
-        out="${out}%{F$fg_selected}$buttons $icon_selected %{A1}"
+        out="${out}%{F$fg_selected}$buttons $icon$name %{A1}"
         # Simple output
         # out="${out} o"
+
+        unset noadd
 
       # Not selected with programs
       elif [ $(($occupied & $bit)) -ne 0 ]; then
         # Pretty output (with external variables)
-        out="${out}%{F$fg_unselect}$buttons $icon_unselect %{A1}"
+        out="${out}%{F$fg_unselect}$buttons $icon$name %{A1}"
         # Simple output
         # out="${out} +"
 
+        noadd="$((1 << ($tag + 1)))"
+
+        [ $name = 9 ] && unset noadd
+
       # Nothing at all
-      else
+      fi #else
         # Pretty output (with external variables)
-        out="${out}%{F$fg_unselect_all}$buttons $icon_unselect_occupied %{A1}"
+        #out="${out}%{F$fg_unselect_all}$buttons $icon_unselect_occupied$name %{A1}"
         # Simple output
         # out="${out} -"
-
-      fi
+        :
+      #fi
 
     tag=$((tag+1)); done
+
+    [ $noadd ] && noadd="%{F$fg_selected_occupied}%{A1:execute dwm-msg run_command view $noadd:}+%{A1}"
+    out="$out$noadd"
 
     #kill $!
     
@@ -112,7 +138,7 @@ _get_tags() {
 
 
     # Pretty output (with external variables)
-    echo 'W' "%{T3}%{B$bg_tags}$out  %{F$bg_tags}%{B-}$rv_affix"
+    echo 'W' "%{T3}%{B$bg_tags}$out  %{F$bg_tags}%{B-}"
     # Simple output
     # echo 'W' "$out"
 
@@ -134,8 +160,7 @@ _get_layout() {
 
       # Beautify with colours, I recommend using the later one if
       # you don't have idea where the rest of the colours/variables come
-      echo 'L' "%{O-5 B$layout_bg F$layout_fg T1}  " \
-               "$tagid %{F$bg_tags B$layout_bg}$affix%{B$bg_tags F-}"
+      echo 'L' "%{O-5 B$layout_bg F$layout_fg}%{T1}   $tagid  %{F$bg_tags B$layout_bg}%{F-}"
 
       # Simple output
       # echo 'L' "$tagid"

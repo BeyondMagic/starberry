@@ -15,7 +15,7 @@ _icon_sensors() {
 
   affix_reverse="$(xgetres bars.separator3)"
 
-  echo "%{T3}%{B$bg_icon}%{F$sensors_fg_affix}$affix%{F$fg_icon}$icon%{F$bg_icon}%{B$sensors_bg_affix}$affix_reverse%{T2}"
+  echo "%{T3}%{B$bg_icon}%{F$fg_icon}  $icon %{F$bg_icon}%{B$sensors_bg_affix}%{T2}%{F$fg_icon}  "
 
 }
 
@@ -41,7 +41,7 @@ _sensors() {
     # 77 < sss < 95
     [ "$sss" -gt "76" ] && [ "$sss" -lt "95" ] && mmm="$(_icon_sensors " " "$hig_med_bg" "$hig_med_fg" ) $sss"
 
-    echo 'S' "%{T1}%{O-4}$mmm ºC  %{F$sensors_bg_affix}%{B-}$affix%{T2}%{F-}"
+    echo "S %{O-8}$mmm ºC  %{F$sensors_bg_affix}%{B-} %{T2}%{F-}"
 
     sleep 5
 

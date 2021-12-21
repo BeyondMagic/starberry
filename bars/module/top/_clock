@@ -14,7 +14,7 @@
 _icon_right() {
   icon="$1"; affix="$2"; fg="$3"; bg="$4"; f_bg="$5"
 
-  echo "%{T3}%{B$bg}%{F$fg}  $icon%{F$bg}%{B$f_bg}$affix%{T2}%{B-}%{O-0}"
+  echo "%{T3}%{B$bg}%{F$fg}  $icon%{F$bg}%{B$f_bg}  %{T2}%{B-}%{O-0}"
 }
 
 _clock() {
@@ -28,7 +28,7 @@ _clock() {
 
     prefix="%{O-3}$(_icon_right "$(expr substr "$icons" $icon 1)" "$affix" "$clock_fg" "$clock_bg" "$clock_f_bg")"
 
-    echo 'C' "$prefix%{B$clock_f_bg}%{F$clock_fg}$(date +'%a %b %d - %H:%M:%S' | sed -re "s/:/%{F$clock_hg}:%{F$clock_fg}/g" -e "s/-/%{F$clock_hg}-%{F$clock_fg}/g")" &
+    echo 'C' "$prefix%{B$clock_f_bg}%{F$clock_fg}$(date +'%a %b %d - %H:%M:%S' | sed -re "s/:/%{F$clock_hg}:%{F$clock_fg}/g" -e "s/-/%{F$clock_hg}-%{F$clock_fg}/g")  %{F-}%{B-}" &
     
     [ "$icon" = "$max_icon" ] && icon=1 || icon=$(($icon + 1))
 

@@ -45,7 +45,8 @@
       bold_font="$(xgetres bars.font.bold)"
      emoji_font="$(xgetres bars.font.emoji)"
   material_font="$(xgetres bars.font.material)"
-  
+     small_font="$(xgetres bars.font.small)"
+
   # NOTE: 3: Get paths of fifos to transform
   #   Constants of FIFOs paths to create as we will use them to send information of our modules.
   [ "$BARS_TOP_FIFO" ] && [ "$BARS_BOTTOM_FIFO" ] && {
@@ -54,7 +55,7 @@
        location_of_top_fifo="$BARS_TOP_FIFO"
 
   } || {
-    
+
     location_of_bottom_fifo="/tmp/bottom.fifo"
        location_of_top_fifo="/tmp/top.fifo"
   }
@@ -96,10 +97,14 @@ read_top_bar() {
       p*)
         packages="${line#?}";;
 
+      # Packages [./top/_packages]
+      t*)
+        task="${line#?}";;
+
     esac
 
     # NOTE: 5.2: Print information to our fifo.
-    printf "%s%s%s\n" "$clock  %{F-}%{B-}$sensors%{c}$music%{r}$packages　$sound  $power"
+    printf "%s%s%s\n" "$clock  $sensors%{c}$music%{r}$task　$packages　$sound  $power"
 
   done < "$location_of_top_fifo"
 }
@@ -135,7 +140,7 @@ read_bottom_bar() {
     esac
 
     # NOTE: 6.2: Print information to our fifo.
-    printf "%s%s%s\n" "$layouts%{T3}$tags%{T1}%{c}$title%{r}$record$memory$nickname　"
+    printf "%s%s%s\n" "$layouts$tags%{T1}%{c}$title%{r}$record$memory$nickname"
 
    done < "$location_of_bottom_fifo"
 }
@@ -148,10 +153,11 @@ read_bottom_bar() {
 read_top_bar | lemonbar -H -p -g "$(xgetres bars.top.geometry)" \
   -B "$(xgetres bars.bg)" \
   -F "$(xgetres bars.fg)" \
-  -o 0 -f "$normal_font" \
+  -o -1 -f "$normal_font" \
   -o 0 -f "$bold_font" \
-  -o 1 -f "$emoji_font" \
-  -o 0 -f "$material_font" \
+  -o -1 -f "$emoji_font" \
+  -o -3 -f "$material_font" \
+  -o 0 -f "$small_font" \
 	| while read -r line; do
     [ $(echo "$line" | awk '{print $1}') = 'execute' ] && {
       line="$(echo "$line" | sed -r 's/^execute //')"
@@ -165,10 +171,11 @@ read_top_bar | lemonbar -H -p -g "$(xgetres bars.top.geometry)" \
 read_bottom_bar | lemonbar -H -b -p -g "$(xgetres bars.bottom.geometry)" \
   -B "$(xgetres bars.bg)" \
   -F "$(xgetres bars.fg)" \
-  -o 0 -f "$normal_font" \
-  -o 0 -f "$bold_font" \
-  -o 1 -f "$emoji_font" \
-  -o -3 -f "$material_font" \
+  -o -1 -f "$normal_font" \
+  -o -2 -f "$bold_font" \
+  -o -1 -f "$emoji_font" \
+  -o -5 -f "$material_font" \
+  -o -6 -f "$small_font" \
   -n "bottom_bar" \
   | while read -r line; do
     [ $(echo "$line" | awk '{print $1}') = 'execute' ] && {

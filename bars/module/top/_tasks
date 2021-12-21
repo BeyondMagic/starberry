@@ -1,0 +1,59 @@
+#!/usr/bin/env sh
+#
+# DESCRIPTION:
+#   Gives a list of tasks you have to do.
+# 
+# DEPENDENCIES:
+#   91menu
+#   dmenu
+#   sed (GNU)
+#
+# NOTE:
+#   Settable options:
+#     path_of_file : Path of the tasks file. Each line is a task.
+#   Enviroment variables:
+#     BARS_TOP_FIFO : Self-describes.
+#
+# MAINTAINER: (s)
+#   GPL3 🄯 BeyondMagic <koetemagie/gmail.com> 2021-
+
+path_of_file="$HOME"/Base/tasks_of_my_life
+
+_update_task() {
+
+  icon=" + "
+  icon_click="%{A1:execute dash $SCRIPTS_FOLDER/bars/module/top/_tasks add:}"
+  execute_click="%{A1:execute dash $SCRIPTS_FOLDER/bars/module/top/_tasks run:}"
+  echo 't' "$icon_click$icon%{A1}" "${execute_click}$(head -n1 "$path_of_file")%{A1}" > "$BARS_TOP_FIFO"
+
+}
+
+_get_tasks() {
+
+  _update_task
+
+  list_of_tasks="$(cat "$path_of_file")"
+  chosen_task="$(echo "$list_of_tasks" | awk '{print NR,$0}' | 91menu -g 0x0+1035+40 | awk '{print $1}' )"
+
+  [ "$chosen_task" ] && {
+
+    sed -i "${chosen_task}d" "$path_of_file"
+
+  }
+
+}
+
+_add_task() {
+
+  [ "$2" ] \
+    && shift && chosen_task="$@" \
+    || chosen_task="$(printf '' | dmenu -p "Add a new task:")"
+
+  [ "$chosen_task" ] && echo "$chosen_task" >> "$path_of_file"
+  _update_task
+
+}
+
+[ "$1" = "run" ]    && _get_tasks
+[ "$1" = "add" ]    && _add_task "$@"
+[ "$1" = "update" ] && _update_task

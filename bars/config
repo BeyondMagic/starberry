@@ -39,6 +39,7 @@ fg_unselect_all="$(xgetres bars.bottom.tags.unselected.all)"
 # Titles : Center [./bottom/_title]
 title_name_fg="$(xgetres bars.bottom.titles.title)"
 title_icon_fg="$(xgetres bars.bottom.titles.icon)"
+title_etc_fg="$(xgetres bars.bottom.titles.etc)"
 
 # Memory : Right [./bottom/_memory]
 mem_colour="$(xgetres bars.bottom.memory.colour)"

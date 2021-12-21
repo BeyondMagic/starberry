@@ -21,14 +21,19 @@
 # MAINTAINER: (s)
 #   GPL3 🄯 BeyondMagic <koetemagie/gmail.com> 2021-
 
+clean_things() {
+  sed -r "s/-|:|\"|'|×|,|\.|_|#|\\\|\\/|\\(|\\)|\|/%{F${title_etc_fg}}&%{F${title_name_fg}}/g"
+}
+
 # Format a Process name based on ID
 #   Note: it's ID, not PID
 format_active_window() {
 
-  icon=""
+  icon=''
   process_id="$1"
 
-  total=$(xprop -id "$process_id" | grep "_NET_WM_NAME" | sed -re 's/(_NET_WM_NAME\(UTF8_STRING\) = ")|"$//g' -e "")
+  total=$(xprop -id "$process_id" | grep "_NET_WM_NAME" | sed -r \
+    -e 's/(_NET_WM_NAME\(UTF8_STRING\) = ")|"$//g')
   name=$(cat /proc/$(xdotool getwindowpid "$process_id")/comm)
   
 
@@ -38,14 +43,20 @@ format_active_window() {
     icon=""
     title_program=$(echo "$total" | sed -r 's/ .*//')
     total=$(echo "$total" | sed -r 's/\w* //')
-    
     case "$title_program" in
       v) icon="";;
-      mpd) 
+      mpd)
         icon=""
         total=$(echo "$total" | sed -r "s/» *//g");;
-      n) icon="";;
+      nnn) icon="";;
     esac
+
+    ;;
+
+  brave)
+
+    icon=""
+    total="$(echo "$total" | sed -re 's/ - Brave$//')"
 
     ;;
 
@@ -53,7 +64,7 @@ format_active_window() {
   GeckoMain)
 
     icon=""
-    total=$(echo "$total" | sed -re 's/\\"/"/g' -e 's/(\[Sidebery\] )|( — Firefox.*)|( — Mozilla Firefox)//g' | recode html..ISO-8859-1)
+    total=$(echo "$total" | sed -re 's/\\"/"/g' -e 's/(\[Sidebery\] )|(Mozilla Firefox)|(— Mozilla Firefox)//g')
     ;;
 
   # gcolor2
@@ -107,15 +118,17 @@ format_active_window() {
     ;;
   
   esac
-
+  
   [ "$name" ] && {
   
       # Reduce length if it's bigger than 40 characters
-    [ "${#total}" -gt "60" ] && total="$(echo "$total" | cut -c -60)..."
+    [ "${#total}" -gt "60" ] \
+      && total="$(echo "$total" | cut -c -60 | clean_things)%{F${title_etc_fg}}..." \
+      || total="$(echo "$total" | clean_things)"
       # If there's no icon, then just prints out the name
     [ ! -n "$icon" ] && icon="$name" || icon="%{T3}$icon"
-    
-    echo 'T' "%{F$title_icon_fg}  $icon %{T2}%{F$title_name_fg}$total  %{T1}%{F-}"
+
+    echo 'T' "%{F$title_icon_fg}  $icon %{T2}%{F$title_name_fg}$total%{T1}%{F-}"
 
   }
 

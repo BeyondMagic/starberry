@@ -17,7 +17,7 @@
     "\nLog-out: Leave current session." \
     "\n────────────────" \
     "\ndwm: Restart dwm instance." \
-    | 91menu -g 0x0+1195+40 \
+    | 91menu -g 0x0+1190+30 \
     | sed -r 's/:.+//')
 
   case $option in
@@ -63,7 +63,7 @@ _get_power() {
   icon=" "; affix="$(xgetres bars.separator4)"
   hover_block="%{A1:execute dash $SCRIPTS_FOLDER/bars/module/top/_power open_menu:}"
   
-  echo 'P' "$hover_block%{F$power_bg}%{B-}$affix%{F$power_fg}%{B$power_bg} $icon  %{A1}"
+  echo 'P' "$hover_block%{B-}%{F$power_fg}%{B$power_bg}   $icon %{B-}%{A1}"
 }
 
 [ "$1" = "run" ] && {
