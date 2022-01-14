@@ -16,7 +16,7 @@
 export PATH="$PATH:$HOME/.cargo/bin"
 
 origin=$(cd -- "$(dirname "$0")" >/dev/null 2>&1 && pwd -P)
-emojis="$origin/emojilist"
+emojis="$origin/../special_characters/emojis"
 chosen=$(cat "$emojis" | dmenu -i -l 10 | sed "s/ ###.*//g")
 
 

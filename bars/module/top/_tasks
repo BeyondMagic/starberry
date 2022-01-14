@@ -17,7 +17,7 @@
 # MAINTAINER: (s)
 #   GPL3 🄯 BeyondMagic <koetemagie/gmail.com> 2021-
 
-path_of_file="$HOME"/Base/tasks_of_my_life
+path_of_file="$HOME"/.cache/tasks
 
 _update_task() {
 

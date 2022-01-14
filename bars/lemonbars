@@ -153,10 +153,10 @@ read_bottom_bar() {
 read_top_bar | lemonbar -H -p -g "$(xgetres bars.top.geometry)" \
   -B "$(xgetres bars.bg)" \
   -F "$(xgetres bars.fg)" \
-  -o -1 -f "$normal_font" \
+  -o 0 -f "$normal_font" \
   -o 0 -f "$bold_font" \
-  -o -1 -f "$emoji_font" \
-  -o -3 -f "$material_font" \
+  -o 0 -f "$emoji_font" \
+  -o -1 -f "$material_font" \
   -o 0 -f "$small_font" \
 	| while read -r line; do
     [ $(echo "$line" | awk '{print $1}') = 'execute' ] && {

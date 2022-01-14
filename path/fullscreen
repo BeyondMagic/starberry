@@ -1,0 +1,26 @@
+#!/usr/bin/env sh
+#
+# DESCRIPTION:
+#   This takes a full screenshot using imagemagic and puts unclutter back to its state
+#
+# DEPENDENCIES:
+#   xclip
+#   notify-send.sh
+#   imagemagick
+#   slop
+#   unclutter (optional)
+#
+# MAINTAINER: (s)
+#   BeyondMagic : 2021- : <koetemagie@gmail.com>
+
+#win_w=1440; win_h=900
+
+scrot \
+  -a '0,0,1440,900' \
+  -q 100 \
+  -f '/tmp/last_shot.png' \
+  -o
+
+cat /tmp/last_shot.png | xclip -selection clipboard -target image/png
+
+notify-send.sh -i '/tmp/last_shot.png' 'Full screenshot was copied to clipboard.'

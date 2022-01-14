@@ -7,14 +7,18 @@
 #   xclip
 #   notify-send.sh
 #   imagemagick
+#   slop
 #   unclutter (optional)
 #
 # MAINTAINER: (s)
 #   BeyondMagic : 2021- : <koetemagie@gmail.com>
 
-killall unclutter
-import png:- | xclip -selection clipboard -t image/png
-xclip -selection clipboard -t image/png -o > "/tmp/last_shot.png"
+scrot \
+  -a $(slop -f '%x,%y,%w,%h') \
+  -q 100 \
+  -f '/tmp/last_shot.png' \
+  -o
+
+cat /tmp/last_shot.png | xclip -selection clipboard -target image/png
+
 notify-send.sh -i "/tmp/last_shot.png" "Partial screenshot was copied to clipboard." &
-nohup unclutter --timeout 1 >/dev/null 2>&1 &
-exit

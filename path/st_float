@@ -10,7 +10,10 @@
 # MAINTAINER: (s)
 #   BeyondMagic : 2021- : <koetemagie@gmail.com>
 
-  random_lines=$(shuf -i 10-20 -n 1)
-random_columns=$(shuf -i 30-70 -n 1)
+#  random_lines=$(shuf -i 10-20 -n 1)
+#random_columns=$(shuf -i 30-70 -n 1)
+
+random_lines=25
+random_columns=100
 
 nohup st -g ${random_columns}x${random_lines}+0+0 -T floatst >/dev/null 2>&1 &

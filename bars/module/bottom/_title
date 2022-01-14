@@ -22,7 +22,9 @@
 #   GPL3 🄯 BeyondMagic <koetemagie/gmail.com> 2021-
 
 clean_things() {
-  sed -r "s/-|:|\"|'|×|,|\.|_|#|\\\|\\/|\\(|\\)|\|/%{F${title_etc_fg}}&%{F${title_name_fg}}/g"
+  sed -re "s/@|-|:|~|\"|'|×|,|\.|_|\\\|\\/|\\(|\\)|\|/%{F${title_etc_fg}}&%{F${title_name_fg}}/g" \
+      -e  "s/YouTube/%{F#DF2703}You%{F#FFFFFF}Tube/g" \
+      -e  "s/[[:digit:]]x[[:digit:]]|K.Flay/%{F#DE7DCC}&%{F${title_name_fg}}/g"
 }
 
 # Format a Process name based on ID

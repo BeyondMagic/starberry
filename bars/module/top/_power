@@ -59,11 +59,10 @@
 }
 
 _get_power() {
-  
+
   icon=" "; affix="$(xgetres bars.separator4)"
-  hover_block="%{A1:execute dash $SCRIPTS_FOLDER/bars/module/top/_power open_menu:}"
-  
-  echo 'P' "$hover_block%{B-}%{F$power_fg}%{B$power_bg}   $icon %{B-}%{A1}"
+  hover_block="%{A1:execute eww open powermenu:}"
+  echo 'P' "$hover_block%{F$power_fg}%{B$power_bg}   $icon %{B-}%{A1}"
 }
 
 [ "$1" = "run" ] && {

@@ -37,7 +37,7 @@
 #   GPL3 🄯 BeyondMagic <koetemagie/gmail.com> 2021-
 
 
-quotes_path="$HOME/git/startpage/data/quotes.json"
+quotes_path="$HOME/Library/quotes.json"
       quote=$(printf "$1" | awk 1 ORS='\\\\n' | head -c -2 )
 
 
