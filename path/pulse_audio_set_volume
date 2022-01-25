@@ -18,4 +18,4 @@
   pactl -- set-sink-volume @DEFAULT_SINK@ -2% &
 }
 
-"$SCRIPTS_FOLDER"/bars/module/top/_sound run > /tmp/top.fifo
+#"$SCRIPTS_FOLDER"/bars/module/top/_sound run > /tmp/top.fifo

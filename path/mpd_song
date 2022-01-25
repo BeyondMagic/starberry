@@ -17,14 +17,12 @@ unset music_path artist title file
 
 
 cover_path="/tmp/cover.jpg"
-music_path="$HOME/Library/music"
-artist=$(mpc -f "%artist%" | head -n 1)
- title=$(mpc -f "%title%"  | head -n 1)
-  file=$(mpc -f "%file%"   | head -n 1)
+music_path="$HOME/Library/Music/Songs"
+artist="$(mpc -f "%artist%" | head -n 1)"
+ title="$(mpc -f "%title%"  | head -n 1)"
+  file="$(mpc -f "%file%"   | head -n 1)"
 
+ffmpeg -loglevel quiet -i "$music_path/$file" "$cover_path"
+notify-send.sh -a "mpd_song" -i "$cover_path" "$title" "$artist"
 
-ffmpeg -loglevel quiet -i -f "$music_path/$file" "$cover_path"
-notify-send.sh -a "ncmpcpp" -i "$cover_path" "$title" "$artist"
-
-
-rm -rf /tmp/cover.jpg
+rm -f $cover_path

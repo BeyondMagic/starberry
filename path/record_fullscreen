@@ -1,17 +1,14 @@
 #!/usr/bin/env sh
 #
-# DESCRIPTION:
+# Description:
 #   Simple recording tool with ffmpeg.
 #
-# DEPENDENCIES:
+# Dependencies:
 #   ffmpeg
 #   notify-send.sh
 #   pkill (coreutils)
 #
-# MAINTAINER: (s)
-#   BeyondMagic : 2021- : <koetemagie@gmail.com>
-
-
+# BeyondMagic : 2021- : <koetemagie@gmail.com>
 
 SIZE_MONITOR="1440x900"
 FRAME_RATE="30"
@@ -20,16 +17,10 @@ PATH_RECORDINGS="$HOME/.cache/ffmpeg"
 FORMAT_FILE="mkv"
 NAME_FILE="$PATH_RECORDINGS/record_fullscreen_$(date +'%a_%b_%d_%H:%M:%S').$FORMAT_FILE"
 
-FIFO_BAR="/tmp/bottom.fifo"
 IS_RECORDING="/tmp/is_recording"
-ICON_CAMERA="$HOME/Base/icons/camera.png"
+ICON_CAMERA="$HOME/.local/share/icons/camera.png"
 
 mkdir -p "$PATH_RECORDINGS"
-
-
-
-# Send a sign of recording to lemonbar so that you know it is being recorded.
-# echo 'R' 'IS RECORDING!!!' > "$FIFO_BAR"
 
 [ -f "$IS_RECORDING" ] || {
 
@@ -37,7 +28,7 @@ mkdir -p "$PATH_RECORDINGS"
   touch "$IS_RECORDING"
 
   # Send a sign of recording to lemonbar so that you know it is being recorded.
-  "$SCRIPTS_FOLDER/bars/module/bottom/_recording" "$FIFO_BAR"
+  eww update record_menu=true
 
   # Start recording
   ffmpeg -f alsa -ac 1 -i pulse \
@@ -49,16 +40,15 @@ mkdir -p "$PATH_RECORDINGS"
 
   # Send a sign of recording to lemonbar so that you know it is not
   # being recorded anymore.
-  echo 'R' '' > "$FIFO_BAR"
+  eww update record_menu=false
 
   # Remove the file since it stopped recording and there's no need to reverify it
-  rm -rf "$IS_RECORDING"
+  rm -f "$IS_RECORDING"
 
-  open_gtk="$(dunstify -i "$ICON_CAMERA" "Full recording was saved to '~/.cache/ffmpeg'." \
-    -A "default,nothing")"
-  
+  open_gtk="$(dunstify -i "$ICON_CAMERA" "Full recording was saved to '$PATH_RECORDINGS'." -A "default,nothing")"
+
   [ "$open_gtk" = "default" ] && {
-    nohup gtk-launch "$(xdg-mime query default inode/directory)" $NAME_FILE >/dev/null 2>&1 &
+    nohup gtk-launch "$(xdg-mime query default inode/directory)" "$PATH_RECORDINGS" >/dev/null 2>&1 &
   }
 
 } && {

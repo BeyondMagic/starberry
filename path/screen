@@ -15,7 +15,6 @@
 
 scrot \
   -a $(slop -f '%x,%y,%w,%h') \
-  -q 100 \
   -f '/tmp/last_shot.png' \
   -o
 

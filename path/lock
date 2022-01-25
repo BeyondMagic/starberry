@@ -27,39 +27,39 @@
 # MAINTAINER: (s)
 #   BeyondMagic : 2021- : <koetemagie@gmail.com>
 
-unset use
-
-quotes_path="$HOME/git/startpage/data/quotes.json"
-
-length_file=$(jq length "$quotes_path")
-random_numb=$(shuf -i 0-$((length_file - 1)) -n 1)
-quote_chose=$(jq -r ".[$random_numb]" "$quotes_path")
-
-first_line=$(echo "$quote_chose" | tr '\r\n' ' ' | jq -r ".[0]")
-secon_line=$(echo "$quote_chose" | tr '\r\n' ' ' | jq -r ".[1]")
-third_line=$(echo "$quote_chose" | tr '\r\n' ' ' | jq -r ".[2]")
-
-#sleep infinity
-
-use="$first_line"
-
-# Function
-#   Center input text based on the terminal's size
-center() {
-
-  cols=100
-  string="$@"
-
-  [ "$string" = "null" ] || printf "%*s\n" $(((${#string}+$cols)/2)) "$string"
-
-}
-
-
-
-
-[ "$secon_line" = "null" ] || use="$use\n$(center "$secon_line")"
-[ "$third_line" = "null" ] || use="$use\n$(center "$third_line")"
+#unset use
+#
+#quotes_path="$HOME/git/startpage/data/quotes.json"
+#
+#length_file=$(jq length "$quotes_path")
+#random_numb=$(shuf -i 0-$((length_file - 1)) -n 1)
+#quote_chose=$(jq -r ".[$random_numb]" "$quotes_path")
+#
+#first_line=$(echo "$quote_chose" | tr '\r\n' ' ' | jq -r ".[0]")
+#secon_line=$(echo "$quote_chose" | tr '\r\n' ' ' | jq -r ".[1]")
+#third_line=$(echo "$quote_chose" | tr '\r\n' ' ' | jq -r ".[2]")
+#
+##sleep infinity
+#
+#use="$first_line"
+#
+## Function
+##   Center input text based on the terminal's size
+#center() {
+#
+#  cols=100
+#  string="$@"
+#
+#  [ "$string" = "null" ] || printf "%*s\n" $(((${#string}+$cols)/2)) "$string"
+#
+#}
+#
+#
+#
+#
+#[ "$secon_line" = "null" ] || use="$use\n$(center "$secon_line")"
+#[ "$third_line" = "null" ] || use="$use\n$(center "$third_line")"
 
 # mpc pause &
 
-slock -m "$(printf "$use")"
+slock #-m "$(printf "$use")"

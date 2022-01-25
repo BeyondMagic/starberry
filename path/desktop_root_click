@@ -33,7 +33,7 @@ case "$option" in
 
 #	st-float)
 
-#		nohup $HOME/git/scripts/terminal/st_float >/dev/null 2>&1 &
+#		nohup $HOME/Git/Projects/creamberry/terminal/st_float >/dev/null 2>&1 &
 
 #	;;
 
@@ -51,17 +51,17 @@ case "$option" in
 
   lemonbar)
 
-    ~/git/scripts/bars/modules clean
-    ~/git/scripts/bars/lemonbars clean
-    ~/git/scripts/bars/lemonbars
-    ~/git/scripts/bars/modules
+    ~/Git/Projects/creamberry/bars/modules clean
+    ~/Git/Projects/creamberry/bars/lemonbars clean
+    ~/Git/Projects/creamberry/bars/lemonbars
+    ~/Git/Projects/creamberry/bars/modules
 
   ;;
 
   lemonbar-modules)
 
-    ~/git/scripts/bars/modules clean
-    ~/git/scripts/bars/modules
+    ~/Git/Projects/creamberry/bars/modules clean
+    ~/Git/Projects/creamberry/bars/modules
 
   ;;
 
