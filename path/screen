@@ -15,9 +15,11 @@
 
 scrot \
   -a $(slop -f '%x,%y,%w,%h') \
-  -f '/tmp/last_shot.png' \
+  -f '/tmp/last_shot.jpg' \
   -o
 
-cat /tmp/last_shot.png | xclip -selection clipboard -target image/png
+cat /tmp/last_shot.jpg | xclip -selection clipboard -target image/png
 
-notify-send.sh -i "/tmp/last_shot.png" "Partial screenshot was copied to clipboard." &
+size="$(identify -format '%wx%h' /tmp/last_shot.jpg)"
+
+notify-send.sh -i "/tmp/last_shot.jpg" "Partial screenshot was copied to clipboard.\n$size" &

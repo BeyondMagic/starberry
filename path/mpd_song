@@ -17,12 +17,75 @@ unset music_path artist title file
 
 
 cover_path="/tmp/cover.jpg"
+cover_blur="/tmp/cover_blur.jpg"
+temporary="/tmp/cover_tmp.jpg"
 music_path="$HOME/Library/Music/Songs"
 artist="$(mpc -f "%artist%" | head -n 1)"
  title="$(mpc -f "%title%"  | head -n 1)"
   file="$(mpc -f "%file%"   | head -n 1)"
 
-ffmpeg -loglevel quiet -i "$music_path/$file" "$cover_path"
-notify-send.sh -a "mpd_song" -i "$cover_path" "$title" "$artist"
+ffmpeg -loglevel quiet -i "$music_path/$file" "$temporary"
 
-rm -f $cover_path
+
+[ -f "$temporary" ] && {
+
+  mv "$temporary" "$cover_path"
+
+  notify-send.sh -a "mpd_song" -i "$cover_path" "$artist" "$title"
+
+  convert -scale 10% -blur 0x2.5 -resize 1000% -fill black -colorize 40% "$cover_path" "$cover_blur"
+
+} || {
+
+  notify-send.sh -a "mpd_song" "$artist" "$title"
+
+  rm -f "$cover_path" "$cover_blur"
+
+}
+
+
+
+eww update current_song_artist="$artist"
+eww update current_song_name="$title"
+
+
+#[ "$(eww get menu_is_open)" = "true" ] && {
+#
+#  eww close mpd-viewer
+#  eww open mpd-viewer
+#
+#} || {
+#
+#  eww close mpd-viewer
+#
+#}
+
+lyrics="$(lyrics_song_mpd)"
+
+[ "$lyrics" ] && {
+
+  lyrics_lines_count="$(echo "$lyrics" | wc -l)"
+  lyrics_lines_half=$(( $lyrics_lines_count / 2 ))
+  lyrics_lines_separator=$(( $lyrics_lines_half + 1))
+
+  lyrics_first_half="$( echo "$lyrics" | sed -n "1,${lyrics_lines_half}p;${lyrics_lines_separator}q" )"
+  lyrics_second_half="$( echo "$lyrics" | sed -n "${lyrics_lines_separator},${lyrics_lines_count}p;$(( $lyrics_lines_count + 1))q")"
+
+  eww update current_song_first_part_lyrics="$lyrics_first_half"
+  eww update current_song_second_part_lyrics="$lyrics_second_half"
+
+  [ "$(eww get menu_is_open)" = "true" ] && {
+
+    eww close mpd-viewer
+    eww open mpd-viewer
+
+  }
+
+} || {
+
+  eww update current_song_first_part_lyrics=""
+  eww update current_song_second_part_lyrics=""
+  eww close mpd-viewer
+  #eww open mpd-viewer
+
+}

@@ -1,0 +1,54 @@
+#!/usr/bin/env sh
+
+# Clean the tag path.
+clean () { sed -r 's_^/tmp/|\.jpg__g'; }
+
+# Set path for next tag.
+next () { tags="$tags /tmp/$bit.jpg"; list=$((list+1)); }
+
+# Set path for next tag and select tag.
+next_c () { scrot --overwrite --file "/tmp/$bit.jpg"; next; current=$list; }
+
+# Get the current state of all tags used.
+tag_status="$(dwm-msg get_monitors | jq '.[].tag_state.selected, .[].tag_state.occupied')"
+
+# Get the current selected tag.
+selected=$(echo "$tag_status" | head -n1)
+
+# Get the current occupied tag.
+occupied=$(echo "$tag_status" | tail -n1)
+
+# Loop through tags to only get the ones that exist.
+list=0; tag=0; while [ $tag -le 8 ]; do
+
+  # Move bits to match the TAG ID.
+  bit=$((1 << $tag))
+
+  # Selected.
+  sb=$(($selected & $bit))
+
+  # Occupied.
+  ob=$(($occupied & $bit))
+
+  # Selected TAG with programs.
+  if   [ $sb -ne 0 ] && [ $ob -ne 0 ]; then next_c
+
+  # Selected TAG without programs.
+  elif [ $sb -ne 0 ];                  then next_c
+
+  # Not selected TAG with programs.
+  elif [ $ob -ne 0 ];                  then next; fi
+
+tag=$((tag + 1)); done
+
+# Get tag.
+tag_to_change=$(nsxiv -tob \
+                      -T 0 \
+                      -N preview \
+                      -g 250x820+18+40 \
+                      -n $current \
+                      $tags \
+                      | clean)
+
+# Go to tag.
+[ "$tag_to_change" ] && dwm-msg run_command view $(echo "$tag_to_change" | tail -n1)
