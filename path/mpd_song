@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 #
 # DESCRIPTION:
-#   Load a notification for current song with 
+#   Load a notification for current song with
 #   cover :)
 #
 # DEPENDENCIES:
@@ -13,79 +13,78 @@
 # MAINTAINER: (s)
 #   GPL3 🄯 BeyondMagic <koetemagie/gmail.com> 2021-
 
-unset music_path artist title file
+# 1. Clean off the folling variables.
+unset music_path artist title file a b c size image
 
+# 2. Set them.
+{
 
-cover_path="/tmp/cover.jpg"
-cover_blur="/tmp/cover_blur.jpg"
-temporary="/tmp/cover_tmp.jpg"
-music_path="$HOME/Library/Music/Songs"
-artist="$(mpc -f "%artist%" | head -n 1)"
- title="$(mpc -f "%title%"  | head -n 1)"
-  file="$(mpc -f "%file%"   | head -n 1)"
+      cover_empty="$HOME/.local/share/icons/no_cover.png"
+     cover_square='/tmp/cover_square.jpg'
+     cover_circle='/tmp/cover_circle.png'
+      cover_blur='/tmp/cover_blur.jpg'
+  cover_temporary='/tmp/cover_tmp.jpg'
 
-ffmpeg -loglevel quiet -i "$music_path/$file" "$temporary"
+  music_path="$HOME/Library/Music/Songs"
 
+  artist="$(mpc -f "%artist%" | head -n 1)"
+   title="$(mpc -f "%title%"  | head -n 1)"
+    file="$(mpc -f "%file%"   | head -n 1)"
 
-[ -f "$temporary" ] && {
+  # A. Capitalize special varibles.
+  artist="$(echo "$artist" | tr '[:lower:]' '[:upper:]')"
 
-  mv "$temporary" "$cover_path"
+  # B. Update special variables.
+  eww update current_song_artist="$artist"
+  eww update current_song_name="$title"
 
-  notify-send.sh -a "mpd_song" -i "$cover_path" "$artist" "$title"
+}
 
-  convert -scale 10% -blur 0x2.5 -resize 1000% -fill black -colorize 40% "$cover_path" "$cover_blur"
+# 3. Extract image from song file.
+ffmpeg -loglevel quiet -i "$music_path/$file" "$cover_temporary"
 
-} || {
+# 4. If it doesn't find an image to extract from song file.
+if [ -f "$cover_temporary" ]; then
 
+  # A. Get image information.
+  #a=$(identify -format '%h' "$cover_temporary")
+  #b=$(($a / 2))
+  c="circle 112,112,112,225"
+
+  # B. Create cropped circle from the image file.
+  convert "$cover_temporary" \
+    -scale '225x225' \
+    \( +clone \
+      -fill Black -colorize 100 \
+      -fill White -draw "$c" \
+    \) \
+    -alpha off -compose CopyOpacity -composite -fill None -draw "$c" \
+    "$cover_circle"
+
+  # C. Notify the song with image.
+  notify-send.sh -a "mpd_song" -i "$cover_circle" "$artist" "$title"
+
+  # D. Create blurred image.
+  convert -scale 1% -blur 0x1 -fill black -colorize 55% "$cover_temporary" "$cover_blur"
+
+  # E. Copy original image.
+  mv -f "$cover_temporary" "$cover_square"
+
+  # F. Update MPD image.
+  eww update mpd_image_path="$cover_square"
+
+  # G. Update lyrics of MPD viewer.
+  eww update mpd_lyrics_index=0 && mpd_eww_lyrics
+
+else
+
+    # A. Notify the song without any image.
   notify-send.sh -a "mpd_song" "$artist" "$title"
 
-  rm -f "$cover_path" "$cover_blur"
+  # B. Remove all image files.
+  rm -f "$cover_circle" "$cover_blur"
 
-}
+  # C. Update image file to not update.
+  eww update mpd_image_path="$cover_empty"
 
-
-
-eww update current_song_artist="$artist"
-eww update current_song_name="$title"
-
-
-#[ "$(eww get menu_is_open)" = "true" ] && {
-#
-#  eww close mpd-viewer
-#  eww open mpd-viewer
-#
-#} || {
-#
-#  eww close mpd-viewer
-#
-#}
-
-lyrics="$(lyrics_song_mpd)"
-
-[ "$lyrics" ] && {
-
-  lyrics_lines_count="$(echo "$lyrics" | wc -l)"
-  lyrics_lines_half=$(( $lyrics_lines_count / 2 ))
-  lyrics_lines_separator=$(( $lyrics_lines_half + 1))
-
-  lyrics_first_half="$( echo "$lyrics" | sed -n "1,${lyrics_lines_half}p;${lyrics_lines_separator}q" )"
-  lyrics_second_half="$( echo "$lyrics" | sed -n "${lyrics_lines_separator},${lyrics_lines_count}p;$(( $lyrics_lines_count + 1))q")"
-
-  eww update current_song_first_part_lyrics="$lyrics_first_half"
-  eww update current_song_second_part_lyrics="$lyrics_second_half"
-
-  [ "$(eww get menu_is_open)" = "true" ] && {
-
-    eww close mpd-viewer
-    eww open mpd-viewer
-
-  }
-
-} || {
-
-  eww update current_song_first_part_lyrics=""
-  eww update current_song_second_part_lyrics=""
-  eww close mpd-viewer
-  #eww open mpd-viewer
-
-}
+fi

@@ -1,5 +1,8 @@
 #!/usr/bin/env sh
 
+#geometry='250x820+18+40'
+geometry='800x180+320+360'
+
 # Clean the tag path.
 clean () { sed -r 's_^/tmp/|\.jpg__g'; }
 
@@ -45,7 +48,7 @@ tag=$((tag + 1)); done
 tag_to_change=$(nsxiv -tob \
                       -T 0 \
                       -N preview \
-                      -g 250x820+18+40 \
+                      -g $geometry \
                       -n $current \
                       $tags \
                       | clean)

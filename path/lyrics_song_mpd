@@ -12,9 +12,10 @@ iris_bin="$HOME/Git/Projects/iris-cli/iris/bin/iris"
 # 1. Get current Artist and Song Name with mpc.
 name_artist="$(mpc -f "[%artist%]" | head -n1)"
 name_song="$(mpc -f "[%title%]" | head -n1)"
+name_album="$(mpc -f "[%album%]" | head -n1)"
 
 # 2. Set paths for folder and lyrics to save for later use.
-folder_lyrics="$HOME/Library/Music/Lyrics/$name_artist"
+folder_lyrics="$HOME/Library/Music/Lyrics/$name_artist/$name_album"
 file_lyrics="$folder_lyrics/$name_song.txt"
 
 # 3. If file exist, just exit.
@@ -31,6 +32,11 @@ lyrics="$("$iris_bin" "$name_artist $name_song lyrics" | awk '$1 !~ /Information
 
   # A. Save them.
   echo "$lyrics" > "$file_lyrics"
+
+} || {
+
+  # A. Save no lyrics.
+  echo '' > "$file_lyrics"
 
 }
 
