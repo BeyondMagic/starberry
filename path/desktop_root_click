@@ -1,264 +1,69 @@
 #!/usr/bin/env sh
-#
-# Description:
-#   Desktop context menu.
-#
-# Dependencies:
-#   91menu (my fork: github.com/beyondmagic/91menu)
-#
-# BeyondMagic  GPL3 LICENSE  2021
 
-# Apps As Root ->
-# Quick CMDs   ->
-#
-# Places       -> Movies
-#              -> Animes
-#              -> Japanese
-# ?Recent Files -> 
-
-menu () { sed -re '1d;$d' -e 's_^ +| +$__g' | 91menu | sed -r 's_(^.  )|( +.$)__g'; }
-
-option="$( echo "
-                   Terminal Emulator
-                 爵  Web Browser       
-
-                   Text Editor
-                 ﬓ  Applications      
-                   Apps As Root      
-                 蘆  Quick CMDs        
-                 冷  Screenshot        
-
-                 ﯒  Places            
-                   Bookmarks         
-                 漣  Preferences       
-                   Keybinds
-
-                   Lock Screen       
-                   System            
-
-                   Wallpaper         
-                " | menu )"
-
-# Main one.
-[ "$option" ] && {
-
-  case "$option" in
-
-    'Lock Screen' )
-
-      nohup lock >/dev/null 2>&1 &
-
-    ;;
-
-    'Terminal Emulator' )
-
-      nohup flarity -t float >/dev/null 2>&1 &
-
-    ;;
-
-    'Text Editor' )
-
-      nohup flarity -e nvim >/dev/null 2>&1 &
-
-    ;;
-
-    'Keybinds' )
-
-      nohup flarity -e "nvim" ".config/xbindkeys/xbindkeysrc" >/dev/null 2>&1 &
-
-    ;;
-
-    'Web Browser' )
-
-      option="$( echo "
-                         Firefox Nightly
-                         Brave Nightly
-                      "     | menu )"
-
-      case "$option" in
-
-        'Firefox Nightly' )
-
-          nohup firefox-developer-edition >/dev/null 2>&1 &
-
-        ;;
-
-        'Brave Nightly' )
-
-          nohup brave >/dev/null 2>&1 &
-
-        ;;
-
-      esac
-
-    ;;
-
-    'Applications' )
-
-      option="$( echo "
-                         Inkscape
-                         Telegram
-                         Shazam
-                         Zathura
-                         Tenacity
-                         Gimp
-                         Monero Wallet
-                       惘  Terra Station
-                       連  Deezer
-                         MPV
-                       嗢  VLC
-                         qBitTorrent
-                         xSnow
-                      " | menu )"
-
-      case "$option" in
-
-        'Inkscape' ) nohup inkscape >/dev/null 2>&1 & ;;
-        'Telegram' ) nohup telegram-desktop >/dev/null 2>&1 & ;;
-        'Shazam' ) nohup Shazam >/dev/null 2>&1 & ;;
-        'Zathura' ) nohup zathura >/dev/null 2>&1 & ;;
-        'Tenacity' ) nohup tenacity >/dev/null 2>&1 & ;;
-        'Gimp' ) nohup gimp-2.10 >/dev/null 2>&1 & ;;
-        'Monero Wallet' ) nohup monero-wallet-gui >/dev/null 2>&1 & ;;
-        'Terra Station' ) nohup station-electron >/dev/null 2>&1 & ;;
-        'Deezer' ) nohup deemix-gui>/dev/null 2>&1 & ;;
-        'MPV' ) nohup mpv --player-operation-mode=pseudo-gui -- >/dev/null 2>&1 & ;;
-        'VLC' ) nohup vlc >/dev/null 2>&1 & ;;
-        'qBitTorrent' ) nohup qbittorrent >/dev/null 2>&1 & ;;
-        'xSnow' ) nohup xsnow >/dev/null 2>&1 & ;;
-
-      esac
-
-    ;;
-
-    'System' )
-
-      option="$( echo "
-                        Status
-                        Shutdown
-                        Reboot
-                      鈴  Sleep
-                      﫼  Log-out
-                        Restart Window Manager
-                      " | menu )"
-
-      case "$option" in
-
-        'Status'                 ) nohup flarity -g 77x15+0+0 -t float -e zsh -c 'fetch; exec sleep infinity' >/dev/null 2>&1 & ;;
-        'Shutdown'               ) nohup doas halt >/dev/null 2>&1 & ;;
-        'Reboot'                 ) nohup doas -- shutdown -r now >/dev/null 2>&1 & ;;
-        'Sleep'                  ) nohup doas -- zzz >/dev/null 2>&1 & ;;
-        'Log-out'                ) nohup exec unlovemii ;;
-        'Restart Window Manager' ) nohup dwm-msg run_command quit 1 >/dev/null 2>&1 & ;;
-
-      esac
-
-    ;;
-
-    'Screenshot' )
-
-            option="$( echo "
-                              Set Size Screenshot
-                              Full Screenshot
-                            "     | menu )"
-
-      case "$option" in
-
-        'Set Size Screenshot' ) nohup screen >/dev/null 2>&1 & ;;
-        'Full Screenshot'     ) nohup fullscreen >/dev/null 2>&1 & ;;
-
-      esac
-
-    ;;
-
-    'Wallpaper' )
-
-            option="$( echo "
-                              New Random Wallpaper
-                              See Wallpapers
-                            "     | menu )"
-
-      case "$option" in
-
-        'New Random Wallpaper' ) nohup zsh -c '. ~/.config/zsh/aliasesrc; random_wallpaper' >/dev/null 2>&1 & ;;
-        'See Wallpapers'       ) nohup zsh -c '. ~/.config/zsh/aliasesrc; set_wallpaper' >/dev/null 2>&1 & ;;
-
-      esac
-
-    ;;
-
-    'Preferences' )
-
-      terminal () {
-
-        nohup flarity -e zsh '-c' "cd $(dirname $1); nvim $1; exec zsh" >/dev/null 2>&1 &
-
-      }
-
-      option="$( echo "
-                         NVim
-                       F  Fcitx5
-                       P  Picom
-                       G  GLava
-                       V  VisualBoyAdvance-M
-                       X  XResources
-                       D  Dunst
-                       Z  Zathura
-                       S  NSXiv
-                       S  ncmpcpp
-                       m  MPDScribble
-                       n  n³
-                       Y  YMuse
-                       B  Boomer
-                       R  Rofi
-                       Z  Zsh
-                       x  xSettings
-                       E  EWW
-                      " | menu )"
-
-      case "$option" in
-
-        'NVim'               ) terminal "$HOME/.config/nvim/init.lua" ;;
-        'Fcitx5'             ) terminal "$HOME/.config/fcitx5/config" ;;
-        'Picom'              ) terminal "$HOME/.config/picom/picom.conf" ;;
-        'GLava'              ) terminal "$HOME/.config/glava/rc.glsl" ;;
-        'VisualBoyAdvance-M' ) terminal "$HOME/.config/visualboyadvance-m/vbam.ini" ;;
-        'XResources'         ) terminal "$HOME/.config/xorg/XResources" ;;
-        'Dunst'              ) terminal "$HOME/.config/dunst/dunstrc.template" ;;
-        'Zathura'            ) terminal "$HOME/.config/zathura/zathurarc.template" ;;
-        'NSXiv'              ) terminal "$HOME/.config/nsxiv/exec/key-handler" ;;
-        'ncmpcpp'            ) terminal "$HOME/.config/ncmpcpp/config" ;;
-        'MPDScribble'        ) terminal "$HOME/.config/mpdscribble/mpdscribble.conf" ;;
-        'n³'                 ) terminal "$HOME/.config/nnn/plugins/preview-tabbed" ;;
-        'YMuse'              ) terminal "$HOME/.config/ymuse/config.json" ;;
-        'Boomer'             ) terminal "$HOME/.config/boomer/config" ;;
-        'Rofi'               ) terminal "$HOME/.config/rofi/themes/colors.rasi" ;;
-        'Zsh'                ) terminal "$HOME/.config/zsh/.zshrc" ;;
-        'xSettings'          ) terminal "$HOME/.config/xsettingsd/xsettingsrc.template" ;;
-        'EWW'                ) terminal "$HOME/.config/eww/eww.yuck" ;;
-
-      esac
-
-    ;;
-
-    #'random wallpaper')
-
-    #  zsh -c '. ~/Base/aliasesrc; random_wallpaper'
-
-    #;;
-
-    #'previous wallpaper')
-
-    #  zsh -c '. ~/Base/aliasesrc; previous_wallpaper'
-
-    #;;
-
-    #'delete wallpaper')
-
-    #  zsh -c '. ~/Base/aliasesrc; delete_wallpaper'
-
-    #;;
-
-  esac
-
-}
+# 1. Set main variables.
+icons="$HOME/.local/share/icons"
+
+# 2. Retrieve command to execute.
+command="$(echo "
+IMG:$icons/flarity.svg	Terminal Emulator	flarity
+
+IMG:$icons/internet.svg	Web Browser
+	IMG:$icons/firefox.svg	Firefox Nightly	zsh -c 'haha'
+	IMG:$icons/brave.svg	Brave Nightly	zsh -c 'lol'
+
+IMG:$icons/neovim.png	Text Editor	flarity -e nvim
+IMG:$icons/applications.svg	Applications
+	IMG:$icons/gimp.svg	Inkscape	inkscape
+	IMG:$icons/gimp.png	Telegram	telegram-desktop
+	IMG:$icons/gimp.png	Shazam	songrec
+	IMG:$icons/gimp.png	Zathura	zathura
+	IMG:$icons/gimp.png	Tenacity	tenacity
+	IMG:$icons/gimp.png	Gimp	gimp-2.10
+	IMG:$icons/gimp.png	Monero Wallet	monero-wallet-gui
+	IMG:$icons/gimp.png	Terra Station	station-electron
+	IMG:$icons/gimp.png	Deezer	deemix-gui
+	IMG:$icons/gimp.png	MPV	mpv --player-operation-mode=pseudo-gui
+	IMG:$icons/gimp.png	VLC	vlc
+	IMG:$icons/gimp.png	qBitTorrent	qbittorrent
+	IMG:$icons/gimp.png	xSnow	xsnow
+IMG:$icons/web.png	Screen
+	IMG:$icons/gimp.png	Set Size Screenshot	screen
+	IMG:$icons/gimp.png	Full Screenshot	fullscreen
+	
+	IMG:$icons/gimp.png	Set Size in GIF	screen
+	IMG:$icons/gimp.png	Full Display GIF	fullscreen
+	IMG:$icons/gimp.png	Set Size MKV	screen
+	IMG:$icons/gimp.png	Full Display MKV	fullscreen
+
+IMG:$icons/web.png	Places
+IMG:$icons/web.png	Bookmarks
+IMG:$icons/web.png	Preferences
+IMG:$icons/web.png	Keybinds	flarity -e "nvim" ".config/xbindkeys/xbindkeysrc"
+
+IMG:$icons/web.png	Lock Screen	lock
+IMG:$icons/web.png	System
+	IMG:$icons/gimp.png	Status
+		
+		    $(id -G -n | sed "s/ /@/") | $(date +'%H:%M, %a%b %d')   
+		
+		  OS       $(cat /etc/os-release | grep -m 1 -oP '((?<=NAME=").*(?= Linux"))') - GNU/Linux - x86_64
+		  KERNEL   Linux $(uname -r)
+		  UPTIME   $(uptime -p | sed 's/^up //')
+		  SHELL    $(echo "$SHELL" | sed 's_/usr/bin/__')
+		  PACKAGES $(pacman -Q | wc -l) packages
+		  INIT     $(ls -l /sbin/init | grep -oP '((?<=-> ).*(?=-init))')
+		  MEMORY   $(free -m | awk '{print $3}' | head -n2 | tail -n1)MiB
+	IMG:$icons/gimp.png	Shutdown	doas halt
+	IMG:$icons/gimp.png	Reboot	doas -- shutdown -r now
+	IMG:$icons/gimp.png	Sleep	doas -- zzz
+	IMG:$icons/gimp.png	Log-out	exec unlovemii
+	IMG:$icons/gimp.png	Restart Window Manager	dwm-msg run_command quit 1
+
+IMG:$icons/web.png	Wallpaper
+	IMG:$icons/web.png	New Random Wallpaper	zsh -c '. ~/.config/zsh/aliasesrc; random_wallpaper'
+	IMG:$icons/gimp.png	See Wallpapers	zsh -c '. ~/.config/zsh/aliasesrc; set_wallpaper'
+" \
+| sed -re '1d;$d' | xmenu)"
+
+# II. Execute command in fly.
+eval "$command"
