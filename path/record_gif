@@ -1,0 +1,68 @@
+#!/usr/bin/env sh
+#
+# A wrapper around giph to record GIFs in fullscreen and a set-sized screen.
+#
+# BeyondMagic © 2022 <koetemagie@gmail.com>
+
+# 1. Variables.
+giph_cache="$HOME/.cache/giph"
+giph_alternative_process="$(pgrep -f 'bash.+giph')"
+icons="$HOME/.local/share/icons/"
+
+# 2. Verify if there's another giph running.
+if [ "$giph_alternative_process" ]; then
+
+  # A. End with previous giph session.
+  kill -INT $(pgrep -P $giph_alternative_process)
+
+  # B. Just exit cleanly.
+  exit 0
+
+fi
+
+# 3.
+if   [ "$1" = 'size' ]; then
+
+  # A. Local variables.
+  file_name="$giph_cache/screen_$(date +'%a_%b_%d_%H:%M:%S').gif"
+
+  # B. Let the user select the screen.
+  giph --select --highlight --color 1,1,1,0.3 --bordersize 1 --padding 0 "$file_name"
+
+  # C.
+  message="GIF of size recording was saved."
+
+# 4.
+elif [ "$1" = 'full' ]; then
+
+  # A. Local variables.
+  file_name="$giph_cache/fullscreen_$(date +'%a_%b_%d_%H:%M:%S').gif"
+
+  # B. Automatic full screen recording.
+  giph "$file_name"
+
+  # C.
+  message="GIF of fulscreen recording was saved."
+
+fi
+
+# 5. In case the recording worked.
+if [ -f "$file_name" ]; then
+
+  # I. Activate EWW systray of 'giph' recording.
+
+  # II.
+  #size="$(identify -format '%wx%h\n' "$file_name" | head -n1)"
+
+  # III. Send notification with click-event to open the folder.
+  open="$(dunstify -i "$icons/camera.svg" "$message" -A 'action,nothing')"
+
+  # IV. In case the user sent clicked-event to the notification server.
+  if [ "$open" = 'action' ]; then
+
+    # 1. Launch the file manager within the folder.
+    nohup gtk-launch "$(xdg-mime query default inode/directory)" "$giph_cache" >/dev/null 2>&1 &
+
+  fi
+
+fi

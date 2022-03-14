@@ -1,0 +1,133 @@
+#!/usr/bin/env sh
+#
+# A simple translation tool that that relies on Iris as a backend.
+#
+# João F. © BeyondMagic <koetemagie@gmail.com>
+
+# 1.
+case "$LANG" in
+
+  en* )
+
+    case "$1" in
+
+      ja ) word='in Japanese' ;;
+
+      pt ) word='in Portuguese' ;;
+
+    esac
+
+  ;;
+
+  pt* )
+
+    case "$1" in
+
+      ja ) word='em Japonês' ;;
+
+      pt ) word='em Inglês' ;;
+
+    esac
+
+  ;;
+
+  ja* )
+
+    case "$1" in
+
+      ja ) word='に翻訳そろは英語' ;;
+
+      pt ) word='に翻訳そろはポルトガル語' ;;
+
+    esac
+
+  ;;
+
+esac
+
+# 2.
+
+  # I.
+  notify () {
+
+    # A.
+    icons="$HOME/.local/share/icons/"
+
+    # B.
+    notify-send.sh \
+      --expire-time=15000 \
+      --force-expire \
+      --icon="$icons/language-hiragana-$index.svg" \
+      "$1" \
+      "$2"
+
+  }
+
+  # II.
+  clean () {
+
+    # A.
+    echo "$@" | awk '{ $1="";$2=""; print substr($0,3) }'
+
+  }
+
+  # III.
+  space () {
+
+    # A.
+    echo "$@" | sed -re 's/([A-Z])/ &/g' -e 's/^ //'
+
+  }
+
+  # IV.
+  parse () {
+
+    # A. Only valid for translation coming from Google
+    if [ "$1" = "GoogleTranslation" ]; then
+
+      # I.
+      result="$(clean "$@")"
+
+      # II.
+      header="$(space "$2")"
+
+      # III.
+      notify "$header" "$result"
+
+    fi
+
+  }
+
+  # V.
+  yetu () {
+
+    # A.
+    echo "$@" | awk '{ $1=""; print substr($0,2) }'
+
+  }
+
+# 3. Main block of the program.
+{
+
+  # A. Count lines for icons.
+  index=1
+
+  # B. Clean off
+  left="$(yetu "$@")"
+
+  # B. Parse every line.
+  echo | iris "$left $word" | while IFS='\n' read -r selected; do
+
+    # 1. Just a stdin alarm.
+    echo $selected
+
+    # II. Send notification.
+    parse $selected
+
+    # III. Increase for the next icon colour.
+    index=$((index + 1))
+
+  done
+
+}
+
