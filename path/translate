@@ -5,11 +5,11 @@
 # João F. © BeyondMagic <koetemagie@gmail.com>
 
 # 1.
-case "$LANG" in
+case "$1" in
 
   en* )
 
-    case "$1" in
+    case "$2" in
 
       ja ) word='in Japanese' ;;
 
@@ -21,11 +21,11 @@ case "$LANG" in
 
   pt* )
 
-    case "$1" in
+    case "$2" in
 
       ja ) word='em Japonês' ;;
 
-      pt ) word='em Inglês' ;;
+      en ) word='em Inglês' ;;
 
     esac
 
@@ -33,17 +33,26 @@ case "$LANG" in
 
   ja* )
 
-    case "$1" in
+    case "$2" in
 
-      ja ) word='に翻訳そろは英語' ;;
+      en ) word='英語' ;;
 
-      pt ) word='に翻訳そろはポルトガル語' ;;
+      pt ) word='ポルトガル語' ;;
 
     esac
 
   ;;
 
 esac
+
+# 2. Make sure there's enough translation process.
+[ "$word" ] || {
+
+  echo 'You need at least two initial arguments: ranging itself from <en>, <ja>, and <pt>.'
+
+  exit 1
+
+}
 
 # 2.
 
@@ -102,7 +111,7 @@ esac
   yetu () {
 
     # A.
-    echo "$@" | awk '{ $1=""; print substr($0,2) }'
+    echo "$@" | awk '{ $1="";$2=""; print substr($0,3) }'
 
   }
 
@@ -115,7 +124,10 @@ esac
   # B. Clean off
   left="$(yetu "$@")"
 
-  # B. Parse every line.
+  # C. Just a stdin alarm.
+  echo "$left $word"
+
+  # D. Parse every line.
   echo | iris "$left $word" | while IFS='\n' read -r selected; do
 
     # 1. Just a stdin alarm.
