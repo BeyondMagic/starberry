@@ -10,14 +10,28 @@
 #
 # BeyondMagic 🄯 2021
 
-
+# 1. Just receive one shot of the color.
 stdbuf -i0 -o0 -e0 colorpicker --short --one-shot | while IFS=$'\n' read -r id_colour; do
 
+  # A.
   id_colour=$(printf "$id_colour" | tr -d '\n' )
 
-  printf "$id_colour" | xclip -sel c &
-  convert -size 50x50 xc:"$id_colour" /tmp/colour.png
-  notify-send.sh -i "/tmp/colour.png" "'$id_colour'" "Was copied to your clipboard."
+  # C.
+  convert -size 100x100 xc:"$id_colour" /tmp/colour.png
+
+  # D.
+  command=$(notify-call \
+    --hint string:image-path:'/tmp/colour.png' \
+    -d "echo copy" \
+    "$id_colour" \
+    'You want to copy to your clipboard?')
+
+  if [ "$command" = 'copy' ]; then
+
+    # I.
+    printf "$id_colour" | xclip -selection clipboard
+
+  fi
 
   exit
 
