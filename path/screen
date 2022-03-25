@@ -1,25 +1,76 @@
 #!/usr/bin/env sh
 #
-# DESCRIPTION:
-#   This takes a screenshot using Imagemagick and puts unclutter back to its state.
-#
 # DEPENDENCIES:
 #   xclip
-#   notify-send.sh
-#   imagemagick
 #   slop
-#   unclutter (optional)
+#   copyq
 #
 # MAINTAINER: (s)
-#   BeyondMagic : 2021- : <koetemagie@gmail.com>
+#   BeyondMagic : 2022- : <koetemagie@gmail.com>
 
-scrot \
-  -a $(slop -f '%x,%y,%w,%h') \
-  -f '/tmp/last_shot.jpg' \
-  -o
+path_image='/tmp/last_shot.png'
 
-cat /tmp/last_shot.jpg | xclip -selection clipboard -target image/png
+# 1. Take the screnshot
+{
+  if [ "$1" = 'size' ]; then
 
-size="$(identify -format '%wx%h' /tmp/last_shot.jpg)"
+    # A. Use scrot to take screenshot with position and geometry.
+    scrot \
+      -a $(slop -f '%x,%y,%w,%h') \
+      -f "$path_image" \
+      -o \
+        || exit 1
 
-notify-send.sh -i "/tmp/last_shot.jpg" "Partial screenshot was copied to clipboard.\n$size" &
+    size="$(identify -format '%wx%h' $path_image)"
+
+  elif [ "$1" = 'full' ]; then
+
+    # A.
+    {
+      size=$(xdpyinfo | awk '/dimensions/{print $2}')
+      geometry=$(echo "$size" | sed -r 's/x/,/')
+    }
+
+    # A.
+    scrot \
+      -a "0,0,$geometry" \
+      -f "$path_image" \
+      -o \
+        || exit 1
+
+  else
+
+    # A. Let the user decides how the screenshot must be taken.
+    command=$(notify-call \
+      -o 'echo size:Size' \
+      -o 'echo full:Fullscreen' \
+      '画面' \
+      'スクリーンショット？')
+
+    echo "$command"
+
+    # B. Execute this script again with the argument or just leave if the user wants.
+    if [ "$command" ]; then
+
+      # I.
+      exec "$0" "$command"
+
+    fi
+
+  fi
+
+}
+
+# D.
+command=$(notify-call \
+  --hint string:image-path:"$path_image" \
+  -d "echo copy" \
+  "画面 - $size" \
+  'クリップボードにコピーしますか？')
+
+if [ "$command" = 'copy' ]; then
+
+  # I. Transfer the image data to clipboard using copyq.
+  copyq write image/png - < "$path_image" && copyq select 0
+
+fi
