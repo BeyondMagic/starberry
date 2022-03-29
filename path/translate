@@ -9,6 +9,8 @@ case "$1" in
 
   en* )
 
+    from='english'
+
     case "$2" in
 
       ja ) word='in Japanese' ;;
@@ -21,6 +23,8 @@ case "$1" in
 
   pt* )
 
+    from='português'
+
     case "$2" in
 
       ja ) word='em Japonês' ;;
@@ -32,6 +36,8 @@ case "$1" in
   ;;
 
   ja* )
+
+    from='日本語'
 
     case "$2" in
 
@@ -107,14 +113,6 @@ esac
 
   }
 
-  # V.
-  yetu () {
-
-    # A.
-    echo "$@" | awk '{ $1="";$2=""; print substr($0,3) }'
-
-  }
-
 # 3. Main block of the program.
 {
 
@@ -122,10 +120,12 @@ esac
   index=1
 
   # B. Clean off
-  left="$(yetu "$@")"
+  left="$(clean "$@")"
 
   # C. Just a stdin alarm.
-  echo "$left $word"
+  echo "$from $left $word"
+
+  export LANG=$1
 
   # D. Parse every line.
   echo | iris "$left $word" | while IFS='\n' read -r selected; do
