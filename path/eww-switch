@@ -1,0 +1,27 @@
+#!/usr/bin/env sh
+#
+# DESCRIPTION:
+#   To switch a variable/window from false/closed to true/open and vice-versa in EWW.
+#
+# DEPENDENCIES:
+#   eww
+#
+# NOTE:
+#   $1 : Variable name.
+#   $2 : Window name.
+#
+# João F. © BeyondMagic 2022 <koetemagie@gmail.com>
+
+if      [ "$(eww get $1)" = 'true' ]; then
+
+  [ "$2" ] && eww close $2
+
+  eww update $1=false
+
+elif [ "$(eww get $1)" = 'false' ]; then
+
+  [ "$2" ] && eww open $2
+
+  eww update $1=true
+
+fi
