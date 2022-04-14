@@ -1,9 +1,12 @@
 #!/usr/bin/env sh
 #
+# Take a screnshot of the user and let them copy to the clipboard through notifications.
+#
 # DEPENDENCIES:
 #   xclip
 #   slop
 #   copyq
+#   notify-call
 #
 # MAINTAINER: (s)
 #   BeyondMagic : 2022- : <koetemagie@gmail.com>
@@ -47,8 +50,6 @@ path_image='/tmp/last_shot.png'
       '画面' \
       'スクリーンショット？')
 
-    echo "$command"
-
     # B. Execute this script again with the argument or just leave if the user wants.
     if [ "$command" ]; then
 
@@ -71,6 +72,9 @@ command=$(notify-call \
 if [ "$command" = 'copy' ]; then
 
   # I. Transfer the image data to clipboard using copyq.
-  copyq write image/png - < "$path_image" && copyq select 0
+  copyq write image/png - < "$path_image" \
+    && copyq select 0 \
+    && notify-call "画面 - $size" \
+    'コピーえる。'
 
 fi
