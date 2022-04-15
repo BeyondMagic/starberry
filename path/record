@@ -1,0 +1,179 @@
+#!/usr/bin/env sh
+#
+# DESCRIPTION:
+#   Simple recording tool and wrapper around giph (ffmpeg).
+#
+# NOTE:
+#
+#   $1 : <gif>, <mkv>  : Type.
+#   $2 : <size, <full> : Scope.
+#
+# DEPENDENCIES:
+#   ffmpeg
+#   notify-send.sh
+#   pkill (coreutils)
+#
+# 2021-2022 : João F. © BeyondMagic <koetemagie@gmail.com>
+
+# 1. Variables.
+{
+  # A. Indepedent of variables.
+  frame_rate=30
+  time=10
+  name='カメラ'
+
+  # B. Depedent of variables.
+  path_recordings="$HOME/.cache/recording"
+  icons="$HOME/.local/share/icons"
+  replace_id="$HOME/.cache/recording.id"
+}
+
+# 2. Functions to minise code.
+#{
+
+  # I.
+  notify () {
+
+    notify-call \
+      --replace-file "$replace_id" \
+      "$@"
+
+  }
+
+  # II.
+  stop () {
+
+    # A.
+    #pkill -INT -f 'ffmpeg -f alsa -ac 1 -i pulse -f x11grab -r 30 -s '
+    giph --stop
+
+    # C.
+    eww update record_menu=false
+
+  }
+#}
+
+# #. Kill previous giph process.
+if [ "$(pgrep -f 'bash.+giph')" ]; then
+
+  # A. Let the user decide.
+  next=$(notify \
+    -d 'echo yes' \
+    "$name" \
+    'Do you want to stop current recording?')
+
+  # A. End with previous giph session.
+  [ "$next" = 'yes' ] && stop
+
+  # B. Just exit cleanly.
+  exit 0
+
+fi
+
+# 2. To see if current fyletype is supported.
+{
+
+  case "$1" in
+
+    # A. Supported.
+    'mkv' | 'gif' | 'webm' | 'mp4' ) ;;
+
+    # B. Not supported.
+    *) 
+
+      # I. Let the user decide.
+      format=$(notify \
+        -o 'echo mkv:MKV' \
+        -o 'echo webm:WEBM' \
+        -o 'echo mp4:MP4' \
+        -o 'echo gif:GIF' \
+        "$name" \
+        'What is the filetype you want to record?')
+  
+      # II. Execute itself.
+      exec $0 $format $2
+
+    ;;
+
+  esac
+
+}
+
+# 3. Whether to choose fullscreen recording or sizeable one.
+{
+  if [ "$2" = 'fullscreen' ]; then
+
+    # A. From <WxH+X+Y> monitor.
+    geometry="$(xrandr | awk '/ primary/{print $4}')"
+
+  elif [ "$2" = 'set' ]; then
+
+    # A. To get size & position of the recording set.
+    geometry="$(slop -f "%wx%h+%x+%y")"
+
+  else
+
+    # I. Let the user decide.
+    next=$(notify \
+      -o 'echo fullscreen:The whole_screen!' \
+      -o 'echo set:Let me set.' \
+      "$name" \
+      'How exactly do you want to record?')
+
+    # II. Execute itself.
+    exec $0 $1 $next
+
+  fi
+}
+
+# 4. Start recording.
+{
+
+  mkdir -p "$path_recordings"
+  name_file="$path_recordings/$2-$(date +'%a_%b_%d_%H:%M:%S').$1"
+
+  # A. Timer.
+  #for i in {1..$time}; do
+
+  #  # I.
+  #  notify "Starting in $i seconds."
+
+  #  # II. Wait for next second.
+  #  sleep ${i}s
+
+  #done
+
+  # B. Send a sign of recording to lemonbar so that you know it is being recorded.
+  eww update record_menu=true
+
+  # C. Start recording.
+  giph \
+    -g "$geometry" \
+    -f "$frame_rate" \
+    "$name_file"
+
+  # D.
+  stop
+
+  # E.
+  responder="$(notify \
+    -o 'echo open:See file?' \
+    -o 'echo none:Hell no' \
+    "$name" \
+    'Recording has finished.')"
+
+  # F. For action-driven response.
+  if [ "$responder" = 'open' ]; then
+
+    # I. 
+    nohup \
+      gtk-launch \
+      "$(xdg-mime query default inode/directory)" \
+      "$path_recordings/" \
+      >/dev/null 2>&1 &
+
+  fi
+
+}
+
+rm -f "$replace_id"

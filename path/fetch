@@ -19,17 +19,16 @@
 
   # Artix logo.
   logo="
-\033[1m          /\\
-\033[1m         /  \\         \033[38m\033[0m\033[3m  OS       $a $(cat /etc/os-release | grep -m 1 -oP '((?<=NAME=").*(?= Linux"))') - GNU/Linux - x86_64
-\033[1m        /    \\        \033[33m\033[0m\033[3m  KERNEL   $a Linux $(uname -r)
-\033[1m       /  -_  \\       \033[34m\033[0m\033[3m  UPTIME   $a $(uptime -p | sed 's/^up //')
-\033[1m      /     -_ \\      \033[35m\033[0m\033[3m  SHELL    $a $(echo "$SHELL" | sed 's_/usr/bin/__')
-\033[1m     /      -   \\     \033[36m\033[0m\033[3m  PACKAGES $a $(pacman -Q | wc -l) packages
-\033[1m    /    __- _   \\    \033[37m\033[0m\033[3m  INIT     $a $(ls -l /sbin/init | grep -oP '((?<=-> ).*(?=-init))')
-\033[1m   /    -     -_  \\   \033[38m\033[0m\033[3m  MEMORY   $a $(free -m | awk '{print $3}' | head -n2 | tail -n1)MiB
-\033[1m  /__---        -__\\
-\033[0m"
-
+        
+       ██       \033[38m\033[0m\033[3m  OS       $a $(cat /etc/os-release | grep -m 1 -oP '((?<=NAME=").*(?= Linux"))') - GNU/Linux - x86_64
+       ███      \033[33m\033[0m\033[3m  KERNEL   $a Linux $(uname -r)
+        █     \033[34m\033[0m\033[3m  UPTIME   $a $(uptime -p | sed 's/^up //')
+    █████       \033[35m\033[0m\033[3m  SHELL    $a $(echo "$SHELL" | sed 's_/usr/bin/__')
+   █████████    \033[36m\033[0m\033[3m  PACKAGES $a $(pacman -Q | wc -l) packages
+  ██████      \033[37m\033[0m\033[3m  INIT     $a $(ls -l /sbin/init | grep -oP '((?<=-> ).*(?=-init))')
+ ████     ███ \033[38m\033[0m\033[3m  MEMORY   $a $(free -m | awk '{print $3}' | head -n2 | tail -n1)MiB
+██          ██
+"
 }
 
 # 2. Basic definitions.

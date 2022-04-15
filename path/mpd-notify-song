@@ -1,17 +1,17 @@
 #!/usr/bin/env sh
 #
 # DESCRIPTION:
-#   Load a notification for current song with
-#   cover :)
+#   Load a notification for the current song with
+#   a cover.
 #
 # DEPENDENCIES:
-#   libnotify ; notify-send
+#   notify-call
 #   mpd
 #     mpc
 #   imagemagick
 #
 # MAINTAINER: (s)
-#   GPL3 🄯 BeyondMagic <koetemagie/gmail.com> 2021-
+#   GPL3 🄯 BeyondMagic <koetemagie/gmail.com> 2022-
 
 # 1. Clean off the folling variables.
 unset music_path artist title file a b c size image
@@ -22,7 +22,7 @@ unset music_path artist title file a b c size image
       cover_empty="$HOME/.local/share/icons/no_cover.png"
      cover_square='/tmp/cover_square.jpg'
      cover_circle='/tmp/cover_circle.png'
-      cover_blur='/tmp/cover_blur.jpg'
+       cover_blur='/tmp/cover_blur.jpg'
   cover_temporary='/tmp/cover_tmp.jpg'
 
   music_path="$HOME/Library/Music/Songs"
@@ -47,8 +47,6 @@ ffmpeg -loglevel quiet -i "$music_path/$file" "$cover_temporary"
 if [ -f "$cover_temporary" ]; then
 
   # A. Get image information.
-  #a=$(identify -format '%h' "$cover_temporary")
-  #b=$(($a / 2))
   c="circle 112,112,112,225"
 
   # B. Create cropped circle from the image file.
@@ -62,7 +60,10 @@ if [ -f "$cover_temporary" ]; then
     "$cover_circle"
 
   # C. Notify the song with image.
-  notify-send.sh -a "mpd_song" -i "$cover_circle" "$artist" "$title"
+  notify-call \
+    --hint string:image-path:"$cover_circle" \
+    "$artist" \
+    "$title"
 
   # D. Create blurred image.
   convert -scale 1% -blur 0x1 -fill black -colorize 55% "$cover_temporary" "$cover_blur"
@@ -73,13 +74,13 @@ if [ -f "$cover_temporary" ]; then
   # F. Update MPD image.
   eww update mpd_image_path="$cover_square"
 
-  # G. Update lyrics of MPD viewer.
-  eww update mpd_lyrics_index=0 && mpd_eww_lyrics
+  # G. Add lyrics to database.
+  mpd-lyrics-song
 
 else
 
-    # A. Notify the song without any image.
-  notify-send.sh -a "mpd_song" "$artist" "$title"
+  # A. Notify the song without any image.
+  notify-call "$artist" "$title"
 
   # B. Remove all image files.
   rm -f "$cover_circle" "$cover_blur"

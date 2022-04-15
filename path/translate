@@ -1,6 +1,14 @@
 #!/usr/bin/env sh
 #
-# A simple translation tool that that relies on Iris as a backend.
+# DESCRIPTION:
+#   A simple translation tool that that relies on Iris as backend.
+#
+# DEPENDENCIES:
+#   iris
+#   notify-call
+# 
+# TODO:
+#   notify-call -> eww
 #
 # João F. © BeyondMagic <koetemagie@gmail.com>
 
@@ -17,6 +25,8 @@ case "$1" in
 
       pt ) word='in Portuguese' ;;
 
+      ru ) word='in Russian' ;;
+
     esac
 
   ;;
@@ -30,6 +40,8 @@ case "$1" in
       ja ) word='em Japonês' ;;
 
       en ) word='em Inglês' ;;
+
+      ru ) word='em Russo' ;;
 
     esac
 
@@ -45,34 +57,36 @@ case "$1" in
 
       pt ) word='ポルトガル語' ;;
 
+      ru ) word='ロシア語' ;;
+
     esac
 
   ;;
 
+  #ru* )
+
+  #;;
+
 esac
 
 # 2. Make sure there's enough translation process.
-[ "$word" ] || {
+if [ ! "$word" ] || [ ! "$from" ]; then
 
-  echo 'You need at least two initial arguments: ranging itself from <en>, <ja>, and <pt>.'
+  echo 'You need at least two initial arguments: ranging itself from <en>, <ja>, <pt>, <ru>.'
 
   exit 1
 
-}
+fi
 
 # 2.
 
   # I.
   notify () {
 
-    # A.
-    icons="$HOME/.local/share/icons/"
-
     # B.
-    notify-send.sh \
-      --expire-time=15000 \
-      --force-expire \
-      --icon="$icons/language-hiragana-$index.svg" \
+    notify-call \
+      --expire-time 15000 \
+      --hint string:image-path:"$HOME/.local/share/icons/banana.png" \
       "$1" \
       "$2"
 
@@ -125,10 +139,8 @@ esac
   # C. Just a stdin alarm.
   echo "$from $left $word"
 
-  export LANG=$1
-
   # D. Parse every line.
-  echo | iris "$left $word" | while IFS='\n' read -r selected; do
+  LANG=$1 iris "$from $left $word" | while IFS='\n' read -r selected; do
 
     # 1. Just a stdin alarm.
     echo $selected

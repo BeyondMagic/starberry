@@ -11,7 +11,7 @@
 # MAINTAINER: (s)
 #   BeyondMagic : 2022- : <koetemagie@gmail.com>
 
-path_image='/tmp/last_shot.png'
+path_image='/tmp/last-shot.png'
 
 # 1. Take the screnshot
 {
@@ -21,6 +21,7 @@ path_image='/tmp/last_shot.png'
     scrot \
       -a $(slop -f '%x,%y,%w,%h') \
       -f "$path_image" \
+      -q 100 \
       -o \
         || exit 1
 
@@ -38,6 +39,7 @@ path_image='/tmp/last_shot.png'
     scrot \
       -a "0,0,$geometry" \
       -f "$path_image" \
+      -q 100 \
       -o \
         || exit 1
 
@@ -45,10 +47,10 @@ path_image='/tmp/last_shot.png'
 
     # A. Let the user decides how the screenshot must be taken.
     command=$(notify-call \
-      -o 'echo size:Size' \
-      -o 'echo full:Fullscreen' \
-      '画面' \
-      'スクリーンショット？')
+                -o 'echo size:Size' \
+                -o 'echo full:Fullscreen' \
+                '画面' \
+                'スクリーンショット？')
 
     # B. Execute this script again with the argument or just leave if the user wants.
     if [ "$command" ]; then
@@ -62,19 +64,22 @@ path_image='/tmp/last_shot.png'
 
 }
 
+name="画面 - $size"
+
 # D.
 command=$(notify-call \
-  --hint string:image-path:"$path_image" \
-  -d "echo copy" \
-  "画面 - $size" \
-  'クリップボードにコピーしますか？')
+            --hint string:image-path:"$path_image" \
+            -d "echo copy" \
+            "$name" \
+            'クリップボードにコピーしますか？')
 
 if [ "$command" = 'copy' ]; then
 
   # I. Transfer the image data to clipboard using copyq.
   copyq write image/png - < "$path_image" \
     && copyq select 0 \
-    && notify-call "画面 - $size" \
-    'コピーえる。'
+    && notify-call \
+         "$name" \
+         'コピーえる。'
 
 fi

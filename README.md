@@ -1,3 +1,3 @@
-<h1 align="center">THIS README.md IS OUTDATED</h1>
+Those files are more documented than the bible -- trust me.
 
-... soon to be rewritten.
+Soon I'll add screenshots here.

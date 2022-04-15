@@ -1,0 +1,20 @@
+#!/usr/bin/env sh
+#
+# DESCRIPTION:
+#   Simple script to notify the volume settings of both sides left and right.
+#
+# DEPENDENCIES:
+#   libpulse   pactl
+#
+# MAINTAINER: (s)
+#   GPL3 🄯 BeyondMagic <koetemagie/gmail.com> 2021-
+
+if [ "$1" = "increase" ]; then
+
+  pactl -- set-sink-volume @DEFAULT_SINK@ +2% &
+
+else
+
+  pactl -- set-sink-volume @DEFAULT_SINK@ -2% &
+
+fi

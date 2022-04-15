@@ -24,7 +24,7 @@ stdbuf -i0 -o0 -e0 colorpicker --short --one-shot | while IFS=$'\n' read -r id_c
     --hint string:image-path:'/tmp/colour.png' \
     -d "echo copy" \
     "$id_colour" \
-    'You want to copy to your clipboard?')
+    'クリップボードにコピーしますか？')
 
   if [ "$command" = 'copy' ]; then
 

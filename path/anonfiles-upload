@@ -1,0 +1,41 @@
+#!/usr/bin/env sh
+#
+# Upload a file to anonfile.
+#
+# DEPENDENCIES:
+#  anonfile
+#
+# João F. © BeyondMagic 2022 <koetemagie@gmail.com>
+
+filename="$1"
+
+notify() {
+
+  notify-call \
+    "Upload - '$filename'" \
+    "$1"
+
+}
+
+# A.
+if [ -f "$1" ]; then
+
+  result="$(anonfile "$filename")"
+
+  if [ "$?" = 0 ]; then
+
+    copyq copy "$(echo "$result" | awk '$1 = /Full/ {print $5}')"
+
+    notify 'Successfull. The URL has been copied to clipboard.'
+
+  else
+
+    notify 'Anonfile failed to upload the file?... :('
+
+  fi
+
+else
+
+  notify "Failed to upload file because the file doesn't exist."
+
+fi

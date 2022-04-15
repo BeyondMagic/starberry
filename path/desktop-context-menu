@@ -1,0 +1,132 @@
+#!/usr/bin/env sh
+
+# 1. Set main variables.
+{
+
+  # A. Main path of icons.
+  i="IMG:$HOME/.local/share/icons"
+
+  if mountpoint -q /mnt/pendrive; then
+
+    pendrive_status="$i/camera-off.svg\tUmount Pendrive\tdoas -- umount /mnt/pendrive"
+
+  else
+
+    pendrive_status="$i/camera-plus.svg\tMount Pendrive (/dev/sdc1)\tdoas -- mount -o umask=0,uid=nobody,gid=nobody /dev/sdc1 /mnt/pendrive"
+
+  fi
+
+}
+
+# 2. Retrieve command to execute.
+command="$(echo "
+$i/flarity.svg\tTerminalーエミュレータ\tflarity
+
+$i/internet.svg\tWebーブラウザ
+\t$i/firefox.svg\tFirefox Nightly\tzsh -c 'haha'
+\t$i/brave.svg\tBrave Nightly\tzsh -c 'lol'
+
+$i/notebook.svg\tT Text Editor\tflarity -e nvim
+$i/applications.svg\tA アプリケーション
+\t$i/inkscape.svg\tInkscape\tinkscape
+\t$i/telegram.svg\tTelegram\ttelegram-desktop
+\t$i/shazam.svg\tShazam\tsongrec
+\t$i/zathura.svg\tZathura\tzathura
+\t$i/tenacity.svg\tTenacity\ttenacity
+\t$i/gimp.svg\tGimp\tgimp-2.10
+\t
+\t$i/wallet-1.svg\tMonero Wallet\tmonero-wallet-gui
+\t$i/wallet-2.svg\tTerra Station\tstation-electron
+\t
+\t$i/deezer.svg\tDeezer\tdeemix-gui
+\t$i/mpv.svg\tMPV\tmpv --player-operation-mode=pseudo-gui
+\t$i/traffic-cone.svg\tVLC\tvlc
+\t$i/world-download.svg\tqBitTorrent\tqbittorrent
+\t
+\t$i/snowflake.svg\txSnow\txsnow
+\t
+\t$i/brand-android.svg\tADB Screen\tscrcpy -K
+$i/monitor.svg\tS 画面
+\t$i/photo.svg\tSet Size Screenshot\tscreen size
+\t$i/picture.svg\tFull Screenshot\tscreen full
+\t
+\t$i/photo.svg\tSet Size in GIF\trecord_gif size
+\t$i/picture.svg\tFull Display GiIF\trecord_gif full
+\t$i/photo.svg\tSet Size MKV\tscreen
+\t$i/picture.svg\tFull Display MKV\tfullphoto
+
+$i/full_bookmark.svg\tF 場所
+\t$i/photo.svg\tDownloads\tflarity -e zsh -c '. ~/.config/zsh/aliasesrc; n $HOME/Downloads/; exec zsh'
+\t$i/picture.svg\tLibrary\tflarity -e zsh -c '. ~/.config/zsh/aliasesrc; n $HOME/Library/; exec zsh'
+\t
+\t$i/picture.svg\tPendrive
+\t\t$i/Pendrive\tSee files\tflarity -e zsh -c '. ~/.config/zsh/aliasesrc; n /mnt/pendrive/; exec zsh'
+\t\t$pendrive_status
+\t$i/picture.svg\tEvolução\tflarity -e zsh -c '. ~/.config/zsh/aliasesrc; n $HOME/Evolução/; exec zsh'
+\t$i/photo.svg\tJapanese\tflarity -e zsh -c '. ~/.config/zsh/aliasesrc; n $HOME/Japanese/; exec zsh'
+\t$i/picture.svg\tStory\tflarity -e zsh -c '. ~/.config/zsh/aliasesrc; n $HOME/Story/; exec zsh'
+\t$i/picture.svg\tImages\tflarity -e zsh -c '. ~/.config/zsh/aliasesrc; n $HOME/Images/; exec zsh'
+\t$i/picture.svg\tGit\tflarity -e zsh -c '. ~/.config/zsh/aliasesrc; n $HOME/Git/; exec zsh'
+$i/bookmark.svg\tB ブックマーク
+\t$i/picture.svg\tScript\tflarity -e zsh -c '. ~/.config/zsh/aliasesrc; v $HOME/Story/Script/Epilogue; exec zsh'
+\t$i/photo.svg\tMemes
+\t
+\t$i/photo.svg\t...
+\t$i/picture.svg\t...
+\t$i/photo.svg\t...
+\t$i/picture.svg\t...
+$i/cog.svg\tC 環境設定
+\tSuckless
+\t\tBoomer\tflarity -e zsh -c '. ~/.config/zsh/aliasesrc; cd $HOME/.config/boomer/; v $HOME/.config/boomer/config;'
+\t\tdwm\tflarity -e zsh -c '. ~/.config/zsh/aliasesrc; cd $HOME/Git/Forking/dwm/; v $HOME/Git/Forking/dwm/config.h;'
+\t\tFlarity\tflarity -e nvim $HOME/Git/Projects/flarity/config.h
+\t
+\tWeb Home-page\tflarity -e nvim $HOME/Git/Projects/startpage/data/links.json
+\tWired\tflarity -e zsh -c '. ~/.config/zsh/aliasesrc; cd $HOME/.config/wired/; v $HOME/.config/wired/wired.ron;'
+\tNVim\tflarity -e nvim $HOME/.config/nvim/init.lua
+\tFcitx5\tflarity -e nvim $HOME/.config/fcitx5/config
+\tPicom\tflarity -e nvim $HOME/.config/picom/picom.conf
+\tGLava\tflarity -e nvim $HOME/.config/glava/rc.glsl
+\tVisualBoyAdvance-M\tflarity -e nvim $HOME/.config/visualboyadvance-m/vbam.ini
+\tXResources\tflarity -e nvim $HOME/.config/xorg/XResources
+\tDunst\tflarity -e nvim $HOME/.config/dunst/dunstrc.template
+\tZathura\tflarity -e nvim $HOME/.config/zathura/zathurarc.template
+\tNSXiv\tflarity -e nvim $HOME/.config/nsxiv/exec/key-handler
+\tncmpcpp\tflarity -e nvim $HOME/.config/ncmpcpp/config
+\tMPDScribble\tflarity -e nvim $HOME/.config/mpdscribble/mpdscribble.conf
+\tn³\tflarity -e nvim $HOME/.config/nnn/plugins/preview-tabbed
+\tYMuse\tflarity -e nvim $HOME/.config/ymuse/config.json
+\tRofi\tflarity -e nvim $HOME/.config/rofi/themes/colors.rasi
+\tZsh\tflarity -e nvim $HOME/.config/zsh/.zshrc
+\txSettings\tflarity -e nvim $HOME/.config/xsettingsd/xsettingsrc.template
+\tEWW\tflarity -e nvim $HOME/.config/eww/eww.yuck
+$i/key.svg\tK キーバインド\tflarity -e nvim $HOME/.config/xbindkeys/xbindkeysrc
+
+$i/lock.svg\tL ロック画面\tlock
+$i/desktop-computer.svg\tD システム
+\t$i/bulb-off.svg\tステータス
+\t\t
+\t\t    $(id -G -n | sed "s/ /@/") | $(date +'%H:%M, %a%b %d')   
+\t\t
+\t\t$i/artix.svg\t   OS       $(cat /etc/os-release | grep -m 1 -oP '((?<=NAME=").*(?= Linux"))') - GNU/Linux - x86_64
+\t\t$i/artboard.svg\t   KERNEL   Linux $(uname -r)
+\t\t$i/clock.svg\t   UPTIME   $(uptime -p | sed 's/^up //')
+\t\t$i/brand-tabler.svg\t   SHELL    $(echo "$SHELL" | sed 's_/usr/bin/__')
+\t\t$i/box.svg\t   PACKAGES $(pacman -Q | wc -l) packages
+\t\t$i/tool.svg\t   INIT     $(ls -l /sbin/init | grep -oP '((?<=-> ).*(?=-init))')
+\t\t$i/live-photo.svg\t   MEMORY   $(free -m | awk '{print $3}' | head -n2 | tail -n1)MiB
+\t$i/power.svg\tスイッチを切る\tdoas halt
+\t$i/refresh.svg\tリブート\tdoas -- shutdown -r now
+\t$i/bed.svg\t睡眠\tdoas -- zzz
+\t$i/logout.svg\tログアウト\texec unlovemii
+\t$i/brand-windows.svg\tリブートーWindow Manager\tdwm-msg run_command quit 1
+\t$i/affiliate.svg\tEWW・Daemons\tzsh -c '. ~/.config/zsh/aliasesrc; eww_reset_daemons'
+
+$i/paint.svg\tP 壁紙
+\t$i/wallpaper.svg\t新しいーランダム\tzsh -c '. ~/.config/zsh/aliasesrc; random_wallpaper'
+\t$i/wall.svg\tすべて\tzsh -c '. ~/.config/zsh/aliasesrc; set_wallpaper'
+" \
+| sed -re '1d;$d' | xmenu)"
+
+# II. Execute command in fly.
+eval "$command"

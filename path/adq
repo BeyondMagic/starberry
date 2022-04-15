@@ -34,12 +34,10 @@
 #   quotes_path = path of the quotes.json file
 #
 # MAINTAINER: (s)
-#   GPL3 🄯 BeyondMagic <koetemagie/gmail.com> 2021-
-
+#   GPL3 🄯 BeyondMagic <koetemagie/gmail.com> 2022-
 
 quotes_path="$HOME/Library/quotes.json"
       quote=$(printf "$1" | awk 1 ORS='\\\\n' | head -c -2 )
-
 
 # See if file exists
 
@@ -64,7 +62,11 @@ quotes_path="$HOME/Library/quotes.json"
 # Three arguments passed
 } || [ ! "$3" = "" ] && {
 
-  echo "Three arguments passed:\n\033[1m\$1 : $1\033[0m\n\033[1m\$2 : $2\033[0m\n\033[1m\$3 : $3\033[0m"
+  echo "Three arguments passed:
+\033[1;31m\$1 \033[90m・ \033[91m$1
+\033[32m\$2 \033[90m・ \033[92m$2
+\033[33m\$3 \033[90m・ \033[93m$3\033[0m"
+
   sed \
     -e '1 a ¨¨[' \
     -e "1 a ¨¨¨¨\"$quote\"," \
@@ -81,7 +83,10 @@ quotes_path="$HOME/Library/quotes.json"
 # Two arguments passed
 } || [ ! "$2" = "" ] && {
 
-  echo "Tho arguments passed:\n\$1 : $1\n\$2 : $2"
+    echo "Two arguments passed:
+\033[1;31m\$1 \033[90m・ \033[91m$1
+\033[32m\$2 \033[90m・ \033[92m$2\033[0m"
+
   sed \
     -e '1 a ¨¨[' \
     -e "1 a ¨¨¨¨\"$quote\"," \
@@ -97,7 +102,9 @@ quotes_path="$HOME/Library/quotes.json"
 # One argument passed
 } || [ ! "$1" = "" ] && {
 
-  echo "One arguments passed:\n\$1 : $1"
+  echo "One argument passed:
+\033[1;31m\$1 \033[90m・ \033[91m$1\033[0m"
+
   sed \
     -e '1 a ¨¨[' \
     -e "1 a ¨¨¨¨\"$quote\"" \
