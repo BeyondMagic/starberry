@@ -12,47 +12,61 @@
 
 export LANG=en_US
 
-# 0. Path of iris.
-iris_bin="$HOME/Git/Projects/iris-cli/iris/bin/iris"
-
 # #. 
 clean () {
 
-  sed -r 's/\/|\.|-|\;|\&|\?|\!/_/g'
+  head -n 1 | sed -r 's/\/|\.|-|\;|\&|\?|\!/_/g'
 
 }
 
 {
   # 1. Get current Artist and Song Name with mpc.
-  name_artist="$(mpc -f "[%artist%]" | head -n1 | clean)"
-  name_song="$(mpc -f "[%title%]" | head -n1 | clean)"
-  name_album="$(mpc -f "[%album%]" | head -n1 | clean)"
+  name_artist="$(mpc -f "[%artist%]" | clean)"
+  name_song="$(mpc   -f "[%title%]"  | clean)"
+  name_album="$(mpc  -f "[%album%]"  | clean)"
 
   # 2. Set paths for folder and lyrics to save for later use.
   folder_lyrics="$HOME/Library/Music/Lyrics/$name_artist/$name_album"
   file_lyrics="$folder_lyrics/$name_song.txt"
 }
 
-# 3. If file exist, just exit.
-[ -f "$file_lyrics" ] && cat "$file_lyrics" && exit 0
+# 3. If file exist, test first argument.
+if [ -f "$file_lyrics" ]; then
+
+  # A. Let the user edit the file.
+  if [ "$1" = 'edit' ] || [ "$1" = 'e' ]; then
+
+    # I. Use environment variable of text-editor.
+    $EDITOR "$file_lyrics"
+
+  else
+
+    # II. Pipe the text into stdout instead if nothing else is asked.
+    cat "$file_lyrics"
+
+  fi
+
+  exit 0
+
+fi
 
 # 4. Create folder to add a new file.
 mkdir -p "$folder_lyrics"
 
 # 5. Get file
-lyrics="$("$iris_bin" "$name_artist $name_song lyrics" | awk '$1 !~ /Information/ { $1=""; print substr($0,2) }')"
+lyrics="$(iris "$name_artist $name_song lyrics" | awk '$1 == "GoogleLyrics" { $1=""; print substr($0,2) }')"
 
 # 6. If lyrics exist at all.
-[ "$lyrics" ] && {
+if [ "$lyrics" ]; then
 
   # A. Save them.
   echo "$lyrics" > "$file_lyrics"
 
-} || {
+else
 
   # A. Save no lyrics.
   echo '' > "$file_lyrics"
 
-}
+fi
 
 cat "$file_lyrics"
