@@ -5,17 +5,17 @@
 
   # A. Main path of icons.
   i="IMG:$HOME/.local/share/icons"
-
-  if mountpoint -q /mnt/pendrive; then
-
-    pendrive_status="$i/camera-off.svg\tUmount Pendrive\tdoas -- umount /mnt/pendrive"
-
-  else
-
-    pendrive_status="$i/camera-plus.svg\tMount Pendrive (/dev/sdc1)\tdoas -- mount -o umask=0,uid=nobody,gid=nobody /dev/sdc1 /mnt/pendrive"
-
-  fi
-
+#
+#  if mountpoint -q /mnt/pendrive; then
+#
+#    pendrive_status="$i/camera-off.svg\tUmount Pendrive\tdoas -- umount /mnt/pendrive"
+#
+#  else
+#
+#    pendrive_status="$i/camera-plus.svg\tMount Pendrive (/dev/sdc1)\tdoas -- mount -o umask=0,uid=nobody,gid=nobody /dev/sdc1 /mnt/pendrive"
+#
+#  fi
+#
 }
 
 # 2. Retrieve command to execute.
@@ -58,10 +58,6 @@ $i/monitor.svg\tS 画面
 $i/full_bookmark.svg\tF 場所
 \t$i/photo.svg\tDownloads\tflarity -e zsh -c '. ~/.config/zsh/aliasesrc; n $HOME/Downloads/; exec zsh'
 \t$i/picture.svg\tLibrary\tflarity -e zsh -c '. ~/.config/zsh/aliasesrc; n $HOME/Library/; exec zsh'
-\t
-\t$i/picture.svg\tPendrive
-\t\t$i/Pendrive\tSee files\tflarity -e zsh -c '. ~/.config/zsh/aliasesrc; n /mnt/pendrive/; exec zsh'
-\t\t$pendrive_status
 \t$i/picture.svg\tEvolução\tflarity -e zsh -c '. ~/.config/zsh/aliasesrc; n $HOME/Evolução/; exec zsh'
 \t$i/photo.svg\tJapanese\tflarity -e zsh -c '. ~/.config/zsh/aliasesrc; n $HOME/Japanese/; exec zsh'
 \t$i/picture.svg\tStory\tflarity -e zsh -c '. ~/.config/zsh/aliasesrc; n $HOME/Story/; exec zsh'
@@ -90,7 +86,7 @@ $i/cog.svg\tC 環境設定
 \tVisualBoyAdvance-M\tflarity -e nvim $HOME/.config/visualboyadvance-m/vbam.ini
 \tXResources\tflarity -e nvim $HOME/.config/xorg/XResources
 \tDunst\tflarity -e nvim $HOME/.config/dunst/dunstrc.template
-\tZathura\tflarity -e nvim $HOME/.config/zathura/zathurarc.template
+\tZathura\tflarity -e nvim $HOME/.config/zathura/zathurarc.template $HOME/.config/xorg/default/zathura.x $HOME/.config/xorg/theme-linked/zathura.x
 \tNSXiv\tflarity -e nvim $HOME/.config/nsxiv/exec/key-handler
 \tncmpcpp\tflarity -e nvim $HOME/.config/ncmpcpp/config
 \tMPDScribble\tflarity -e nvim $HOME/.config/mpdscribble/mpdscribble.conf
@@ -99,28 +95,16 @@ $i/cog.svg\tC 環境設定
 \tRofi\tflarity -e nvim $HOME/.config/rofi/themes/colors.rasi
 \tZsh\tflarity -e nvim $HOME/.config/zsh/.zshrc
 \txSettings\tflarity -e nvim $HOME/.config/xsettingsd/xsettingsrc.template
-\tEWW\tflarity -e nvim $HOME/.config/eww/eww.yuck
+\tEWW\tflarity -e nvim $HOME/.config/eww/eww.yuck $HOME/.config/eww/eww.scss
 $i/key.svg\tK キーバインド\tflarity -e nvim $HOME/.config/xbindkeys/xbindkeysrc
 
 $i/lock.svg\tL ロック画面\tlock
-$i/desktop-computer.svg\tD システム
-\t$i/bulb-off.svg\tステータス
-\t\t
-\t\t    $(id -G -n | sed "s/ /@/") | $(date +'%H:%M, %a%b %d')   
-\t\t
-\t\t$i/artix.svg\t   OS       $(cat /etc/os-release | grep -m 1 -oP '((?<=NAME=").*(?= Linux"))') - GNU/Linux - x86_64
-\t\t$i/artboard.svg\t   KERNEL   Linux $(uname -r)
-\t\t$i/clock.svg\t   UPTIME   $(uptime -p | sed 's/^up //')
-\t\t$i/brand-tabler.svg\t   SHELL    $(echo "$SHELL" | sed 's_/usr/bin/__')
-\t\t$i/box.svg\t   PACKAGES $(pacman -Q | wc -l) packages
-\t\t$i/tool.svg\t   INIT     $(ls -l /sbin/init | grep -oP '((?<=-> ).*(?=-init))')
-\t\t$i/live-photo.svg\t   MEMORY   $(free -m | awk '{print $3}' | head -n2 | tail -n1)MiB
 \t$i/power.svg\tスイッチを切る\tdoas halt
 \t$i/refresh.svg\tリブート\tdoas -- shutdown -r now
 \t$i/bed.svg\t睡眠\tdoas -- zzz
 \t$i/logout.svg\tログアウト\texec unlovemii
 \t$i/brand-windows.svg\tリブートーWindow Manager\tdwm-msg run_command quit 1
-\t$i/affiliate.svg\tEWW・Daemons\tzsh -c '. ~/.config/zsh/aliasesrc; eww_reset_daemons'
+\t$i/affiliate.svg\tEWW・Daemons\tzsh -c '. ~/.config/zsh/aliasesrc; eww_reset_daemons &'
 
 $i/paint.svg\tP 壁紙
 \t$i/wallpaper.svg\t新しいーランダム\tzsh -c '. ~/.config/zsh/aliasesrc; random_wallpaper'

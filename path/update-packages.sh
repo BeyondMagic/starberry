@@ -15,25 +15,15 @@ icons="$HOME/.local/share/icons"
 # 1.
 send () {
 
-  # A.
-  if [ "$1" = 'notify' ]; then
+  # I.
+  if [ "$2" = 'id' ]; then
 
-    # I.
-    if [ "$2" = 'id' ]; then
+    id=$(notify-send.sh --print-id --icon="$icons/box.svg" 'パッケージ' "$3")
 
-      id=$(notify-send.sh --print-id --icon="$icons/box.svg" 'パッケージ' "$3")
+  # II.
+  else
 
-    # II.
-    else
-
-      notify-send.sh --replace=$id --icon="$icons/box.svg" 'パッケージ' "$2"
-
-    fi
-
-  # B.
-  elif [ "$1" = 'ask' ]; then
-
-    :
+    notify-send.sh --replace=$id --icon="$icons/box.svg" 'パッケージ' "$2"
 
   fi
 

@@ -22,6 +22,7 @@ stdbuf -i0 -o0 -e0 colorpicker --short --one-shot | while IFS=$'\n' read -r id_c
   # D.
   command=$(notify-call \
     --hint string:image-path:'/tmp/colour.png' \
+    --app-name 'magick-pick-colour' \
     -d "echo copy" \
     "$id_colour" \
     'クリップボードにコピーしますか？')

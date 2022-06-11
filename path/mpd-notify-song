@@ -35,8 +35,8 @@ unset music_path artist title file a b c size image
   artist="$(echo "$artist" | tr '[:lower:]' '[:upper:]')"
 
   # B. Update special variables.
-  eww update current_song_artist="$artist"
-  eww update current_song_name="$title"
+  #eww update current_song_artist="$artist"
+  #eww update current_song_name="$title"
 
 }
 
@@ -72,7 +72,7 @@ if [ -f "$cover_temporary" ]; then
   mv -f "$cover_temporary" "$cover_square"
 
   # F. Update MPD image.
-  eww update mpd_image_path="$cover_square"
+  #eww update mpd_image_path="$cover_square"
 
   # G. Add lyrics to database.
   mpd-lyrics-song
@@ -86,6 +86,6 @@ else
   rm -f "$cover_circle" "$cover_blur"
 
   # C. Update image file to not update.
-  eww update mpd_image_path="$cover_empty"
+  #eww update mpd_image_path="$cover_empty"
 
 fi

@@ -10,8 +10,6 @@
 #
 # João F. © BeyondMagic 2022 <koetemagie@gmail.com>
 
-export LANG=en_US
-
 # #. 
 clean () {
 
@@ -54,7 +52,7 @@ fi
 mkdir -p "$folder_lyrics"
 
 # 5. Get file
-lyrics="$(iris "$name_artist $name_song lyrics" | awk '$1 == "GoogleLyrics" { $1=""; print substr($0,2) }')"
+lyrics="$(LANG=en_US iris "$name_artist $name_song lyrics" | awk '$1 == "GoogleLyrics" { $1=""; print substr($0,2) }')"
 
 # 6. If lyrics exist at all.
 if [ "$lyrics" ]; then

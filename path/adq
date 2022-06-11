@@ -36,8 +36,9 @@
 # MAINTAINER: (s)
 #   GPL3 🄯 BeyondMagic <koetemagie/gmail.com> 2022-
 
-quotes_path="$HOME/Library/quotes.json"
-      quote=$(printf "$1" | awk 1 ORS='\\\\n' | head -c -2 )
+[ "$quotes_path" ] || quotes_path="$HOME/Library/quotes.json"
+
+quote=$(printf "$1" | awk 1 ORS='\\\\n' | head -c -2 )
 
 # See if file exists
 
