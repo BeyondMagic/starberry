@@ -33,16 +33,15 @@
 # Set:
 #   quotes_path = path of the quotes.json file
 #
-# MAINTAINER: (s)
-#   GPL3 🄯 BeyondMagic <koetemagie/gmail.com> 2022-
+# Maintainers:
+# - João Victor 🄯 GPL3 2022-2024 BeyondMagic <beyondmagic@mail.ru>
 
-[ "$quotes_path" ] || quotes_path="$HOME/Library/quotes.json"
+[ "$quotes_path" ] || quotes_path="$HOME/storage/quotes.json"
 
 quote=$(printf "$1" | awk 1 ORS='\\\\n' | head -c -2 )
 
 # See if file exists
-
-   [ ! -e "$quotes_path" ] && {
+[ ! -e "$quotes_path" ] && {
 
   echo -e "No file encountered, current path being passed is:" \
   "\n\$quotes_path : $quotes_path\n" \
@@ -55,7 +54,7 @@ quote=$(printf "$1" | awk 1 ORS='\\\\n' | head -c -2 )
 }
 
 # Four?
-  [ ! "$4" = "" ] && {
+[ ! "$4" = "" ] && {
 
   echo "Please, only three arguments..."
   exit 1

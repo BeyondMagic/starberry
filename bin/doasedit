@@ -1,9 +1,12 @@
 #!/usr/bin/env sh
 #
-# TODO
-#   normalize syntax
+# Will edit a priviliged file without privilige.
 #
-# Script made by AN3223
+# Dependencies:
+# - doas (duh)
+#
+# AN3223 © 2022
+# João Farias © 2022-2024 BeyondMagic
 
 help() {
   cat - >&2 <<EOF
@@ -30,12 +33,18 @@ esac
 export TMPDIR=/dev/shm/
 trap 'rm -f "$tmp" "$tmpcopy"' EXIT HUP QUIT TERM INT ABRT
 
+doas echo Allowed...
+
 for file; do
-  tmp="$(mktemp)"
+  tmp="$(mktemp)$(echo "$file" | grep -oE '\..+$')"
   if [ -f "$file" ] && [ ! -r "$file" ]; then
+
     doas cat "$file" > "$tmp"
+
   elif [ -r "$file" ]; then
+
     cat "$file" > "$tmp"
+
   else
     :
   fi
