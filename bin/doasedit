@@ -1,4 +1,4 @@
-#!/usr/bin/env sh
+#!/usr/bin/env nu
 #
 # Will edit a priviliged file without privilige.
 #
@@ -6,60 +6,72 @@
 # - doas (duh)
 #
 # AN3223 © 2022
-# João Farias © 2022-2024 BeyondMagic
+# João Farias © 2022-2024 BeyondMagic <beyondmagic@mail.ru>
 
-help() {
-  cat - >&2 <<EOF
-doasedit - like sudoedit, but for doas
+use std log
 
-doasedit file...
-
-Every argument will be treated as a file to edit. There's no support for
-passing arguments to doas, so you can only doas root.
-
-This script is SECURITY SENSITIVE! Special care has been taken to correctly
-preserve file attributes. Please exercise CAUTION when modifying AND using
-this script.
-EOF
+def clean [temppath: string] {
+	rm -rf $temppath
 }
 
-export POSIXLY_CORRECT=1
+# Like sudoedit, but for doas.
+#
+# Every argument will be treated as a file to edit. There's no suppot for passing arguments to doas, so you can only doas root.
+#
+# This script is SECURIRTY SENSTIVE! Special care has been taken to correctly preserve file attributes. Please exercise CAUTION when modifyin AND using this script.
+def main [
+	...filepaths: string # Filepath to edit, either absolute or relative.
+] -> int {
+	if ($filepaths | is-empty) {
+		log error " Given no files to edit. Specify which files."
+		exit 1
+	}
 
-case "$1" in
-  --help| -h) help; exit 0;;
-  *) ;;
-esac
+	# Exit if environment variable EDITOR is not set.
+	if $env.EDITOR == "" {
+		log error " Environment variable EDITOR is not set, please set it."
+		exit 1
+	}
 
-export TMPDIR=/dev/shm/
-trap 'rm -f "$tmp" "$tmpcopy"' EXIT HUP QUIT TERM INT ABRT
+	for $filepath in $filepaths {
 
-doas echo Allowed...
+		# Test if the file exists AND it is a file.
+		if (do { test -f $filepath } | complete | get exit_code | into bool) {
+			log error $" '($filepath)' is not a file or does not exist."
+			exit 1
+		}
 
-for file; do
-  tmp="$(mktemp)$(echo "$file" | grep -oE '\..+$')"
-  if [ -f "$file" ] && [ ! -r "$file" ]; then
+		# Exit if we can write the file.
+		if not (do { test -w $filepath } | complete | get exit_code | into bool) {
+			log error $" '($filepath)' is a file you can edit!"
+			exit 1
+		}
 
-    doas cat "$file" > "$tmp"
+		# Test if we can read the file.
+		mut content = ''
+		if not (do { test -r $filepath } | complete | get exit_code | into bool) {
+			$content = (cat $filepath)
+		} else {
+			$content = (doas cat $filepath)
+		}
 
-  elif [ -r "$file" ]; then
+		let tmp = (basename $filepath)
+		let fullpath = (readlink -f $filepath)
 
-    cat "$file" > "$tmp"
-
-  else
-    :
-  fi
-
-  tmpcopy="$(mktemp)"
-  cat "$tmp" > "$tmpcopy"
-
-  (unset -v POSIXLY_CORRECT; ${EDITOR:-vi} "$tmp")
-
-  if cmp -s "$tmp" "$tmpcopy"; then
-    echo 'File unchanged, exiting...'
-  else
-    doas dd if="$tmp" of="$file"
-    echo 'Done, changes written'
-  fi
-
-  rm "$tmp" "$tmpcopy"
-done
+		cd /tmp/
+		try {
+			$content | save $tmp
+			run-external $env.EDITOR $tmp
+			if not (do { cmp -s $fullpath $tmp } | complete | get exit_code | into bool) {
+				log warning " File unchanged, exiting..."
+			} else {
+				doas dd ($tmp | prepend "if=" | str join) ($fullpath | prepend "of=" | str join)
+				log debug " Done, changes written."
+			}
+		} catch {
+			log debug " Caught something, exiting."
+		}
+		clean $tmp
+		cd -
+	}
+}
