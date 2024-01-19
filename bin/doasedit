@@ -10,8 +10,20 @@
 
 use std log
 
-def clean [temppath: string] {
+let LIMIT_TRIES = 3
+
+def clean [temppath: string] -> null {
 	rm -rf $temppath
+}
+
+def read_file [filepath: string] -> string {
+	mut content = ''
+	if not (do { test -r $filepath } | complete | get exit_code | into bool) {
+		$content = (cat $filepath)
+	} else {
+		$content = (doas cat $filepath)
+	}
+	return $content
 }
 
 # Like sudoedit, but for doas.
@@ -35,38 +47,60 @@ def main [
 
 	for $filepath in $filepaths {
 
+		let fullpath = (readlink -f $filepath)
+
 		# Test if the file exists AND it is a file.
-		if (do { test -f $filepath } | complete | get exit_code | into bool) {
+		if (do { test -f $fullpath } | complete | get exit_code) != 0 {
 			log error $" '($filepath)' is not a file or does not exist."
 			exit 1
 		}
 
 		# Exit if we can write the file.
-		if not (do { test -w $filepath } | complete | get exit_code | into bool) {
+		if (do { test -w $fullpath } | complete | get exit_code) == 0 {
 			log error $" '($filepath)' is a file you can edit!"
 			exit 1
 		}
 
-		# Test if we can read the file.
-		mut content = ''
-		if not (do { test -r $filepath } | complete | get exit_code | into bool) {
-			$content = (cat $filepath)
-		} else {
-			$content = (doas cat $filepath)
-		}
-
-		let tmp = (basename $filepath)
-		let fullpath = (readlink -f $filepath)
-
+		let tmp = (basename $fullpath | prepend '/tmp/' | str join)
 		cd /tmp/
+
 		try {
-			$content | save $tmp
+			read_file $fullpath | save $tmp --force
 			run-external $env.EDITOR $tmp
-			if not (do { cmp -s $fullpath $tmp } | complete | get exit_code | into bool) {
+
+			if (do { diff --ignore-trailing-space --brief $fullpath $tmp } | complete | get exit_code) == 0 {
+
 				log warning " File unchanged, exiting..."
+
 			} else {
-				doas dd ($tmp | prepend "if=" | str join) ($fullpath | prepend "of=" | str join)
-				log debug " Done, changes written."
+
+				mut times = 0
+				while $times < $LIMIT_TRIES {
+					$times += 1
+
+					let exit_code = (do { doas dd ($tmp | prepend "if=" | str join) ($fullpath | prepend "of=" | str join) } | complete | get exit_code)
+
+					# Wrong password attempt.
+					if $exit_code == 1 {
+						
+						if $times == $LIMIT_TRIES {
+							log warning $" You failed ($LIMIT_TRIES) times, the limit, exiting..."
+							break
+						}
+						continue
+
+					# Forced exit.
+					} else if $exit_code == -1 {
+						log warning " Canceled, exiting..."
+						break
+
+					# Successful attemp.
+					} else {
+						log debug " Done, changes written."
+						break
+					}
+				}
+
 			}
 		} catch {
 			log debug " Caught something, exiting."

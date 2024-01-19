@@ -73,7 +73,7 @@ quote=$(printf "$1" | awk 1 ORS='\\\\n' | head -c -2 )
     -e "1 a ¨¨¨¨\"$2\"," \
     -e "1 a ¨¨¨¨\"$3\"" \
     -e '1 a ¨¨],' "$quotes_path" | \
-    sed '2,6s/¨/ /g' > "$quotes_path.tmp" \
+    sed '2,6s/¨¨/\t/g' > "$quotes_path.tmp" \
     && mv "$quotes_path.tmp" "$quotes_path" || \
     { echo "Failed to save quote, please review the error" \
       "message and be sure that you're using GNU sed."; exit 1; }
@@ -92,7 +92,7 @@ quote=$(printf "$1" | awk 1 ORS='\\\\n' | head -c -2 )
     -e "1 a ¨¨¨¨\"$quote\"," \
     -e "1 a ¨¨¨¨\"$2\"" \
     -e '1 a ¨¨],' "$quotes_path" | \
-    sed '2,5s/¨/ /g' > "$quotes_path.tmp" \
+    sed '2,5s/¨¨/\t/g' > "$quotes_path.tmp" \
     && mv "$quotes_path.tmp" "$quotes_path" || \
     { echo "Failed to save quote, please review the error" \
       "message and be sure that you're using GNU sed."; exit 1; }
@@ -109,7 +109,7 @@ quote=$(printf "$1" | awk 1 ORS='\\\\n' | head -c -2 )
     -e '1 a ¨¨[' \
     -e "1 a ¨¨¨¨\"$quote\"" \
     -e '1 a ¨¨],' "$quotes_path" | \
-    sed '2,4s/¨/ /g' > "$quotes_path.tmp" \
+    sed '2,4s/¨¨/\t/g' > "$quotes_path.tmp" \
     && mv "$quotes_path.tmp" "$quotes_path" || \
     { echo "Failed to save quote, please review the error" \
       "message and be sure that you're using GNU sed."; exit 1; }
@@ -120,6 +120,6 @@ quote=$(printf "$1" | awk 1 ORS='\\\\n' | head -c -2 )
 } || {
   
   echo "Please, pass at least one arguments (quote)."
-  exit o1
+  exit 1
 
 }
